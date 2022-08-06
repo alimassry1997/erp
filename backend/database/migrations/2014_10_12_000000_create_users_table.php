@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create("users", function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("system_role_id");
+            $table->foreignId("system_role_id");
             $table
                 ->foreign("system_role_id")
                 ->references("id")
