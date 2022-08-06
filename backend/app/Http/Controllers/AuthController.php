@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+	/**
+	 * Login Process that checks for email and password and returns $user and their token
+	 * @param Request $request
+	 * @return JsonResponse
+	 */
 	public function login(Request $request): JsonResponse
 	{
 		$credentials = $request->validate([
