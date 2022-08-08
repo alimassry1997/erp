@@ -13,4 +13,6 @@
 /backend/npm-debug.log
 /backend/yarn-error.log
 .idea
+/backend/_ide_helper.php
+/backend/_ide_helper_models.php
 
