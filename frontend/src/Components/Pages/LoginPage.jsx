@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LoginPage.css";
+import Logo from "../../assets/images/logo.png";
+import { HiOutlineMail } from "react-icons/hi";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -27,14 +30,13 @@ const LoginPage = () => {
   // Submission Function
   const loginProcess = async (userData) => {
     try {
-      const response = await axios.post("/api/admins/login", userData);
+      const response = await axios.post("/api/login", userData);
       if (response.data) {
         const { data: user } = response;
         return user;
       }
     } catch (err) {
-      console.log(err.response);
-      setErrorMessage(err.response.data);
+      setErrorMessage(err.response.data.message);
       throw new Error();
     }
   };
@@ -57,9 +59,12 @@ const LoginPage = () => {
   const validate = (values) => {
     canSubmit = false;
     const errorMessages = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
     if (values.email === "") {
-      errorMessages.email = "Username is required";
+      errorMessages.email = "Email is required";
+    } else if (!regex.test(values.email)) {
+      errorMessages.email = "Invalid Email address!";
     } else {
       errorMessages.email = "";
     }
@@ -89,40 +94,56 @@ const LoginPage = () => {
     <div className="login-container">
       <div className="login-form">
         <section className="heading">
-          <h1>Admin Login</h1>
-          <p>Enter your information below</p>
+          <img src={Logo} alt="Logo" />
+          <h1>Login To Dashboard</h1>
           {errorMessage && <p className="error-msg">{errorMessage}</p>}
         </section>
         <section className="form">
           <form onSubmit={onSubmit}>
             <div className="form-group">
-              <input
-                type="text"
-                className={errors.email ? "error" : "form-valid"}
-                name="email"
-                id="email"
-                value={email}
-                onChange={onChange}
-              />
-              <label htmlFor="email">Email</label>
+              <label className="form-label" htmlFor="email">
+                Email:
+              </label>
+              <div className="form-input-div">
+                <div>
+                  <HiOutlineMail />
+                </div>
+                <input
+                  type="text"
+                  className={errors.email ? "error" : "form-valid"}
+                  name="email"
+                  id="email"
+                  value={email}
+                  placeholder="Enter your email"
+                  onChange={onChange}
+                />
+              </div>
               <p>{errors.email}</p>
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                className={errors.password ? "error" : "form-valid"}
-                name="password"
-                id="password"
-                value={password}
-                onChange={onChange}
-              />
+              <label className="form-label" htmlFor="password">
+                Password:
+              </label>
+              <div className="form-input-div">
+                <div>
+                  <RiLockPasswordFill />
+                </div>
+                <input
+                  type="password"
+                  className={errors.password ? "error" : "form-valid"}
+                  name="password"
+                  id="password"
+                  value={password}
+                  onChange={onChange}
+                  placeholder="Enter your password"
+                />
+              </div>
               <p>{errors.password}</p>
             </div>
 
             <div className="form-group">
-              <input type="submit" className="btn btn-block" value="Login" />
+              <input type="submit" className="btn" value="Login" />
             </div>
           </form>
         </section>
