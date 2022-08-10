@@ -1,5 +1,9 @@
-const Employees = () => {
-  return <div>Employees</div>;
-};
+import React from 'react'
 
-export default Employees;
+function Employees() {
+  return (
+    <div>Employees page</div>
+  )
+}
+
+export default Employees

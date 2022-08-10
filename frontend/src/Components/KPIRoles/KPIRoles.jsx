@@ -1,5 +1,9 @@
-const KPIRoles = () => {
-  return <div>KPI & Roles</div>;
-};
+import React from 'react'
 
-export default KPIRoles;
+function KPIRoles() {
+  return (
+    <div>KPIRoles page</div>
+  )
+}
+
+export default KPIRoles
