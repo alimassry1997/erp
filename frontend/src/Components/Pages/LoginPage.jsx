@@ -33,6 +33,7 @@ const LoginPage = () => {
       const response = await axios.post("/api/login", userData);
       if (response.data) {
         const { data: user } = response;
+        console.log(user);
         return user;
       }
     } catch (err) {
