@@ -1,8 +1,9 @@
 import React from 'react'
+import './Teams.css'
 
 function Teams() {
   return (
-    <div>Teams page</div>
+    <div className='team'>Teams page</div>
   )
 }
 

@@ -1,8 +1,9 @@
 import React from 'react'
+import './Reports.css'
 
 function Reports() {
   return (
-    <div>Reports page</div>
+    <div className='main'>Reports page</div>
   )
 }
 

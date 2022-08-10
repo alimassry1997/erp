@@ -1,8 +1,9 @@
 import React from 'react'
+import './KPIRoles.css'
 
 function KPIRoles() {
   return (
-    <div>KPIRoles page</div>
+    <div className='kpi'>KPIRoles page</div>
   )
 }
 

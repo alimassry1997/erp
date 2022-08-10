@@ -1,45 +1,89 @@
-import React, { useState } from 'react';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
-import { Link } from 'react-router-dom';
-import { SidebarData } from './SidebarData';
-import './Sidebar.css'
-import { IconContext } from 'react-icons';
+import React from "react";
+import "./Sidebar.css";
+import Logo from "../../assets/logo.png";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
-  const [sidebar, setSidebar] = useState(false);
-
-  const showSidebar = () => setSidebar(!sidebar);
- 
   return (
     <>
-    <IconContext.Provider value={{ color: '#fff' }}>
-    <div className='navbar'>
-          <Link to='#' className='menu-bars'>
-            <FaIcons.FaBars onClick={showSidebar}/>
-          </Link>
+      <section className="side_bar">
+        <div className="top">
+          <div className="brand">
+            <img src={Logo} alt="logo" />
+            <span>Company Logo</span>
+          </div>
+          <div className="links">
+            <ul>
+              <li>
+                <i class="fa-brands fa-adn"></i>
+                <Link to={"/Admins"}>
+                  <span>Admins</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="links">
+            <ul>
+              <li>
+                <i class="fa-solid fa-flag"></i>
+                <Link to={"/Reports"}>
+                  <span>Reports</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="links">
+            <ul>
+              <li>
+                <i class="fa-solid fa-list-check"></i>
+                <Link to={"/Projects"}>
+                  <span>Projects</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="links">
+            <ul>
+              <li>
+                <i class="fa-solid fa-people-group"></i>
+                <Link to={"/Teams"}>
+                  <span>Teams</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="links">
+            <ul>
+              <li>
+                <i class="fa-solid fa-user"></i>
+                <Link to={"/Employees"}>
+                  <span>Employees</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="links">
+            <ul>
+              <li>
+                <i class="fa fa-tachometer" aria-hidden="true"></i>
+                <Link to={"/KPIRoles"}>
+                  <span>KPIRoles</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="links">
+            <ul>
+              <li>
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <a href="#">
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-          <ul className='nav-menu-items' onClick={showSidebar}>
-            <li className='navbar-toggle'>
-              <Link to='#' className='menu-bars'>
-                <AiIcons.AiOutlineClose />
-              </Link>
-            </li>
-            {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-    </IconContext.Provider>
-      
+      </section>
     </>
   );
 }

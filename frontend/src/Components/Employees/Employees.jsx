@@ -1,8 +1,9 @@
 import React from 'react'
+import './Employees.css'
 
 function Employees() {
   return (
-    <div>Employees page</div>
+    <div className='employee'>Employees page</div>
   )
 }
 

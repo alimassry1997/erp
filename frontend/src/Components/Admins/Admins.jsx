@@ -1,8 +1,9 @@
 import React from 'react'
+import './Admins.css'
 
 function Admins() {
   return (
-    <div>Admins page</div>
+    <div className='admin'>Admins page</div>
   )
 }
 

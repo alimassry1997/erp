@@ -8,22 +8,24 @@ import KPIRoles from "./Components/KPIRoles/KPIRoles";
 import Reports from "./Components/Reports/Reports";
 import Projects from "./Components/Projects/Projects";
 import Teams from "./Components/Teams/Teams";
+import Footer from './Components/Layout/Footer'
 
 function App() {
   return (
-    <>
-      <Router>
+    <Router>
+      <>
         <Sidebar />
         <Routes>
-          <Route path="/" exact element={<Admins />} />
+          <Route path="/admins"  exact element={<Admins />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/kpiroles" element={<KPIRoles />} />
         </Routes>
-      </Router>
-    </>
+        <Footer />
+      </>
+    </Router>
   );
 }
 
