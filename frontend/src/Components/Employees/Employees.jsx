@@ -1,6 +1,7 @@
 import './Employees.css';
 import axios from 'axios';
 import { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Employees extends Component {
     
@@ -19,7 +20,9 @@ class Employees extends Component {
       });
      }
 
-    }
+  }
+  
+  
   render() {
     var emp_table= "";
     if (this.state.loading) {
@@ -29,7 +32,7 @@ class Employees extends Component {
         return (
           <tr key={item.id}>
             <td>{item.id}</td>
-            <td>{item.system_role_id}</td>
+            <td>{item.status}</td>
             <td>{item.first_name}</td>
             <td>{item.last_name}</td>
             <td>{item.email}</td>
@@ -38,13 +41,15 @@ class Employees extends Component {
         );
       });
       }
-
+      
     return <div>
+
+      
       <table>
         <thead>
           <tr>
             <th>ID</th>
-            <th>System Role ID</th>
+            <th>Status</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
@@ -54,7 +59,7 @@ class Employees extends Component {
         {emp_table}
         </tbody>
       </table>
-
+     <Link to="/add-employee">Add</Link>
 
     </div>;
   }

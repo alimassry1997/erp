@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     /**
      * Run the migrations.
-     *
+     * 
+     * 
      * @return void
      */
     public function up(): void
@@ -26,7 +27,7 @@ return new class extends Migration {
             $table->string("password")->nullable();
             $table->integer("phone_number");
             $table->boolean("status")->default(true);
-            $table->string("picture");
+            $table->string("picture")->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

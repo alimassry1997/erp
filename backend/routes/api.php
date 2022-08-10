@@ -22,5 +22,9 @@ Route::middleware("auth:sanctum")->get("/user", function (Request $request) {
     return $request->user();
 });
 
+// Add Employee
+Route::post('add-employee', [UserController::class, 'store']);
+
+
 // View all the employees
 Route::get('employees', [UserController::class, 'index']);
