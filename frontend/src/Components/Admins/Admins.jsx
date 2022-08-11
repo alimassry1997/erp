@@ -1,5 +1,10 @@
-const Admins = () => {
-  return <div>Admins</div>;
-};
+import React from 'react'
+import './Admins.css'
 
-export default Admins;
+function Admins() {
+  return (
+    <div className='admin'>Admins page</div>
+  )
+}
+
+export default Admins

@@ -1,5 +1,10 @@
-const Teams = () => {
-  return <div>Teams</div>;
-};
+import React from 'react'
+import './Teams.css'
 
-export default Teams;
+function Teams() {
+  return (
+    <div className='team'>Teams page</div>
+  )
+}
+
+export default Teams

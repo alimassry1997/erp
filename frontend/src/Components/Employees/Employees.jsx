@@ -1,5 +1,10 @@
-const Employees = () => {
-  return <div>Employees</div>;
-};
+import React from 'react'
+import './Employees.css'
 
-export default Employees;
+function Employees() {
+  return (
+    <div className='employee'>Employees page</div>
+  )
+}
+
+export default Employees
