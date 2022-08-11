@@ -42,4 +42,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(SystemRole::class);
     }
+
+    /**
+     * Get the team that belongs to this user.
+     */
+    public function team(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
 }
