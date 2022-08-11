@@ -15,7 +15,7 @@ function Sidebar() {
           <div className="links">
             <ul>
               <li>
-                <i class="fa-brands fa-adn"></i>
+                <i className="fa-brands fa-adn"></i>
                 <Link to={"/Admins"}>
                   <span>Admins</span>
                 </Link>
@@ -25,8 +25,8 @@ function Sidebar() {
           <div className="links">
             <ul>
               <li>
-                <i class="fa-solid fa-flag"></i>
-                <Link to={"/Reports"}>
+                <i className="fa-solid fa-flag"></i>
+                <Link to={"/"}>
                   <span>Reports</span>
                 </Link>
               </li>
@@ -35,7 +35,7 @@ function Sidebar() {
           <div className="links">
             <ul>
               <li>
-                <i class="fa-solid fa-list-check"></i>
+                <i className="fa-solid fa-list-check"></i>
                 <Link to={"/Projects"}>
                   <span>Projects</span>
                 </Link>
@@ -45,7 +45,7 @@ function Sidebar() {
           <div className="links">
             <ul>
               <li>
-                <i class="fa-solid fa-people-group"></i>
+                <i className="fa-solid fa-people-group"></i>
                 <Link to={"/Teams"}>
                   <span>Teams</span>
                 </Link>
@@ -55,7 +55,7 @@ function Sidebar() {
           <div className="links">
             <ul>
               <li>
-                <i class="fa-solid fa-user"></i>
+                <i className="fa-solid fa-user"></i>
                 <Link to={"/Employees"}>
                   <span>Employees</span>
                 </Link>
@@ -65,9 +65,9 @@ function Sidebar() {
           <div className="links">
             <ul>
               <li>
-                <i class="fa fa-tachometer" aria-hidden="true"></i>
-                <Link to={"/KPIRoles"}>
-                  <span>KPIRoles</span>
+                <i className="fa fa-tachometer" aria-hidden="true"></i>
+                <Link to={"/roles"}>
+                  <span>Roles</span>
                 </Link>
               </li>
             </ul>
@@ -75,7 +75,17 @@ function Sidebar() {
           <div className="links">
             <ul>
               <li>
-                <i class="fa-solid fa-right-from-bracket"></i>
+                <i className="fa fa-tachometer" aria-hidden="true"></i>
+                <Link to={"/kpi"}>
+                  <span>KPI</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="links">
+            <ul>
+              <li>
+                <i className="fa-solid fa-right-from-bracket"></i>
                 <a href="#">
                   <span>Logout</span>
                 </a>
