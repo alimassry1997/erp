@@ -10,7 +10,7 @@ function Sidebar() {
         <div className="top">
           <div className="brand">
             <img src={Logo} alt="logo" />
-            <span>Company Logo</span>
+            {/* <span>Company Logo</span> */}
           </div>
           <div className="links">
             <ul>

@@ -51,6 +51,8 @@
   padding-left: 1rem;
   padding-right: 1rem;
   border-radius: 1.6rem;
+  justify-content: space-between;
+  display: flex;
 }
 
 .side_bar li:hover {
@@ -59,6 +61,8 @@
 
 .side_bar i {
   color: white;
+  padding-right: 1rem;
+  padding-top: 0.3rem;
 }
 
 .side_bar a {
