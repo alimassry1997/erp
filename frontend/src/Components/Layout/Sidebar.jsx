@@ -1,6 +1,6 @@
 import React from "react";
 import "./Sidebar.css";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/images/logo.png";
 import { Link } from "react-router-dom";
 
 function Sidebar() {
@@ -10,7 +10,6 @@ function Sidebar() {
         <div className="top">
           <div className="brand">
             <img src={Logo} alt="logo" />
-            {/* <span>Company Logo</span> */}
           </div>
           <div className="links">
             <ul>
