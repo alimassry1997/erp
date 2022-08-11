@@ -1,0 +1,10 @@
+.footer {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #5a99cc;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 82%;
+  text-align: center;
+}

@@ -1,5 +1,10 @@
-const Projects = () => {
-  return <div>Projects</div>;
-};
+import React from 'react'
+import './Projects.css'
 
-export default Projects;
+function Projects() {
+  return (
+    <div className='project'>Projects page</div>
+  )
+}
+
+export default Projects
