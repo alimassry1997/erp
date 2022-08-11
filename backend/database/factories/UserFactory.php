@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -20,6 +21,7 @@ class UserFactory extends Factory
     {
         return [
             "system_role_id" => fake()->numberBetween(1, 2),
+            "team_id" => fake()->numberBetween(1, 3),
             "first_name" => fake()->firstName(),
             "last_name" => fake()->lastName(),
             "email" => fake()->safeEmail(),
@@ -43,6 +45,23 @@ class UserFactory extends Factory
             return [
                 "email_verified_at" => null,
             ];
+        });
+    }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            if ($user->system_role->id === 1) {
+                $user->update([
+                    "team_id" => 1,
+                    "password" => Hash::make("1q2w3e4r5t"),
+                ]);
+            }
         });
     }
 }

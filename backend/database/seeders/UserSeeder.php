@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
         $super_admins = [
             [
                 "system_role_id" => 3,
+                "team_id" => 1,
                 "first_name" => "Ahmad",
                 "last_name" => "Berri",
                 "password" => Hash::make("1q2w3e4r5t"),
@@ -34,6 +35,7 @@ class UserSeeder extends Seeder
             ],
             [
                 "system_role_id" => 3,
+                "team_id" => 1,
                 "first_name" => "Ali",
                 "last_name" => "Masri",
                 "password" => Hash::make("1q2w3e4r5t"),
@@ -46,6 +48,7 @@ class UserSeeder extends Seeder
             ],
             [
                 "system_role_id" => 3,
+                "team_id" => 1,
                 "first_name" => "Hassan",
                 "last_name" => "Al Dika",
                 "password" => Hash::make("1q2w3e4r5t"),
