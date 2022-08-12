@@ -9,6 +9,8 @@ import LoginPage from "./Components/Pages/LoginPage";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
 import Roles from "./Components/Roles/Roles";
 import KPI from "./Components/KPI/KPI";
+import EditEmployee from './Components/Employees/Edit-Employees/edit-employee';
+import AddEmployee from './Components/Employees/Add-Employees/add-employee';
 
 const App = () => {
   return (
