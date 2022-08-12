@@ -31,3 +31,7 @@ Route::get('employees', [UserController::class, 'index']);
 
 // Edit the Employee
 Route::get('edit-employee/{id}', [UserController::class, 'edit']);
+
+
+
+

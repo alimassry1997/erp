@@ -44,7 +44,6 @@ class UserController extends Controller
 
     // get employee list from db
     public function index(){
-        
            $employees = User::all();
            return response()->json([
             'status' => 200,
@@ -54,7 +53,18 @@ class UserController extends Controller
 
 public function edit($id){
     $employee = User::find($id);
-    // return view('pages.employee.edit', compact('employee'));
-}
+    if($employee){
 
+    
+    return response()->json([
+        'status' => 200,
+        'employee' => $employee ,
+       ]);
+    } else{
+        return response()->json([
+            'status' => 404,
+            'message' => 'Employee Does not Exist',
+           ]);
+    }
+}
 }
