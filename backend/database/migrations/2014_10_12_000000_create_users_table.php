@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->string("password")->nullable();
             $table->integer("phone_number");
             $table->boolean("status")->default(true);
-            $table->string("picture")->nullable();
+            $table->string("picture");
             $table->rememberToken();
             $table->timestamps();
         });

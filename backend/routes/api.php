@@ -28,3 +28,6 @@ Route::post('add-employee', [UserController::class, 'store']);
 
 // View all the employees
 Route::get('employees', [UserController::class, 'index']);
+
+// Edit the Employee
+Route::get('edit-employee/{id}', [UserController::class, 'edit']);
