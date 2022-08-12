@@ -1,5 +1,7 @@
-.employee {
-    font-size: 50px;
-    padding-left: 250px;
+table, th, td {
+    border: 1px solid black;
+  }
 
-}
+  th{
+    width: 10vw;
+  }
