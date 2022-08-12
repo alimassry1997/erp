@@ -28,6 +28,10 @@ a {
   text-decoration: none;
 }
 
+a:visited {
+  color: var(--primary-color);
+}
+
 ul {
   list-style: none;
 }
@@ -144,12 +148,6 @@ Forms Design
   flex-direction: column;
 }
 
-.home,
-.reports,
-.products {
-  display: flex;
-  height: 90vh;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
+.content-container {
+  padding-left: 220px;
 }
