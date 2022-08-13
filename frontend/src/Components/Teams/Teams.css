@@ -23,15 +23,15 @@
   letter-spacing: 1px;
 }
 
-.teams-dashboard {
+.dashboard {
   padding: 1rem 1rem 1rem 0;
 }
 
-.teams-dashboard a:visited {
+.dashboard a:visited {
   color: var(--white-color);
 }
 
-.teams-dashboard a:hover {
+.dashboard a:hover {
   color: var(--primary-color);
 }
 
@@ -40,13 +40,14 @@ table {
   border-collapse: collapse;
 }
 
-.table-teams .btn {
+.dashboard .btn {
+  margin-top: 0;
   padding: 0.5rem;
   font-size: 0.8rem;
   border-radius: 5px;
 }
 
-.teams-dashboard .flex-btn {
+.dashboard .flex-btn {
   display: flex;
   justify-content: space-evenly;
   height: max-content;

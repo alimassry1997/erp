@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
@@ -17,7 +17,7 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             "system_role_id" => fake()->numberBetween(1, 2),
@@ -28,8 +28,7 @@ class UserFactory extends Factory
             "email_verified_at" => now(),
             "phone_number" => fake()->randomNumber(8),
             "status" => fake()->boolean(),
-            "picture" =>
-                "https://depositphotos.com/171453724/stock-illustration-default-avatar-profile-icon-grey.html",
+            "picture" => "https://via.placeholder.com/150",
             "remember_token" => Str::random(10),
         ];
     }
@@ -39,7 +38,7 @@ class UserFactory extends Factory
      *
      * @return static
      */
-    public function unverified()
+    public function unverified(): static
     {
         return $this->state(function (array $attributes) {
             return [
@@ -53,7 +52,7 @@ class UserFactory extends Factory
      *
      * @return $this
      */
-    public function configure()
+    public function configure(): static
     {
         return $this->afterCreating(function (User $user) {
             if ($user->system_role->id === 1) {

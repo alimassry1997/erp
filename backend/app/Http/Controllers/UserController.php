@@ -9,11 +9,15 @@ use Illuminate\Http\JsonResponse;
 class UserController extends Controller
 {
     /**
+     * Get all Employees
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $employees = User::latest()->get();
+        $employees = User::with("team")
+            ->latest()
+            ->whereNotIn("team_id", [1])
+            ->get();
         return response()->json([
             "employees" => $employees,
         ]);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import "./Teams.css";
 import Spinner from "../Layout/Spinner";
 import Team from "./Team";
@@ -14,7 +14,7 @@ const Teams = ({ teams, fetchTeams, loadingTeams }) => {
     return <Spinner />;
   } else {
     return (
-      <div className="teams-dashboard">
+      <div className="dashboard">
         <div className="header">
           <h2>
             <AiOutlineTeam />
@@ -36,7 +36,7 @@ const Teams = ({ teams, fetchTeams, loadingTeams }) => {
               </tr>
             </thead>
             <tbody>
-              {teams.teams.map((team) => (
+              {teams.map((team) => (
                 <Team
                   key={team.id}
                   name={team.name}

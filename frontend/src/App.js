@@ -20,6 +20,7 @@ const App = () => {
    * @type {object}
    */
   const user = JSON.parse(localStorage.getItem("user"));
+  const token = user ? user.access_token : "";
 
   /**
    * Auth State for Admin Credentials & Token
@@ -54,9 +55,13 @@ const App = () => {
   const fetchTeams = async () => {
     try {
       setLoadingTeams(true);
-      const response = await axios.get(`/api/teams/`);
-      const { data } = response;
-      setTeams(data);
+      const response = await axios.get(`/api/teams/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { teams },
+      } = response;
+      setTeams(teams);
       setLoadingTeams(false);
     } catch (error) {
       console.log(error.message);
@@ -66,7 +71,9 @@ const App = () => {
   const fetchEmployees = async () => {
     try {
       setLoadingEmployees(true);
-      const response = await axios.get(`/api/employees`);
+      const response = await axios.get(`/api/employees`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const {
         data: { employees },
       } = response;
@@ -85,12 +92,15 @@ const App = () => {
   const getTeam = async (slug) => {
     setLoadingTeam(true);
     try {
-      const response = await axios.get(`/api/teams/${slug}`);
-      const { data } = response;
-      setTeam(data);
-      document.title = `${capitalizeFirstLetter(
-        data.team.name
-      )} Team | ERP Teams`;
+      const response = await axios.get(`/api/teams/${slug}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { team },
+      } = response;
+      console.log(team);
+      setTeam(team);
+      document.title = `${capitalizeFirstLetter(team.name)} Team | ERP Teams`;
     } catch (error) {
       console.log(error.message);
     }

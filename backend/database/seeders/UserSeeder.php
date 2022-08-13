@@ -30,8 +30,7 @@ class UserSeeder extends Seeder
                 "email_verified_at" => now(),
                 "remember_token" => Str::random(10),
                 "phone_number" => "70513964",
-                "picture" =>
-                    "https://depositphotos.com/171453724/stock-illustration-default-avatar-profile-icon-grey.html",
+                "picture" => "https://via.placeholder.com/150",
             ],
             [
                 "system_role_id" => 3,
@@ -43,8 +42,7 @@ class UserSeeder extends Seeder
                 "email_verified_at" => now(),
                 "remember_token" => Str::random(10),
                 "phone_number" => "71861634",
-                "picture" =>
-                    "https://depositphotos.com/171453724/stock-illustration-default-avatar-profile-icon-grey.html",
+                "picture" => "https://via.placeholder.com/150",
             ],
             [
                 "system_role_id" => 3,
@@ -56,8 +54,7 @@ class UserSeeder extends Seeder
                 "email_verified_at" => now(),
                 "remember_token" => Str::random(10),
                 "phone_number" => "76877530",
-                "picture" =>
-                    "https://depositphotos.com/171453724/stock-illustration-default-avatar-profile-icon-grey.html",
+                "picture" => "https://via.placeholder.com/150",
             ],
         ];
         foreach ($super_admins as $super_admin) {

@@ -18,18 +18,24 @@ use App\Http\Controllers\UserController;
 */
 /**
  * Login Route
+ * Public Access
  */
 Route::post("/login", [AuthController::class, "login"]);
 
 /**
- * Teams Routes
+ * Private Routes
  */
-Route::get("/teams", [TeamController::class, "index"]);
-Route::get("/teams/{team}", [TeamController::class, "show"]);
+Route::group(["middleware" => ["auth:sanctum"]], static function () {
+    /**
+     * Teams Routes
+     */
+    Route::get("/teams", [TeamController::class, "index"]);
+    Route::get("/teams/{team}", [TeamController::class, "show"]);
 
-/**
- * Employees Routes
- */
-Route::get("/employees", [UserController::class, "index"]);
-Route::post("/employees", [UserController::class, "store"]);
-Route::get("/employees/{user}", [UserController::class, "edit"]);
+    /**
+     * Employees Routes
+     */
+    Route::get("/employees", [UserController::class, "index"]);
+    Route::post("/employees", [UserController::class, "store"]);
+    Route::get("/employees/{user}", [UserController::class, "edit"]);
+});

@@ -1,64 +1,61 @@
 import "./Employees.css";
-import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import Spinner from "../Layout/Spinner";
+import { AiOutlineTeam } from "react-icons/ai";
+import { FaPlusSquare } from "react-icons/fa";
+import Employee from "./Employee";
 
 const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
   useEffect(() => {
     fetchEmployees();
   }, []);
-
-  /* Image lal employee then fname then lname then email then phone then status with a button to
-  whether you want to activate or deactivate an employee and a manage finally containing edit icon 
-  if we need to edit the record, when the whole record is clicked it opens a page containing whole information 
-  about the employee 
-  - filtering and search is a plus to the employees table
-   */
-
   if (loadingEmployees) {
     return <Spinner />;
   } else {
-    employees.map((item) => {
-      return (
-        <tr key={item.id}>
-          <td>{item.id}</td>
-          <td>{item.status === 1 ? "Inactive" : "Active"}</td>
-          <td>{item.first_name}</td>
-          <td>{item.last_name}</td>
-          <td>{item.email}</td>
-          <td>{item.phone_number}</td>
-          <td>
-            <button type="button">View</button>
-            <Link to={`edit-employee/${item.id}`}>
-              {" "}
-              <button type="button">Edit</button>{" "}
-            </Link>
-            <button type="button">Deactivate</button>
-          </td>
-        </tr>
-      );
-    });
+    return (
+      <div className="dashboard employees-dashboard">
+        <div className="header">
+          <h2>
+            <AiOutlineTeam />
+            Employees Management
+          </h2>
+          <button className="btn add-btn">
+            <FaPlusSquare />
+          </button>
+        </div>
+        <div className="table-responsive">
+          <table className="table table-employees">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Team Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Status</th>
+                <th>Manage</th>
+              </tr>
+            </thead>
+            <tbody>
+              {employees.map((employee) => (
+                <Employee
+                  key={employee.id}
+                  image={employee.picture}
+                  firstName={employee.first_name}
+                  lastName={employee.last_name}
+                  teamName={employee.team.name}
+                  email={employee.email}
+                  phoneNumber={employee.phone_number}
+                  status={employee.status}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
   }
-
-  return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Status</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <Link to="/add-employee">Add</Link>
-    </div>
-  );
 };
 
 export default Employees;

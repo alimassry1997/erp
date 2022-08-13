@@ -16,8 +16,8 @@ class TeamController extends Controller
     {
         $teams = Team::withCount("users")
             ->latest()
-            ->get()
-            ->except(["id", 1]);
+            ->whereNotIn("id", [1])
+            ->get();
         return response()->json([
             "teams" => $teams,
         ]);

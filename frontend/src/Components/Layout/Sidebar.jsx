@@ -26,13 +26,13 @@ const Sidebar = ({ setAuth }) => {
       </div>
       <ul>
         <li>
-          <NavLink to="/admins">
-            <RiAdminFill /> Admins
+          <NavLink to={"/"}>
+            <TbReportSearch /> Reports
           </NavLink>
         </li>
         <li>
-          <NavLink to={"/"}>
-            <TbReportSearch /> Reports
+          <NavLink to="/admins">
+            <RiAdminFill /> Admins
           </NavLink>
         </li>
         <li>

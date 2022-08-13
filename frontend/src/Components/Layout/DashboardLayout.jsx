@@ -14,7 +14,7 @@ const DashboardLayout = ({ auth, setAuth }) => {
     <div>
       <Sidebar setAuth={setAuth} />
       <main className="content-container">
-        <Outlet />
+        <Outlet auth={auth} />
         <Footer />
       </main>
     </div>

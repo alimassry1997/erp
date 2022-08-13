@@ -1,0 +1,61 @@
+.team-employees-dashboard {
+  padding-left: 1rem;
+}
+
+.team-employees-dashboard table img {
+  width: 50px;
+  border-radius: 50%;
+}
+
+.team-employees-dashboard .status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50% !important;
+}
+
+@media (max-width: 950px) {
+  .table-team-employees .btn {
+    width: 70%;
+  }
+
+  .table-team-employees .status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50% !important;
+    margin-top: 0;
+  }
+  /*
+  Label the data
+  */
+  .table-team-employees td:nth-of-type(1):before {
+    content: "Image";
+  }
+
+  .table-team-employees td:nth-of-type(2):before {
+    content: "First Name";
+  }
+
+  .table-team-employees td:nth-of-type(3):before {
+    content: "Last Name";
+  }
+
+  .table-team-employees td:nth-of-type(4):before {
+    content: "Email";
+  }
+
+  .table-team-employees td:nth-of-type(5):before {
+    content: "Phone Number";
+  }
+
+  .table-team-employees td:nth-of-type(6):before {
+    content: "Status";
+  }
+
+  .table-team-employees td:nth-of-type(7):before {
+    content: "Manage";
+  }
+
+  .flex-btn {
+    column-gap: 1rem;
+  }
+}
