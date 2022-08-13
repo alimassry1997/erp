@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LoginPage.css";
 import Logo from "../../assets/images/logo.png";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordFill } from "react-icons/ri";
 
-const LoginPage = () => {
+const LoginPage = ({ auth, setAuth }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   let canSubmit = false;
   const { email, password } = formData;
 
@@ -33,7 +33,8 @@ const LoginPage = () => {
       const response = await axios.post("/api/login", userData);
       if (response.data) {
         const { data: user } = response;
-        console.log(user);
+        setAuth(user);
+        localStorage.setItem("user", JSON.stringify(user));
         return user;
       }
     } catch (err) {
@@ -89,7 +90,10 @@ const LoginPage = () => {
         setErrorMessage(false);
       }, 5000);
     }
-  }, [errorMessage]);
+    if (auth) {
+      navigate("/");
+    }
+  }, [errorMessage, auth]);
 
   return (
     <div className="login-container">
