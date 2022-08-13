@@ -1,55 +1,55 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import "./Teams.css";
 import Spinner from "../Layout/Spinner";
+import Team from "./Team";
+import { FaPlusSquare } from "react-icons/fa";
+import { AiOutlineTeam } from "react-icons/ai";
 
-const Teams = () => {
-  document.title = "Classes Dashboard | Zumba";
+const Teams = ({ teams, fetchTeams, loadingTeam }) => {
+  document.title = "Teams Dashboard | ERP";
   useEffect(() => {
-    // fetchClasses();
+    fetchTeams();
   }, []);
-  if (true) {
+  if (loadingTeam) {
     return (
       <>
         <Spinner />
       </>
     );
   } else {
+    console.log(teams.teams);
     return (
-      <div className="classes-dashboard">
+      <div className="teams-dashboard">
         <div className="header">
-          <h2>Teams Management</h2>
-          {/*<button className="btn add-btn" onClick={showAddClassFormPopup}>*/}
-          {/*  <FaPlusSquare />*/}
-          {/*</button>*/}
+          <h2>
+            <AiOutlineTeam />
+            Teams Management
+          </h2>
+          <button className="btn add-btn">
+            <FaPlusSquare />
+          </button>
         </div>
         <div className="table-responsive">
-          <table className="table table-classes">
+          <table className="table table-teams">
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Benefits</th>
-                <th>Description</th>
-                <th>Video</th>
-                <th>Age Range</th>
+                <th>Team Size</th>
+                <th>Created At</th>
+                <th>Updated At</th>
                 <th>Manage</th>
               </tr>
             </thead>
             <tbody>
-              {/*{classes.map((item) => (*/}
-              {/*  <ClassAuthItem*/}
-              {/*    key={item._id}*/}
-              {/*    id={item._id}*/}
-              {/*    name={item.name}*/}
-              {/*    benefits={item.benefits}*/}
-              {/*    description={item.description}*/}
-              {/*    video_url={item.video_url}*/}
-              {/*    min={item.age.min}*/}
-              {/*    max={item.age.max}*/}
-              {/*    singleClass={item}*/}
-              {/*    showEditClassFormPopup={showEditClassFormPopup}*/}
-              {/*    showDeleteClassFormPopup={showDeleteClassFormPopup}*/}
-              {/*  />*/}
-              {/*))}*/}
+              {teams.teams.map((team) => (
+                <Team
+                  key={team.id}
+                  name={team.name}
+                  size={team.users_count}
+                  created_at={team.created_at}
+                  updated_at={team.updated_at}
+                />
+              ))}
             </tbody>
           </table>
         </div>

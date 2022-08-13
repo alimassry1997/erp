@@ -8,53 +8,60 @@ import { AiOutlineProject, AiOutlineTeam, AiOutlineUser } from "react-icons/ai";
 import { FaUsersCog } from "react-icons/fa";
 import { GiSkills } from "react-icons/gi";
 import { FiLogOut } from "react-icons/fi";
+import { NavLink, useNavigate } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ setAuth }) => {
+  const navigate = useNavigate();
+  const onLogout = () => {
+    localStorage.removeItem("user");
+    setAuth(null);
+    navigate("/login");
+  };
   return (
     <section className="sidebar">
       <div className="brand">
-        <Link to={"/"}>
+        <Link to="/">
           <img src={Logo} alt="logo" />
         </Link>
       </div>
       <ul>
         <li>
-          <Link to={"/admins"}>
+          <NavLink to="/admins">
             <RiAdminFill /> Admins
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to={"/"}>
+          <NavLink to={"/"}>
             <TbReportSearch /> Reports
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to={"/projects"}>
+          <NavLink to={"/projects"}>
             <AiOutlineProject /> Projects
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to={"/teams"}>
+          <NavLink to={"/teams"}>
             <AiOutlineTeam /> Teams
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to={"/employees"}>
+          <NavLink to={"/employees"}>
             <AiOutlineUser /> Employees
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to={"/roles"}>
+          <NavLink to={"/roles"}>
             <FaUsersCog /> Roles
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to={"/kpi"}>
+          <NavLink to={"/kpi"}>
             <GiSkills /> KPI
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <button>
+          <button onClick={onLogout}>
             <FiLogOut /> Logout
           </button>
         </li>

@@ -10,6 +10,7 @@ import LoginPage from "./Components/Pages/LoginPage";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
 import Roles from "./Components/Roles/Roles";
 import KPI from "./Components/KPI/KPI";
+import axios from "axios";
 
 const App = () => {
   /**
@@ -22,6 +23,29 @@ const App = () => {
    * Auth State for Admin Credentials & Token
    */
   const [auth, setAuth] = useState(user ? user : null);
+
+  /**
+   * Team States
+   * Loading & Team
+   */
+  const [loadingTeam, setLoadingTeam] = useState(true);
+  const [teams, setTeams] = useState([]);
+
+  /**
+   * Get All teams with their corresponding employees
+   * @returns {Promise<void>}
+   */
+  const fetchTeams = async () => {
+    try {
+      setLoadingTeam(true);
+      const response = await axios.get(`/api/teams/`);
+      const { data } = response;
+      setTeams(data);
+      setLoadingTeam(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <Router>
@@ -49,7 +73,16 @@ const App = () => {
             path="/teams"
             element={<DashboardLayout auth={auth} setAuth={setAuth} />}
           >
-            <Route index element={<Teams />} />
+            <Route
+              index
+              element={
+                <Teams
+                  fetchTeams={fetchTeams}
+                  teams={teams}
+                  loadingTeam={loadingTeam}
+                />
+              }
+            />
           </Route>
           <Route
             path="/employees"

@@ -8,6 +8,9 @@ html {
   --secondary-color: #133f4c;
   --link-color: #25aba8;
   --white-color: #f3f6fb;
+  --success-color: #00873d;
+  --danger-color: #d6001c;
+  --edit-color: #e57e17;
 }
 
 /**
@@ -148,6 +151,24 @@ Forms Design
   flex-direction: column;
 }
 
+.active {
+  width: fit-content;
+  color: var(--secondary-color) !important;
+  border-bottom: 3px solid var(--secondary-color) !important;
+}
+
+.add-btn {
+  background-color: var(--success-color);
+}
+
+.delete-btn {
+  background-color: var(--danger-color);
+}
+
+.edit-btn {
+  background-color: var(--edit-color);
+}
+
 .content-container {
   padding: 1rem 0 0 216px;
   min-height: 100vh;
@@ -158,5 +179,8 @@ Forms Design
 @media (max-width: 600px) {
   .content-container {
     padding-left: 90px;
+  }
+  .active {
+    width: 100%;
   }
 }

@@ -14,7 +14,7 @@ class TeamController extends Controller
      */
     public function index(): JsonResponse
     {
-        $teams = Team::with("users")
+        $teams = Team::withCount("users")
             ->get()
             ->except(["id", 1]);
         return response()->json([

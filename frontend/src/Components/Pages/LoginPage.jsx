@@ -27,7 +27,7 @@ const LoginPage = ({ auth, setAuth }) => {
     }));
   };
 
-  // Submission Function
+  // Login Function
   const loginProcess = async (userData) => {
     try {
       const response = await axios.post("/api/login", userData);
