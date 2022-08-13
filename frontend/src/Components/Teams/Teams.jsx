@@ -5,19 +5,14 @@ import Team from "./Team";
 import { FaPlusSquare } from "react-icons/fa";
 import { AiOutlineTeam } from "react-icons/ai";
 
-const Teams = ({ teams, fetchTeams, loadingTeam }) => {
+const Teams = ({ teams, fetchTeams, loadingTeams }) => {
   document.title = "Teams Dashboard | ERP";
   useEffect(() => {
     fetchTeams();
   }, []);
-  if (loadingTeam) {
-    return (
-      <>
-        <Spinner />
-      </>
-    );
+  if (loadingTeams) {
+    return <Spinner />;
   } else {
-    console.log(teams.teams);
     return (
       <div className="teams-dashboard">
         <div className="header">
@@ -46,6 +41,7 @@ const Teams = ({ teams, fetchTeams, loadingTeam }) => {
                   key={team.id}
                   name={team.name}
                   size={team.users_count}
+                  slug={team.slug}
                   created_at={team.created_at}
                   updated_at={team.updated_at}
                 />

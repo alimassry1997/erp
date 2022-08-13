@@ -1,8 +1,9 @@
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import formatDate from "../../utils/formatDate";
 import { BiShowAlt } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
-const Team = ({ name, size, created_at, updated_at }) => {
+const Team = ({ name, size, created_at, updated_at, slug }) => {
   return (
     <tr>
       <td>{name}</td>
@@ -11,12 +12,9 @@ const Team = ({ name, size, created_at, updated_at }) => {
       <td>{formatDate(updated_at)}</td>
       <td>
         <div className="flex-btn">
-          <button
-            className="btn view-btn"
-            // onClick={() => showEditClassFormPopup(singleClass)}
-          >
+          <Link to={`/teams/${slug}`} className="btn view-btn">
             <BiShowAlt />
-          </button>
+          </Link>
           <button
             className="btn edit-btn"
             // onClick={() => showEditClassFormPopup(singleClass)}

@@ -27,6 +27,14 @@
   padding: 1rem 1rem 1rem 0;
 }
 
+.teams-dashboard a:visited {
+  color: var(--white-color);
+}
+
+.teams-dashboard a:hover {
+  color: var(--primary-color);
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

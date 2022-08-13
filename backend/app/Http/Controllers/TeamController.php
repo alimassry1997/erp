@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class TeamController extends Controller
 {
     /**
-     * Get All Teams with their respective employees
+     * Get All Teams with their employees count
      * @return JsonResponse
      */
     public function index(): JsonResponse
@@ -19,6 +19,19 @@ class TeamController extends Controller
             ->except(["id", 1]);
         return response()->json([
             "teams" => $teams,
+        ]);
+    }
+
+    /**
+     * Get specific team according to id
+     * @param Team $team
+     * @return JsonResponse
+     */
+    public function show(Team $team): JsonResponse
+    {
+        $team->users;
+        return response()->json([
+            "team" => $team,
         ]);
     }
 }

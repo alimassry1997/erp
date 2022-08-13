@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Team;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class TeamSeeder extends Seeder
 {
@@ -13,9 +14,10 @@ class TeamSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        $team_admin = ["name" => "admin"];
+        $name = "admin";
+        $team_admin = ["name" => $name, "slug" => Str::slug($name, "-")];
         Team::create($team_admin);
         Team::factory()
             ->count(3)

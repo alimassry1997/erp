@@ -11,6 +11,8 @@ import DashboardLayout from "./Components/Layout/DashboardLayout";
 import Roles from "./Components/Roles/Roles";
 import KPI from "./Components/KPI/KPI";
 import axios from "axios";
+import SingleTeam from "./Components/Teams/SingleTeam";
+import capitalizeFirstLetter from "./utils/capitalizeFirstLetter";
 
 const App = () => {
   /**
@@ -25,11 +27,15 @@ const App = () => {
   const [auth, setAuth] = useState(user ? user : null);
 
   /**
-   * Team States
+   * Teams States
    * Loading & Team
    */
-  const [loadingTeam, setLoadingTeam] = useState(true);
+  const [loadingTeams, setLoadingTeams] = useState(true);
   const [teams, setTeams] = useState([]);
+
+  // Single Product State
+  const [loadingTeam, setLoadingTeam] = useState(true);
+  const [team, setTeam] = useState([]);
 
   /**
    * Get All teams with their corresponding employees
@@ -37,14 +43,34 @@ const App = () => {
    */
   const fetchTeams = async () => {
     try {
-      setLoadingTeam(true);
+      setLoadingTeams(true);
       const response = await axios.get(`/api/teams/`);
       const { data } = response;
       setTeams(data);
-      setLoadingTeam(false);
+      setLoadingTeams(false);
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  /**
+   * Get a single Team by SLug
+   * @param slug
+   * @returns {Promise<void>}
+   */
+  const getTeam = async (slug) => {
+    setLoadingTeam(true);
+    try {
+      const response = await axios.get(`/api/teams/${slug}`);
+      const { data } = response;
+      setTeam(data);
+      document.title = `${capitalizeFirstLetter(
+        data.team.name
+      )} Team | ERP Teams`;
+    } catch (error) {
+      console.log(error.message);
+    }
+    setLoadingTeam(false);
   };
 
   return (
@@ -79,7 +105,22 @@ const App = () => {
                 <Teams
                   fetchTeams={fetchTeams}
                   teams={teams}
+                  loadingTeams={loadingTeams}
+                />
+              }
+            />
+          </Route>
+          <Route
+            path="/teams/:slug/"
+            element={<DashboardLayout auth={auth} setAuth={setAuth} />}
+          >
+            <Route
+              index
+              element={
+                <SingleTeam
+                  team={team}
                   loadingTeam={loadingTeam}
+                  getTeam={getTeam}
                 />
               }
             />
