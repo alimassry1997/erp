@@ -61,12 +61,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'phone_number',
-        'system_role_id',
-        'picture',
+        "first_name",
+        "last_name",
+        "email",
+        "phone_number",
+        "system_role_id",
+        "picture",
     ];
 
     /**
@@ -84,6 +84,16 @@ class User extends Authenticatable
     protected $casts = [
         "email_verified_at" => "datetime",
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return "email";
+    }
 
     /**
      * Get the system role that belongs to this user.

@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     /**
      * Run the migrations.
-     * 
-     * 
      * @return void
      */
     public function up(): void
     {
-        Schema::create("users", function (Blueprint $table) {
+        Schema::create("users", static function (Blueprint $table) {
             $table->id();
             $table->foreignId("system_role_id")->constrained();
             $table->foreignId("team_id")->constrained();
@@ -23,7 +21,7 @@ return new class extends Migration {
             $table->timestamp("email_verified_at")->nullable();
             $table->string("password")->nullable();
             $table->integer("phone_number");
-            $table->boolean("status")->default(true);
+            $table->boolean("status")->default(1);
             $table->string("picture");
             $table->rememberToken();
             $table->timestamps();

@@ -28,14 +28,24 @@ const App = () => {
 
   /**
    * Teams States
-   * Loading & Team
+   * Loading & Teams
    */
   const [loadingTeams, setLoadingTeams] = useState(true);
   const [teams, setTeams] = useState([]);
 
-  // Single Product State
+  /**
+   * Single Team States
+   * Loading $ Team
+   */
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState([]);
+
+  /**
+   * Employees States
+   * Loading $ Employees
+   */
+  const [loadingEmployees, setLoadingEmployees] = useState(true);
+  const [employees, setEmployees] = useState([]);
 
   /**
    * Get All teams with their corresponding employees
@@ -48,6 +58,20 @@ const App = () => {
       const { data } = response;
       setTeams(data);
       setLoadingTeams(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const fetchEmployees = async () => {
+    try {
+      setLoadingEmployees(true);
+      const response = await axios.get(`/api/employees`);
+      const {
+        data: { employees },
+      } = response;
+      setEmployees(employees);
+      setLoadingEmployees(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -129,7 +153,16 @@ const App = () => {
             path="/employees"
             element={<DashboardLayout auth={auth} setAuth={setAuth} />}
           >
-            <Route index element={<Employees />} />
+            <Route
+              index
+              element={
+                <Employees
+                  fetchEmployees={fetchEmployees}
+                  employees={employees}
+                  loadingEmployees={loadingEmployees}
+                />
+              }
+            />
           </Route>
           <Route
             path="/roles"
