@@ -149,7 +149,10 @@ Forms Design
 }
 
 .content-container {
-  padding: 1rem 1rem 1rem 200px;
+  padding: 1rem 0 0 216px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
 }
 
 @media (max-width: 600px) {
