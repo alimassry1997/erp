@@ -13,40 +13,50 @@ const Sidebar = () => {
   return (
     <section className="sidebar">
       <div className="brand">
-        <img src={Logo} alt="logo" />
+        <Link to={"/"}>
+          <img src={Logo} alt="logo" />
+        </Link>
       </div>
       <ul>
         <li>
-          <RiAdminFill />
-          <Link to={"/admins"}>Admins</Link>
+          <Link to={"/admins"}>
+            <RiAdminFill /> Admins
+          </Link>
         </li>
         <li>
-          <TbReportSearch />
-          <Link to={"/"}>Reports</Link>
+          <Link to={"/"}>
+            <TbReportSearch /> Reports
+          </Link>
         </li>
         <li>
-          <AiOutlineProject />
-          <Link to={"/projects"}>Projects</Link>
+          <Link to={"/projects"}>
+            <AiOutlineProject /> Projects
+          </Link>
         </li>
         <li>
-          <AiOutlineTeam />
-          <Link to={"/teams"}>Teams</Link>
+          <Link to={"/teams"}>
+            <AiOutlineTeam /> Teams
+          </Link>
         </li>
         <li>
-          <AiOutlineUser />
-          <Link to={"/employees"}>Employees</Link>
+          <Link to={"/employees"}>
+            <AiOutlineUser /> Employees
+          </Link>
         </li>
         <li>
-          <FaUsersCog />
-          <Link to={"/roles"}>Roles</Link>
+          <Link to={"/roles"}>
+            <FaUsersCog /> Roles
+          </Link>
         </li>
         <li>
-          <GiSkills />
-          <Link to={"/kpi"}>KPI</Link>
+          <Link to={"/kpi"}>
+            <GiSkills /> KPI
+          </Link>
         </li>
         <li>
-          <FiLogOut />
-          <button>Logout</button>
+          <button>
+            <FiLogOut /> Logout
+          </button>
         </li>
       </ul>
     </section>

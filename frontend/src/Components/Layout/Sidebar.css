@@ -24,15 +24,12 @@
   row-gap: 1.5rem;
 }
 
-.sidebar ul li {
+.sidebar ul li a,
+.sidebar ul li button {
   cursor: pointer;
   display: flex;
   align-items: center;
   column-gap: 0.5rem;
-}
-
-.sidebar ul li:hover {
-  color: var(--secondary-color);
 }
 
 .sidebar ul li a:hover {
@@ -51,4 +48,21 @@
   font-size: 1.4rem;
   margin: 0;
   border: none;
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    width: 80px;
+    font-size: 10px;
+  }
+  .sidebar ul li a,
+  .sidebar ul li button {
+    flex-direction: column;
+    column-gap: 0;
+  }
+
+  .sidebar button {
+    font-size: 10px;
+    margin: 0 auto;
+  }
 }
