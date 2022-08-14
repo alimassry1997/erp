@@ -25,7 +25,7 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
   const getUnassignedEmployees = async () => {
     try {
       setLoadingUnassignedEmployees(true);
-      const response = await axios.get(`/api/teams/filter/wuckert-group`, {
+      const response = await axios.get(`/api/teams/filter/unassigned`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {

@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineTeam } from "react-icons/ai";
 import "./AddTeamForm.css";
 import axios from "axios";
-import { components } from "react-select";
-import { default as ReactSelect } from "react-select";
+import MultiSelect from "../Layout/MultiSelect";
 
 const AddTeamForm = ({
   token,
@@ -19,7 +18,7 @@ const AddTeamForm = ({
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [optionSelected, setOptionSelected] = useState(null);
+  const [optionSelected, setOptionSelected] = useState([]);
   let canSubmit = false;
   let employees = [];
   const { name } = formData;
@@ -65,12 +64,14 @@ const AddTeamForm = ({
       try {
         const data = new FormData();
         data.append("name", name);
-        const message = await AddNewTeam(formData);
-        setSuccess(message);
+        data.append("employees", JSON.stringify(optionSelected));
+        const message = await AddNewTeam(data);
+        setSuccess(message.message);
         setReloadTeams(!reloadTeams);
         setFormData({
           name: "",
         });
+        console.log(formData);
       } catch (err) {
         console.log(err);
       }
@@ -107,31 +108,6 @@ const AddTeamForm = ({
     }
   }, [errorMessage, success]);
 
-  /**
-   * Multi Select Section
-   */
-
-  const handleChange = (selected) => {
-    setOptionSelected({
-      optionSelected: selected,
-    });
-  };
-
-  const Option = (props) => {
-    return (
-      <div>
-        <components.Option {...props}>
-          <input
-            type="checkbox"
-            checked={props.isSelected}
-            onChange={() => null}
-          />{" "}
-          <label>{props.label}</label>
-        </components.Option>
-      </div>
-    );
-  };
-
   return (
     <div className="form-section add-team-form">
       <section className="heading">
@@ -159,20 +135,11 @@ const AddTeamForm = ({
             />
             <p>{errors.name}</p>
           </div>
-          {!loadingUnassignedEmployees && (
-            <ReactSelect
-              name="employees"
-              options={employees}
-              isMulti
-              closeMenuOnSelect={false}
-              hideSelectedOptions={false}
-              components={{
-                Option,
-              }}
-              onChange={() => handleChange(optionSelected)}
-              allowSelectAll={true}
-            />
-          )}
+          <MultiSelect
+            options={employees}
+            loading={loadingUnassignedEmployees}
+            setSelectedOptions={setOptionSelected}
+          />
           <div className="form-group">
             <input
               type="submit"

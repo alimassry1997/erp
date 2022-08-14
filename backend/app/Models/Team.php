@@ -34,7 +34,7 @@ class Team extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ["name"];
+    protected $fillable = ["name", "slug"];
 
     /**
      * Get the users for the system role.
