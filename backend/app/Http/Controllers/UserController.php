@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+
+
 
 
 
@@ -61,4 +65,45 @@ public function edit($id){
            ]);
     }
 }
+
+
+
+public function update(Request $request, $id){
+    $employee = User::find($id);
+    if($employee){
+
+    
+    $employee -> first_name = $request->input('first_name');
+    $employee -> last_name = $request->input('last_name');
+    $employee -> email = $request->input('email');
+    $employee -> phone_number = $request->input('phone_number');
+
+     if($request-> hasFile('image')){
+        $path = $employee->picture;
+        if(File::exists($path))
+        {
+           File::delete($path);
+        }
+        $file = $request ->file('image');
+        $extension = $file -> getClientOriginalExtension();
+        $filename= time() .'.'.$extension;
+        $file->move('uploads/',$filename);
+        $employee->picture = 'uploads/'.$filename;
+     }
+    $employee -> system_role_id = $request->input('system_role_id');
+    $employee-> update();
+    return response()->json([
+        'status' => 200,
+        'message' => 'Employee Updated Successfully', 
+       ]);
+    } else{
+        return response()->json([
+            'status' => 404,
+            'message' => 'Employee Not Found', 
+           ]);
+    }
+}
+
+
+
 }

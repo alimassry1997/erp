@@ -28,6 +28,14 @@ const AddEmployee = () => {
   const saveEmployee = (e) => {
     e.preventDefault();
 
+
+    // const params = useParams();
+  
+    // const employee_id = params.id;
+    // axios.get(`http://localhost:8080/api/edit-employee/${employee_id}`).then(res => {
+    //    setEmpInput(res.data.employee);
+    // });
+
     const formData = new FormData();
     formData.append("image", pic.image);
     formData.append("first_name", empInput.first_name);
