@@ -1,15 +1,11 @@
-import { useEffect } from "react";
 import "./Teams.css";
 import Spinner from "../Layout/Spinner";
 import Team from "./Team";
 import { FaPlusSquare } from "react-icons/fa";
 import { AiOutlineTeam } from "react-icons/ai";
 
-const Teams = ({ teams, fetchTeams, loadingTeams }) => {
+const Teams = ({ teams, loadingTeams, showAddTeamFormPopup }) => {
   document.title = "Teams Dashboard | ERP";
-  useEffect(() => {
-    fetchTeams();
-  }, []);
   if (loadingTeams) {
     return <Spinner />;
   } else {
@@ -20,7 +16,10 @@ const Teams = ({ teams, fetchTeams, loadingTeams }) => {
             <AiOutlineTeam />
             Teams Management
           </h2>
-          <button className="btn add-btn">
+          <button
+            className="btn add-btn"
+            onClick={() => showAddTeamFormPopup()}
+          >
             <FaPlusSquare />
           </button>
         </div>

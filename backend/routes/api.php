@@ -30,7 +30,9 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
      * Teams Routes
      */
     Route::get("/teams", [TeamController::class, "index"]);
+    Route::post("/teams", [TeamController::class, "store"]);
     Route::get("/teams/{team}", [TeamController::class, "show"]);
+    Route::get("/teams/filter/{team}", [TeamController::class, "filterByTeam"]);
 
     /**
      * Employees Routes

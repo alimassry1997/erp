@@ -21,7 +21,7 @@ class UserFactory extends Factory
     {
         return [
             "system_role_id" => fake()->numberBetween(1, 2),
-            "team_id" => fake()->numberBetween(2, 4),
+            "team_id" => fake()->numberBetween(2, 5),
             "first_name" => fake()->firstName(),
             "last_name" => fake()->lastName(),
             "email" => fake()->safeEmail(),

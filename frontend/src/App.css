@@ -83,6 +83,18 @@ Forms Design
   color: red;
 }
 
+.form-section {
+  padding: 0 1rem;
+  background-color: var(--white-color);
+  width: 500px;
+  margin: 0 auto;
+  border-radius: 5px;
+}
+
+.form .btn:hover {
+  transform: scale(0.98);
+}
+
 .form-group {
   margin-bottom: 10px;
 }
@@ -194,11 +206,32 @@ Forms Design
   grid-template-rows: 1fr auto;
 }
 
+@media (max-width: 650px) {
+  .form-section {
+    width: 350px;
+  }
+}
+
 @media (max-width: 600px) {
   .content-container {
     padding-left: 66px;
   }
   .active {
     width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .form-section {
+    width: 250px;
+  }
+
+  .heading {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .heading p {
+    font-size: 0.8rem;
   }
 }

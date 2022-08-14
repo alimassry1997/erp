@@ -16,11 +16,16 @@ class TeamController extends Controller
     {
         $teams = Team::withCount("users")
             ->latest()
-            ->whereNotIn("id", [1])
+            ->whereNotIn("id", [1, 2])
             ->get();
         return response()->json([
             "teams" => $teams,
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        dump($request);
     }
 
     /**
@@ -33,6 +38,16 @@ class TeamController extends Controller
         $team->users;
         return response()->json([
             "team" => $team,
+        ]);
+    }
+
+    public function filterByTeam(Team $team): JsonResponse
+    {
+        return response()->json([
+            "employees" => $team
+                ->users()
+                ->select("email", "first_name")
+                ->get(),
         ]);
     }
 }

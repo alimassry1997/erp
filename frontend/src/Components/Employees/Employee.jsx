@@ -2,6 +2,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { BiShowAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import IsActiveButton from "./IsActiveButton";
+import CapitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 
 const Employee = ({
   firstName,
@@ -21,7 +22,7 @@ const Employee = ({
       </td>
       <td>{firstName}</td>
       <td>{lastName}</td>
-      <td>{teamName}</td>
+      <td>{CapitalizeFirstLetter(teamName)}</td>
       <td>{email}</td>
       <td>{phoneNumber}</td>
       <td>{<IsActiveButton status={status} />}</td>

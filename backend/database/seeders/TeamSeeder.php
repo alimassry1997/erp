@@ -16,9 +16,22 @@ class TeamSeeder extends Seeder
      */
     public function run(): void
     {
-        $name = "admin";
-        $team_admin = ["name" => $name, "slug" => Str::slug($name, "-")];
-        Team::create($team_admin);
+        $name_admin_team = "admin";
+        $name_unassigned_team = "unassigned";
+        $teams_fixed = [
+            [
+                "name" => $name_admin_team,
+                "slug" => Str::slug($name_admin_team, "-"),
+            ],
+            [
+                "name" => $name_unassigned_team,
+                "slug" => Str::slug($name_unassigned_team, "-"),
+            ],
+        ];
+        foreach ($teams_fixed as $team_fixed) {
+            Team::create($team_fixed);
+        }
+
         Team::factory()
             ->count(3)
             ->create();

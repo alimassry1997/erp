@@ -2,11 +2,12 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import formatDate from "../../utils/formatDate";
 import { BiShowAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import CapitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 
 const Team = ({ name, size, created_at, updated_at, slug }) => {
   return (
     <tr>
-      <td>{name}</td>
+      <td>{CapitalizeFirstLetter(name)}</td>
       <td>{size}</td>
       <td>{formatDate(created_at)}</td>
       <td>{formatDate(updated_at)}</td>

@@ -5,7 +5,6 @@ import Admins from "./Components/Admins/Admins";
 import Employees from "./Components/Employees/Employees";
 import Reports from "./Components/Reports/Reports";
 import Projects from "./Components/Projects/Projects";
-import Teams from "./Components/Teams/Teams";
 import LoginPage from "./Components/Pages/LoginPage";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
 import Roles from "./Components/Roles/Roles";
@@ -13,6 +12,7 @@ import KPI from "./Components/KPI/KPI";
 import axios from "axios";
 import SingleTeam from "./Components/Teams/SingleTeam";
 import capitalizeFirstLetter from "./utils/capitalizeFirstLetter";
+import TeamsDashboard from "./Components/Pages/TeamsDashboard";
 
 const App = () => {
   /**
@@ -68,6 +68,10 @@ const App = () => {
     }
   };
 
+  /**
+   * Get all employees
+   * @returns {Promise<void>}
+   */
   const fetchEmployees = async () => {
     try {
       setLoadingEmployees(true);
@@ -136,10 +140,11 @@ const App = () => {
             <Route
               index
               element={
-                <Teams
+                <TeamsDashboard
                   fetchTeams={fetchTeams}
                   teams={teams}
                   loadingTeams={loadingTeams}
+                  token={token}
                 />
               }
             />
