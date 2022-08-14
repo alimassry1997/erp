@@ -4,40 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 
 class UserController extends Controller
 {
     // save employee to db
      public function store(Request $request){
-        $employee = new User;
-        $employee -> first_name = $request->input('first_name');
-        $employee -> last_name = $request->input('last_name');
-        $employee -> email = $request->input('email');
-        $employee -> phone_number = $request->input('phone_number');
-        $employee -> system_role_id = $request->input('system_role_id');
-        $employee -> picture = $request->input('picture');
-        $employee-> save();
+            $employee = new User;
+            $employee -> first_name = $request->input('first_name');
+            $employee -> last_name = $request->input('last_name');
+            $employee -> email = $request->input('email');
+            $employee -> phone_number = $request->input('phone_number');
 
-
-        // $request->validate([
-        //     'first_name' => 'required',
-        //     'last_name' => 'required',
-        //     'email' => 'required',
-        //     'phone_number' => 'required|integer',
-        //     'system_role_id' => 'required',
-        //     'picture' => 'required|mimes:jpg,png,jpeg|max:5048',
-        // ]);
-
-    //    if($request->hasFile('picture')){
-    //     $employee['picture']= $request->file('picture') -> store('upassets', 'public');
-    //    }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Employee Added Successfully', 
-           ]);
-     }
+             if($request-> hasFile('image')){
+                $file = $request ->file('image');
+                $extension = $file -> getClientOriginalExtension();
+                $filename= time() .'.'.$extension;
+                $file->move('uploads/',$filename);
+                $employee->picture = 'uploads/'.$filename;
+             }
+            $employee -> system_role_id = $request->input('system_role_id');
+            $employee-> save();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Employee Added Successfully', 
+               ]);
+        }
 
 
 
@@ -51,11 +45,11 @@ class UserController extends Controller
            ]);
     }
 
+
+    // edit employee
 public function edit($id){
     $employee = User::find($id);
     if($employee){
-
-    
     return response()->json([
         'status' => 200,
         'employee' => $employee ,

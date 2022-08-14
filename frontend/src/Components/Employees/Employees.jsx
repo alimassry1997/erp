@@ -1,6 +1,5 @@
 import "./Employees.css";
 import axios from "axios";
-import { Component } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -48,7 +47,8 @@ const Employees = () => {
             <td>{item.first_name}</td>
             <td>{item.last_name}</td>
             <td>{item.email}</td>
-            <td>{item.phone_number}</td>
+          <td>{item.phone_number}</td>
+          <td><img src={`http://localhost:8080/${item.picture}`} alt="Image" width="50px" /></td>
             <td>
               <button type="button">View</button>
               <Link to={`edit-employee/${item.id}`}>
@@ -73,6 +73,7 @@ const Employees = () => {
             <th>Last Name</th>
             <th>Email</th>
             <th>Phone Number</th>
+            <th>Image</th>
             <th>Actions</th>
           </tr>
         </thead>
