@@ -49,12 +49,9 @@ class TeamController extends Controller
             foreach ($employees as $employee) {
                 $emails_of_employees[] = $employee->value;
             }
-            $team
-                ->users()
-                ->whereIn("email", $emails_of_employees)
-                ->update([
-                    "team_id" => $team->id,
-                ]);
+            User::whereIn("email", $emails_of_employees)->update([
+                "team_id" => $team->id,
+            ]);
         }
         return response()->json([
             "message" => "Team Added Successfully",

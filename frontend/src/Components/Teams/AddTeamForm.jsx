@@ -71,7 +71,6 @@ const AddTeamForm = ({
         setFormData({
           name: "",
         });
-        console.log(formData);
       } catch (err) {
         console.log(err);
       }
