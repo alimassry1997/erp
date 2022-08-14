@@ -71,6 +71,11 @@ class TeamController extends Controller
         ]);
     }
 
+    /**
+     * Get A specific users according to their team
+     * @param Team $team
+     * @return JsonResponse
+     */
     public function filterByTeam(Team $team): JsonResponse
     {
         return response()->json([
@@ -78,6 +83,25 @@ class TeamController extends Controller
                 ->users()
                 ->select("email", "first_name")
                 ->get(),
+        ]);
+    }
+
+    /**
+     * Edit a specific team
+     * @param Request $request
+     * @param Team $team
+     * @return JsonResponse
+     */
+    public function update(Request $request, Team $team): JsonResponse
+    {
+        $request->validate([
+            "name" => "required|unique:teams",
+        ]);
+        $inputs["name"] = $request["name"];
+        $inputs["slug"] = Str::slug($request["name"], "-");
+        $team->update($inputs);
+        return response()->json([
+            "message" => "Team Successfully Updated",
         ]);
     }
 }

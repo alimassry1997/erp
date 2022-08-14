@@ -11,6 +11,11 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
   const [showAddTeamForm, setShowAddTeamForm] = useState(false);
 
   /**
+   * Edit Team Form State Popup
+   */
+  const [showEditTeamForm, setShowEditTeamForm] = useState(false);
+
+  /**
    * Refresh Teams Table after each add, edit and delete request
    */
   const [reloadTeams, setReloadTeams] = useState(false);
@@ -22,6 +27,10 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
   const [loadingUnassignedEmployees, setLoadingUnassignedEmployees] =
     useState(true);
 
+  /**
+   * Get All unassigned employees
+   * @returns {Promise<void>}
+   */
   const getUnassignedEmployees = async () => {
     try {
       setLoadingUnassignedEmployees(true);
