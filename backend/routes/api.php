@@ -18,24 +18,28 @@ use App\Http\Controllers\UserController;
 */
 /**
  * Login Route
+ * Public Access
  */
 Route::post("/login", [AuthController::class, "login"]);
 
 /**
- * Teams Routes
+ * Private Routes
  */
-Route::get("/teams", [TeamController::class, "index"]);
+Route::group(["middleware" => ["auth:sanctum"]], static function () {
+    /**
+     * Teams Routes
+     */
+    Route::get("/teams", [TeamController::class, "index"]);
+    Route::post("/teams", [TeamController::class, "store"]);
+    Route::get("/teams/{team}", [TeamController::class, "show"]);
+    Route::put("/teams/{team}", [TeamController::class, "update"]);
+    Route::delete("/teams/{team}", [TeamController::class, "destroy"]);
+    Route::get("/teams/filter/{team}", [TeamController::class, "filterByTeam"]);
 
-Route::middleware("auth:sanctum")->get("/user", function (Request $request) {
-    return $request->user();
+    /**
+     * Employees Routes
+     */
+    Route::get("/employees", [UserController::class, "index"]);
+    Route::post("/employees", [UserController::class, "store"]);
+    Route::get("/employees/{user}", [UserController::class, "edit"]);
 });
-
-// Add Employee
-Route::post('add-employee', [UserController::class, 'store']);
-
-
-// View all the employees
-Route::get('employees', [UserController::class, 'index']);
-
-// Edit the Employee
-Route::get('edit-employee/{id}', [UserController::class, 'edit']);

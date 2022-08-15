@@ -4,21 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    // save employee to db
-     public function store(Request $request){
-        $employee = new User;
-        $employee -> first_name = $request->input('first_name');
-        $employee -> last_name = $request->input('last_name');
-        $employee -> email = $request->input('email');
-        $employee -> phone_number = $request->input('phone_number');
-        $employee -> system_role_id = $request->input('system_role_id');
-        $employee -> picture = $request->input('picture');
-        $employee-> save();
+    /**
+     * Get all Employees
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $employees = User::with("team")
+            ->latest()
+            ->whereNotIn("team_id", [1])
+            ->get();
+        return response()->json([
+            "employees" => $employees,
+        ]);
+    }
 
+    // save employee to db
+    public function store(Request $request)
+    {
+        $employee = new User();
+        $employee->first_name = $request->input("first_name");
+        $employee->last_name = $request->input("last_name");
+        $employee->email = $request->input("email");
+        $employee->phone_number = $request->input("phone_number");
+        $employee->system_role_id = $request->input("system_role_id");
+        $employee->picture = $request->input("picture");
+        $employee->save();
 
         // $request->validate([
         //     'first_name' => 'required',
@@ -29,32 +44,27 @@ class UserController extends Controller
         //     'picture' => 'required|mimes:jpg,png,jpeg|max:5048',
         // ]);
 
-    //    if($request->hasFile('picture')){
-    //     $employee['picture']= $request->file('picture') -> store('upassets', 'public');
-    //    }
+        //    if($request->hasFile('picture')){
+        //     $employee['picture']= $request->file('picture') -> store('upassets', 'public');
+        //    }
 
         return response()->json([
-            'status' => 200,
-            'message' => 'Employee Added Successfully', 
-           ]);
-     }
-
-
-
-
-    // get employee list from db
-    public function index(){
-        
-           $employees = User::all();
-           return response()->json([
-            'status' => 200,
-            'employees' => $employees,
-           ]);
+            "message" => "Employee Added Successfully",
+        ]);
     }
 
-public function edit($id){
-    $employee = User::find($id);
-    // return view('pages.employee.edit', compact('employee'));
-}
+    public function edit($id)
+    {
+        $employee = User::find($id);
+        if ($employee) {
+            return response()->json([
+                "employee" => $employee,
+            ]);
+        }
 
+        return response()->json([
+            "status" => 404,
+            "message" => "Employee Does not Exist",
+        ]);
+    }
 }

@@ -1,77 +1,69 @@
-.side_bar {
-  position: fixed;
-  left: 0;
-  background-color: rgb(24, 44, 63);
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--white-color);
   height: 100vh;
-  width: 18vw;
+  position: fixed;
+  width: 200px;
+  font-size: 1.4rem;
+  color: var(--primary-color);
+}
+
+.sidebar .brand img {
+  width: 100px;
+}
+
+.sidebar ul li a {
+  color: var(--primary-color);
+  border-bottom: 3px solid transparent;
+}
+
+.sidebar ul {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 2rem 0;
+  row-gap: 1.5rem;
 }
 
-.side_bar .top {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  width: 100%;
-}
-
-.side_bar .toggle {
-  display: none;
-}
-
-.side_bar .brand {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 5vh;
-}
-
-.side_bar span {
-  font-size: 1.3rem;
-  color: #fff;
-  font-family: "Permanent Marker", cursive;
-}
-
-.side_bar .links {
-  display: flex;
+.sidebar ul li a,
+.sidebar ul li button {
   cursor: pointer;
-}
-
-.side_bar ul {
-  list-style-type: none;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  column-gap: 0.5rem;
 }
 
-.side_bar li {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  border-radius: 1.6rem;
-  justify-content: space-between;
-  display: flex;
+.sidebar ul li a:hover {
+  color: var(--secondary-color);
 }
 
-.side_bar li:hover {
-  background-color: #5a99cc;
+.sidebar ul li button:hover {
+  color: var(--secondary-color);
 }
 
-.side_bar i {
-  color: white;
-  padding-right: 1rem;
-  padding-top: 0.3rem;
+.sidebar button {
+  cursor: pointer;
+  background-color: transparent;
+  padding: 0;
+  color: var(--primary-color);
+  font-size: 1.4rem;
+  margin: 0;
+  border: none;
 }
 
-.side_bar a {
-  text-decoration: none;
-  display: flex;
-  color: white;
-}
+@media (max-width: 600px) {
+  .sidebar {
+    width: 50px;
+    font-size: 10px;
+  }
+  .sidebar ul li a,
+  .sidebar ul li button {
+    flex-direction: column;
+    column-gap: 0;
+  }
 
-img {
-  height: 20vh;
-  width: 20vw;
+  .sidebar button {
+    font-size: 10px;
+    margin: 0 auto;
+  }
 }

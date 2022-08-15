@@ -1,10 +1,13 @@
-import React from 'react'
-import './Footer.css'
+import React from "react";
+import "./Footer.css";
+import { CgCopyright } from "react-icons/cg";
 
 function Footer() {
   return (
-    <div className='footer'>copy-write 2022</div>
-  )
+    <footer>
+      ERP <CgCopyright /> {new Date().getFullYear()}
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;

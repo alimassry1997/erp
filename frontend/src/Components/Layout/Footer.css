@@ -1,10 +1,10 @@
-.footer {
-  margin-top: 1rem;
+footer {
   padding: 1rem;
-  background-color: #5a99cc;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 82%;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.2rem;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  margin-left: -16px;
 }

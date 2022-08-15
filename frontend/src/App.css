@@ -8,6 +8,9 @@ html {
   --secondary-color: #133f4c;
   --link-color: #25aba8;
   --white-color: #f3f6fb;
+  --success-color: #00873d;
+  --danger-color: #d6001c;
+  --edit-color: #e57e17;
 }
 
 /**
@@ -26,6 +29,10 @@ body {
 
 a {
   text-decoration: none;
+}
+
+a:visited {
+  color: var(--primary-color);
 }
 
 ul {
@@ -70,10 +77,27 @@ h6 {
 /**
 Forms Design
  */
+
+#unassigned-select {
+  margin-bottom: 1rem;
+}
+
 .form-group p {
   margin-top: -10px;
   font-size: 0.8rem;
   color: red;
+}
+
+.form-section {
+  padding: 0 1rem;
+  background-color: var(--white-color);
+  width: 500px;
+  margin: 0 auto;
+  border-radius: 5px;
+}
+
+.form .btn:hover {
+  transform: scale(0.98);
 }
 
 .form-group {
@@ -144,12 +168,85 @@ Forms Design
   flex-direction: column;
 }
 
-.home,
-.reports,
-.products {
-  display: flex;
-  height: 90vh;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
+.active {
+  width: fit-content;
+  color: var(--secondary-color) !important;
+  border-bottom: 3px solid var(--secondary-color) !important;
+}
+
+.add-btn {
+  background-color: var(--success-color);
+}
+
+.delete-btn {
+  background-color: var(--danger-color);
+}
+
+.edit-btn {
+  background-color: var(--edit-color);
+}
+
+.disabled-btn {
+  background-color: lightgray;
+}
+
+.disabled-btn:hover {
+  background-color: lightgray;
+  color: var(--danger-color);
+  border: 1px solid transparent;
+}
+
+.edit-btn:hover {
+  color: var(--edit-color);
+  background-color: var(--white-color);
+  border: 1px solid var(--edit-color);
+}
+
+.delete-btn:hover {
+  color: var(--danger-color);
+  background-color: var(--white-color);
+  border: 1px solid var(--danger-color);
+}
+
+.add-btn:hover {
+  color: var(--success-color);
+  background-color: var(--white-color);
+  border: 1px solid var(--success-color);
+}
+
+.content-container {
+  padding: 1rem 0 0 216px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+@media (max-width: 650px) {
+  .form-section {
+    width: 350px;
+  }
+}
+
+@media (max-width: 600px) {
+  .content-container {
+    padding-left: 66px;
+  }
+  .active {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .form-section {
+    width: 250px;
+  }
+
+  .heading {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .heading p {
+    font-size: 0.8rem;
+  }
 }
