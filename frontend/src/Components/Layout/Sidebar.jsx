@@ -53,7 +53,7 @@ const Sidebar = ({ auth: { user } }) => {
           </NavLink>
         </li>
         <li>
-          <NavLink to={"/kpi"}>
+          <NavLink to={"/skills"}>
             <GiSkills /> KPI
           </NavLink>
         </li>

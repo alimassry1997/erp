@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,15 @@ Route::post("/login", [AuthController::class, "login"]);
  * Private Routes
  */
 Route::group(["middleware" => ["auth:sanctum"]], static function () {
+    /**
+     * Skills Routes
+     */
+    Route::get("/skills", [SkillController::class, "index"]);
+    Route::post("/skills", [SkillController::class, "store"]);
+    Route::get("/skills/{skill}", [SkillController::class, "show"]);
+    Route::put("/skills/{skill}", [SkillController::class, "update"]);
+    Route::delete("/skills/{skill}", [SkillController::class, "destroy"]);
+
     /**
      * Teams Routes
      */

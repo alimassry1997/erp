@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -50,6 +52,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTeamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Skill[] $skills
+ * @property-read int|null $skills_count
  */
 class User extends Authenticatable
 {
@@ -98,7 +102,7 @@ class User extends Authenticatable
     /**
      * Get the system role that belongs to this user.
      */
-    public function system_role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function system_role(): BelongsTo
     {
         return $this->belongsTo(SystemRole::class);
     }
@@ -106,8 +110,19 @@ class User extends Authenticatable
     /**
      * Get the team that belongs to this user.
      */
-    public function team(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
+    }
+
+    /**
+     * Get the skills that belongs to this user.
+     */
+    public function skills(): BelongsToMany
+    {
+        return $this->belongsToMany(Skill::class)
+            ->as("kpi")
+            ->withPivot("score", "feedback")
+            ->withTimestamps();
     }
 }

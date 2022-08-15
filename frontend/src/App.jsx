@@ -8,11 +8,11 @@ import Projects from "./Components/Projects/Projects";
 import LoginPage from "./Components/Pages/LoginPage";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
 import Roles from "./Components/Roles/Roles";
-import KPI from "./Components/KPI/KPI";
 import axios from "axios";
 import capitalizeFirstLetter from "./utils/capitalizeFirstLetter";
 import TeamsDashboard from "./Components/Pages/TeamsDashboard";
 import SingleTeamDashboard from "./Components/Pages/SingleTeamDashboard";
+import SkillsDashboard from "./Components/Pages/SkillsDashboard";
 
 const App = () => {
   /**
@@ -49,6 +49,13 @@ const App = () => {
   const [employees, setEmployees] = useState([]);
 
   /**
+   * Employees States
+   * Loading $ Employees
+   */
+  const [loadingSkills, setLoadingSkills] = useState(true);
+  const [skills, setSkills] = useState([]);
+
+  /**
    * Get All teams with their corresponding employees
    * @returns {Promise<void>}
    */
@@ -63,6 +70,26 @@ const App = () => {
       } = response;
       setTeams(teams);
       setLoadingTeams(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  /**
+   * Get All skills
+   * @returns {Promise<void>}
+   */
+  const fetchSkills = async () => {
+    try {
+      setLoadingSkills(true);
+      const response = await axios.get(`/api/skills/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { skills },
+      } = response;
+      setSkills(skills);
+      setLoadingSkills(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -186,10 +213,20 @@ const App = () => {
             <Route index element={<Roles />} />
           </Route>
           <Route
-            path="/kpi"
+            path="/skills"
             element={<DashboardLayout auth={auth} setAuth={setAuth} />}
           >
-            <Route index element={<KPI />} />
+            <Route
+              index
+              element={
+                <SkillsDashboard
+                  skills={skills}
+                  loadingSkills={loadingSkills}
+                  fetchSkills={fetchSkills}
+                  token={token}
+                />
+              }
+            />
           </Route>
           <Route
             path="/login"
