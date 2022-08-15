@@ -9,6 +9,7 @@ const Teams = ({
   loadingTeams,
   showAddTeamFormPopup,
   showEditTeamPopup,
+  showDeleteTeamPopup,
 }) => {
   document.title = "Teams Dashboard | ERP";
   if (loadingTeams) {
@@ -49,6 +50,7 @@ const Teams = ({
                   created_at={team.created_at}
                   updated_at={team.updated_at}
                   showEditTeamPopup={showEditTeamPopup}
+                  showDeleteTeamPopup={showDeleteTeamPopup}
                 />
               ))}
             </tbody>

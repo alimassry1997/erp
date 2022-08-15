@@ -4,6 +4,7 @@ import Popup from "../Layout/Popup";
 import AddTeamForm from "../Teams/AddTeamForm";
 import axios from "axios";
 import EditTeamForm from "../Teams/EditTeamForm";
+import DeleteTeamAlert from "../Teams/DeleteTeamAlert";
 
 const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
   /**
@@ -16,6 +17,12 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
    */
   const [showEditTeamForm, setShowEditTeamForm] = useState(false);
   const [editTeam, setEditTeam] = useState("");
+
+  /**
+   * Delete Team Alert State Popup
+   */
+  const [showDeleteTeamForm, setShowDeleteTeamForm] = useState(false);
+  const [deleteTeam, setDeleteTeam] = useState("");
 
   /**
    * Refresh Teams Table after each add, edit and delete request
@@ -60,6 +67,11 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
     setShowEditTeamForm(true);
   };
 
+  const showDeleteTeamPopup = (team) => {
+    setDeleteTeam(team);
+    setShowDeleteTeamForm(true);
+  };
+
   useEffect(() => {
     fetchTeams();
   }, [reloadTeams]);
@@ -71,6 +83,7 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
         loadingTeams={loadingTeams}
         showAddTeamFormPopup={showAddTeamFormPopup}
         showEditTeamPopup={showEditTeamPopup}
+        showDeleteTeamPopup={showDeleteTeamPopup}
       />
       {/* Teams Add Form Popup */}
       {showAddTeamForm && (
@@ -107,6 +120,21 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
               employeesList={employeesList}
               setEmployeesList={setEmployeesList}
               editTeam={editTeam}
+            />
+          }
+        />
+      )}
+      {/* Teams Delete Form Popup */}
+      {showDeleteTeamForm && (
+        <Popup
+          show={showDeleteTeamForm}
+          setShow={setShowDeleteTeamForm}
+          component={
+            <DeleteTeamAlert
+              token={token}
+              reloadTeams={reloadTeams}
+              setReloadTeams={setReloadTeams}
+              deleteTeam={deleteTeam}
             />
           }
         />

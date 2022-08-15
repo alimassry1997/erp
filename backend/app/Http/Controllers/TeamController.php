@@ -137,4 +137,26 @@ class TeamController extends Controller
             "message" => "Team Successfully Updated",
         ]);
     }
+
+    /**
+     * Delete a Team with no employees
+     * @param Team $team
+     * @return JsonResponse
+     */
+    public function destroy(Team $team): JsonResponse
+    {
+        if (count($team->users) > 0) {
+            return response()->json(
+                [
+                    "message" =>
+                        "Team cannot be deleted, employees still assigned to it",
+                ],
+                405
+            );
+        }
+        $team->delete();
+        return response()->json([
+            "message" => "Team Deleted Successfully",
+        ]);
+    }
 }

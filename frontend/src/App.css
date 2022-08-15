@@ -186,6 +186,16 @@ Forms Design
   background-color: var(--edit-color);
 }
 
+.disabled-btn {
+  background-color: lightgray;
+}
+
+.disabled-btn:hover {
+  background-color: lightgray;
+  color: var(--danger-color);
+  border: 1px solid transparent;
+}
+
 .edit-btn:hover {
   color: var(--edit-color);
   background-color: var(--white-color);

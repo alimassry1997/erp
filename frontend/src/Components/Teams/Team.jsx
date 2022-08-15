@@ -11,6 +11,7 @@ const Team = ({
   updated_at,
   slug,
   showEditTeamPopup,
+  showDeleteTeamPopup,
 }) => {
   return (
     <tr>
@@ -31,8 +32,9 @@ const Team = ({
           </button>
 
           <button
-            className="btn delete-btn"
-            // onClick={() => showDeleteClassFormPopup({ id, name })}
+            disabled={size > 0}
+            className={`btn ${size > 0 ? "disabled-btn" : "delete-btn"}`}
+            onClick={() => showDeleteTeamPopup({ name, slug })}
           >
             <FaTrashAlt />
           </button>
