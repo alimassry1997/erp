@@ -3,10 +3,20 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import { AiOutlineTeam } from "react-icons/ai";
+import { FaPlusSquare } from "react-icons/fa";
+import Popup from "./Add-Employees/add-Popup";
+import AddEmployee from "./Add-Employees/add-employee";
+import PopUp from "./Edit-Employees/edit-Popup";
+import EditEmployee from "./Edit-Employees/edit-employee";
+
+
 
 const Employees = () => {
   const [loading, setLoading] = useState(true);
   const [employeeList, setEmployeeList] = useState([]);
+  const [openPopup, setOpenPopup] = useState(false);
+  const [eopenPopup, esetOpenPopup] = useState(false);
 
   const getEmployees = () => {
     axios.get("http://localhost:8080/api/employees").then((response) => {
@@ -41,20 +51,19 @@ const Employees = () => {
   } else {
     emp_table = employeeList.map((item) => {
       return (
-          <tr key={item.id}>
-            <td>{item.id}</td>
-            <td>{item.status === 1 ? "Inactive" : "Active"}</td>
-            <td>{item.first_name}</td>
-            <td>{item.last_name}</td>
-            <td>{item.email}</td>
-          <td>{item.phone_number}</td>
+        <tr key={item.email}>
           <td><img src={`http://localhost:8080/${item.picture}`} alt="Image" width="50px" /></td>
+          <td>{item.first_name}</td>
+          <td>{item.last_name}</td>
+          <td>{item.email}</td>
+          <td>{item.phone_number}</td>
+            <td>{item.status === 1 ? "🟢" : "🔴"}</td>
             <td>
               <button type="button">View</button>
-              <Link to={`edit-employee/${item.id}`}>
-                {" "}
+               <Link to={`edit-employee/${item.id}`}>
+                {" "} 
                 <button type="button">Edit</button>{" "}
-              </Link>
+               </Link> 
               <button type="button">Deactivate</button>
             </td>
           </tr>
@@ -63,25 +72,50 @@ const Employees = () => {
   }
 
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Status</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Image</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>{emp_table}</tbody>
-      </table>
-      <Link to="/add-employee">Add</Link>
-    </div>
+    <div className="dashboard employees-dashboard">
+        <div className="header">
+          <h2>
+            <AiOutlineTeam />
+            Employees Management
+        </h2>
+        {/* <Link to="/add-employee"> */}
+        <button className="btn add-btn"
+        onClick={()=> setOpenPopup(true)}>
+            <FaPlusSquare />
+          </button>
+          {/* </Link> */}
+        </div>
+        <div className="table-responsive">
+          <table className="table table-employees">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Status</th>
+                <th>Manage</th>
+              </tr>
+            </thead>
+            <tbody>{emp_table}</tbody>
+          </table>
+      </div>
+      <Popup
+        openPopup={openPopup}
+      setOpenPopup={setOpenPopup}>
+        <AddEmployee />
+      </Popup>
+
+
+      {/* <PopUp
+      eopenPopup={eopenPopup}
+      esetOpenPopup={esetOpenPopup}>
+      <EditEmployee />
+      </PopUp> */}
+      </div>
   );
 };
 
 export default Employees;
+

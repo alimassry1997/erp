@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import swal from "sweetalert";
 import { useEffect } from "react";
+import "./add-employee.css";
+
 
 const AddEmployee = () => {
   const [empInput, setEmpInput] = useState({
@@ -11,7 +13,7 @@ const AddEmployee = () => {
     last_name: "",
     email: "",
     phone_number: "",
-    system_role_id: "",
+    system_role_id: 2,
   });
 
   const [pic, setPic] = useState([]);
@@ -55,7 +57,6 @@ const AddEmployee = () => {
             last_name: "",
             email: "",
             phone_number: "",
-            system_role_id: "",
           });
         } else if (res.data.status === 422) {
           console.log("All fields are mandatory");
@@ -63,11 +64,13 @@ const AddEmployee = () => {
       });
   };
   return (
-    <div>
-      <Link to="/employees">Back</Link>
+    <div className="whole-add">
+      
       <form onSubmit={saveEmployee} encType="multipart/form-data">
-        <label>First Name </label>
-        <input
+      <div className="fname">
+        <label className="lbl-fname">First Name *</label>
+          <input
+            className="inp-fname"
           type="text"
           name="first_name"
           onChange={handleInput}
@@ -75,16 +78,18 @@ const AddEmployee = () => {
           placeholder="Type your first name"
         ></input>
         <br />
-        <label>Last Name </label>
-        <input
+        <label>Last Name *</label>
+          <input
+            className="inp-fname"
           type="text"
           name="last_name"
           onChange={handleInput}
           value={empInput.last_name}
           placeholder="Type your Last name"
-        ></input>
+          ></input>
+          </div>
         <br />
-        <label>Email Address </label>
+        <label>Email Address *</label>
         <input
           type="email"
           name="email"
@@ -93,7 +98,7 @@ const AddEmployee = () => {
           placeholder="Type your email"
         ></input>
         <br />
-        <label>Phone Number </label>
+        <label>Phone Number *</label>
         <input
           type="text"
           name="phone_number"
@@ -102,7 +107,7 @@ const AddEmployee = () => {
           placeholder="Type your Phone Number"
         ></input>
         <br />
-        <label>System Role </label>
+        {/* <label>System Role </label>
         <input
           type="number"
           name="system_role_id"
@@ -110,8 +115,8 @@ const AddEmployee = () => {
           value={empInput.system_role_id}
           placeholder="Type your Role"
         ></input>
-        <br />
-        <label>Upload your Image </label>
+        <br /> */}
+        <label>Upload your Image *  </label>
         <input
           type="file"
           name="picture"

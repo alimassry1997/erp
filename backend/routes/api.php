@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use Termwind\Components\Raw;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +34,9 @@ Route::get('employees', [UserController::class, 'index']);
 Route::get('edit-employee/{id}', [UserController::class, 'edit']);
 
 // Update the Employee
-
 Route::post('update-employee/{id}', [UserController::class, 'update']);
+
+// update status 
+// Route::get('update-status/{id}', [UserController::class, 'status_update']);
 
 

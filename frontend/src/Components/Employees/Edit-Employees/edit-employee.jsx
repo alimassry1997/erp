@@ -12,7 +12,7 @@ const EditEmployee = () => {
     last_name: "",
     email: "",
     phone_number: "",
-    system_role_id: "",
+    system_role_id: 2,
   });
 
   const [pic, setPic] = useState([]);
@@ -115,7 +115,7 @@ const EditEmployee = () => {
           placeholder="Type your Phone Number"
         ></input>
         <br />
-        <label>System Role </label>
+        {/* <label>System Role </label>
         <input
           type="number"
           name="system_role_id"
@@ -123,7 +123,7 @@ const EditEmployee = () => {
           value={empInput.system_role_id}
           placeholder="Type your Role"
         ></input>
-        <br />
+        <br /> */}
         <label>Upload your Image </label>
         <input
           type="file"

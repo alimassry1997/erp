@@ -5,3 +5,9 @@ table, th, td {
   th{
     width: 10vw;
   }
+  td{
+    text-align: center;
+  }
+
+
+  

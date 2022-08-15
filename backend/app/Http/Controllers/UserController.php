@@ -64,6 +64,9 @@ public function edit($id){
             'message' => 'Employee Does not Exist',
            ]);
     }
+
+
+
 }
 
 
@@ -104,6 +107,22 @@ public function update(Request $request, $id){
     }
 }
 
+// public function status_update($id) {
+    
+//     $emp_status = User::find($id)->select('status');
+//       if($emp_status === 1){
+//         $status = 0;
+//       } else {
+//         $status = 1;
+//       }
+
+//       $value = array('status' => $status);
+//       $emp_status -> update()->where('id', $id);
+//       return response()->json([
+//         'status' => 200,
+//         'message' => 'Status Updated Successfully', 
+//        ]);
+// }
 
 
 }
