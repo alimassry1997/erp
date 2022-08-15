@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -27,5 +28,21 @@ class ProjectFactory extends Factory
             "slug" => $slug,
             "status" => fake()->numberBetween(1, 0),
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Project $project) {
+            if ($project->status === 1) {
+                $project->update([
+                    "finished_at" => fake()->dateTime(),
+                ]);
+            }
+        });
     }
 }

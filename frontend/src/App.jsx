@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Admins from "./Components/Admins/Admins";
 import Employees from "./Components/Employees/Employees";
 import Reports from "./Components/Reports/Reports";
-import Projects from "./Components/Projects/Projects";
 import LoginPage from "./Components/Pages/LoginPage";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
 import Roles from "./Components/Roles/Roles";
@@ -13,6 +12,7 @@ import capitalizeFirstLetter from "./utils/capitalizeFirstLetter";
 import TeamsDashboard from "./Components/Pages/TeamsDashboard";
 import SingleTeamDashboard from "./Components/Pages/SingleTeamDashboard";
 import SkillsDashboard from "./Components/Pages/SkillsDashboard";
+import ProjectsDashboard from "./Components/Pages/ProjectsDashboard";
 
 const App = () => {
   /**
@@ -36,24 +36,31 @@ const App = () => {
 
   /**
    * Single Team States
-   * Loading $ Team
+   * Loading & Team
    */
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState([]);
 
   /**
    * Employees States
-   * Loading $ Employees
+   * Loading & Employees
    */
   const [loadingEmployees, setLoadingEmployees] = useState(true);
   const [employees, setEmployees] = useState([]);
 
   /**
-   * Employees States
-   * Loading $ Employees
+   * Skills States
+   * Loading & Skills
    */
   const [loadingSkills, setLoadingSkills] = useState(true);
   const [skills, setSkills] = useState([]);
+
+  /**
+   * Projects States
+   * Loading & Projects
+   */
+  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [projects, setProjects] = useState([]);
 
   /**
    * Get All teams with their corresponding employees
@@ -70,6 +77,26 @@ const App = () => {
       } = response;
       setTeams(teams);
       setLoadingTeams(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  /**
+   * Get All projects
+   * @returns {Promise<void>}
+   */
+  const fetchProjects = async () => {
+    try {
+      setLoadingProjects(true);
+      const response = await axios.get(`/api/projects/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { projects },
+      } = response;
+      setProjects(projects);
+      setLoadingProjects(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -157,7 +184,17 @@ const App = () => {
             path="/projects"
             element={<DashboardLayout auth={auth} setAuth={setAuth} />}
           >
-            <Route index element={<Projects />} />
+            <Route
+              index
+              element={
+                <ProjectsDashboard
+                  projects={projects}
+                  loadingProjects={loadingProjects}
+                  fetchProjects={fetchProjects}
+                  token={token}
+                />
+              }
+            />
           </Route>
           <Route
             path="/teams"
