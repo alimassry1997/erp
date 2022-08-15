@@ -12,10 +12,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create("skills", static function (Blueprint $table) {
+        Schema::create("projects", static function (Blueprint $table) {
             $table->id();
             $table->string("name")->unique();
             $table->string("slug");
+            $table->boolean("status")->default(true);
+            $table->date("finished_at")->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists("k_p_i_s");
+        Schema::dropIfExists("projects");
     }
 };

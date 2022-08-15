@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Http\Request;
@@ -35,6 +36,15 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
     Route::get("/skills/{skill}", [SkillController::class, "show"]);
     Route::put("/skills/{skill}", [SkillController::class, "update"]);
     Route::delete("/skills/{skill}", [SkillController::class, "destroy"]);
+
+    /**
+     * Projects Routes
+     */
+    Route::get("/projects", [ProjectController::class, "index"]);
+    Route::post("/projects", [ProjectController::class, "store"]);
+    Route::get("/projects/{project}", [ProjectController::class, "show"]);
+    Route::put("/projects/{project}", [ProjectController::class, "update"]);
+    Route::delete("/projects/{project}", [ProjectController::class, "destroy"]);
 
     /**
      * Teams Routes
