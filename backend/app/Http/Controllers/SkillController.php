@@ -62,7 +62,6 @@ class SkillController extends Controller
         $skill->update($inputs);
         return response()->json([
             "message" => "Skill Successfully Updated",
-            "slug" => $inputs["slug"],
         ]);
     }
 

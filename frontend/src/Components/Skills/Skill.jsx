@@ -4,6 +4,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const Skill = ({
   name,
+  slug,
   created_at,
   updated_at,
   showDeleteSkillPopup,
@@ -18,14 +19,14 @@ const Skill = ({
         <div className="flex-btn">
           <button
             className="btn edit-btn"
-            onClick={() => showEditSkillPopup({ name })}
+            onClick={() => showEditSkillPopup({ name, slug })}
           >
             <FaEdit />
           </button>
 
           <button
-            className="delete-btn"
-            onClick={() => showDeleteSkillPopup({ name })}
+            className="btn delete-btn"
+            onClick={() => showDeleteSkillPopup({ name, slug })}
           >
             <FaTrashAlt />
           </button>

@@ -30,7 +30,6 @@ const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
                 <th>Image</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Team Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Status</th>
@@ -44,7 +43,6 @@ const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
                   image={employee.picture}
                   firstName={employee.first_name}
                   lastName={employee.last_name}
-                  teamName={employee.team.name}
                   email={employee.email}
                   phoneNumber={employee.phone_number}
                   status={employee.status}

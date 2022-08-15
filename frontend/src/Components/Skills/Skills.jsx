@@ -2,6 +2,7 @@ import Spinner from "../Layout/Spinner";
 import { GiSkills } from "react-icons/gi";
 import { FaPlusSquare } from "react-icons/fa";
 import Skill from "./Skill";
+import "./Skills.css";
 
 const Skills = ({
   loadingSkills,
@@ -43,6 +44,7 @@ const Skills = ({
                 <Skill
                   key={skill.id}
                   name={skill.name}
+                  slug={skill.slug}
                   created_at={skill.created_at}
                   updated_at={skill.updated_at}
                   showEditSkillPopup={showEditSkillPopup}

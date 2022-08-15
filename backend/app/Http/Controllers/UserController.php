@@ -14,8 +14,7 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        $employees = User::with("team")
-            ->latest()
+        $employees = User::latest()
             ->whereNotIn("team_id", [1])
             ->get();
         return response()->json([

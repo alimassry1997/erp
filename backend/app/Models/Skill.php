@@ -31,6 +31,13 @@ class Skill extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = ["name", "slug"];
+
+    /**
      * Get the users that belongs to this skill.
      */
     public function skills(): BelongsToMany
@@ -39,5 +46,15 @@ class Skill extends Model
             ->as("kpi")
             ->withPivot("score", "feedback")
             ->withTimestamps();
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return "slug";
     }
 }
