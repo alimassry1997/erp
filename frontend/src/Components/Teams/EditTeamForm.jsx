@@ -49,7 +49,7 @@ const EditTeamForm = ({
   // Submission Function
   const EditTeam = async (userData) => {
     try {
-      const response = await axios.post("/api/teams/", userData, {
+      const response = await axios.post(`/api/teams/${slug}`, userData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data) {
@@ -71,12 +71,11 @@ const EditTeamForm = ({
         const data = new FormData();
         data.append("name", name);
         data.append("employees", JSON.stringify(optionSelected));
+        data.append("removedEmployees", JSON.stringify(optionRelatedSelected));
+        data.append("_method", "PUT");
         const message = await EditTeam(data);
         setSuccess(message.message);
         setReloadTeams(!reloadTeams);
-        setFormData({
-          name: "",
-        });
       } catch (err) {
         console.log(err);
       }
@@ -150,7 +149,7 @@ const EditTeamForm = ({
             loading={loadingEmployees}
             setSelectedOptions={setOptionSelected}
           />
-          {size > 0 && (
+          {size > 0 && !loadingRelatedEmployees && (
             <>
               <label htmlFor="related-select" className="form-label">
                 Remove an employee
@@ -160,16 +159,11 @@ const EditTeamForm = ({
                 options={assignedEmployees}
                 loading={loadingRelatedEmployees}
                 setSelectedOptions={setOptionRelatedSelected}
-                defaultValue={assignedEmployees}
               />
             </>
           )}
           <div className="form-group">
-            <input
-              type="submit"
-              className="btn btn-block"
-              value="Add New Team"
-            />
+            <input type="submit" className="btn btn-block" value="Edit Team" />
           </div>
         </form>
       </section>

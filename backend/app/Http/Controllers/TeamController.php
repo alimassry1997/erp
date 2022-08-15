@@ -6,6 +6,7 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use JsonException;
 use Illuminate\Support\Str;
 
@@ -91,15 +92,47 @@ class TeamController extends Controller
      * @param Request $request
      * @param Team $team
      * @return JsonResponse
+     * @throws JsonException
      */
     public function update(Request $request, Team $team): JsonResponse
     {
         $request->validate([
-            "name" => "required|unique:teams",
+            "name" => ["required", Rule::unique("teams")->ignore($team->id)],
         ]);
         $inputs["name"] = $request["name"];
         $inputs["slug"] = Str::slug($request["name"], "-");
         $team->update($inputs);
+        if ($request["employees"]) {
+            $employees = json_decode(
+                $request["employees"],
+                false,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+            $emails_of_employees = [];
+            foreach ($employees as $employee) {
+                $emails_of_employees[] = $employee->value;
+            }
+            User::whereIn("email", $emails_of_employees)->update([
+                "team_id" => $team->id,
+            ]);
+        }
+        if ($request["removedEmployees"]) {
+            $employee_to_remove = json_decode(
+                $request["removedEmployees"],
+                false,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+            $search_for_email_and_remove = [];
+            foreach ($employee_to_remove as $employee) {
+                $search_for_email_and_remove[] = $employee->value;
+            }
+            User::whereIn("email", $search_for_email_and_remove)->update([
+                "team_id" => 2,
+            ]);
+        }
+
         return response()->json([
             "message" => "Team Successfully Updated",
         ]);

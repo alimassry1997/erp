@@ -6,13 +6,11 @@ const MultiSelect = ({
   options,
   loading,
   setSelectedOptions,
-  defaultValue,
 }) => {
   const animatedComponents = makeAnimated();
   return (
     <Select
       id={id}
-      defaultValue={defaultValue}
       components={animatedComponents}
       isMulti
       onChange={(item) => setSelectedOptions(item)}

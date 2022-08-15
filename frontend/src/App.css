@@ -77,6 +77,11 @@ h6 {
 /**
 Forms Design
  */
+
+#unassigned-select {
+  margin-bottom: 1rem;
+}
+
 .form-group p {
   margin-top: -10px;
   font-size: 0.8rem;
