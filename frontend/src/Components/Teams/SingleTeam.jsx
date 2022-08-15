@@ -5,10 +5,16 @@ import "./SingleTeam.css";
 import "./SingleTeamEmployees.css";
 import { HiUserGroup } from "react-icons/hi";
 import { AiOutlineTeam } from "react-icons/ai";
-import { FaPlusSquare } from "react-icons/fa";
+import { FaEdit, FaPlusSquare, FaTrashAlt } from "react-icons/fa";
 import SingleTeamEmployees from "./SingleTeamEmployees";
 
-const SingleTeam = ({ team, loadingTeam, getTeam }) => {
+const SingleTeam = ({
+  team,
+  loadingTeam,
+  getTeam,
+  showDeleteTeamPopup,
+  showEditTeamPopup,
+}) => {
   const { slug } = useParams();
 
   useEffect(() => {
@@ -19,7 +25,7 @@ const SingleTeam = ({ team, loadingTeam, getTeam }) => {
     return <Spinner />;
   } else {
     const { name, users: employees } = team;
-    console.log(employees);
+    const size = employees.length;
     return (
       <div className="single-team-container">
         <header>
@@ -28,47 +34,67 @@ const SingleTeam = ({ team, loadingTeam, getTeam }) => {
             <HiUserGroup />
             Team Size: {employees.length}
           </div>
-        </header>
-        <h3>Employees Assigned</h3>
-        <div className="dashboard team-employees-dashboard">
-          <div className="header">
-            <h2>
-              <AiOutlineTeam />
-              Employees Management
-            </h2>
-            <button className="btn add-btn">
-              <FaPlusSquare />
+          <div className="single-team-manage">
+            <button
+              className="btn edit-btn"
+              onClick={() => showEditTeamPopup({ name, size, slug })}
+            >
+              <FaEdit />
+            </button>
+            <button
+              disabled={size > 0}
+              className={`btn ${size > 0 ? "disabled-btn" : "delete-btn"}`}
+              onClick={() => showDeleteTeamPopup({ name, slug })}
+            >
+              <FaTrashAlt />
             </button>
           </div>
-          <div className="table-responsive">
-            <table className="table table-team-employees">
-              <thead>
-                <tr>
-                  <th>Image</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Phone Number</th>
-                  <th>Status</th>
-                  <th>Manage</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employees.map((employee) => (
-                  <SingleTeamEmployees
-                    key={employee.id}
-                    image={employee.picture}
-                    firstName={employee.first_name}
-                    lastName={employee.last_name}
-                    email={employee.email}
-                    phoneNumber={employee.phone_number}
-                    status={employee.status}
-                  />
-                ))}
-              </tbody>
-            </table>
+        </header>
+        {size > 0 ? (
+          <div className="dashboard team-employees-dashboard">
+            <div className="header">
+              <h2>
+                <AiOutlineTeam />
+                Employees Assigned
+              </h2>
+              <button className="btn add-btn">
+                <FaPlusSquare />
+              </button>
+            </div>
+            <div className="table-responsive">
+              <table className="table table-team-employees">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Status</th>
+                    <th>Manage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {employees.map((employee) => (
+                    <SingleTeamEmployees
+                      key={employee.id}
+                      image={employee.picture}
+                      firstName={employee.first_name}
+                      lastName={employee.last_name}
+                      email={employee.email}
+                      phoneNumber={employee.phone_number}
+                      status={employee.status}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="dashboard team-employees-dashboard">
+            No Employees Assigned
+          </div>
+        )}
       </div>
     );
   }

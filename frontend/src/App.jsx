@@ -10,9 +10,9 @@ import DashboardLayout from "./Components/Layout/DashboardLayout";
 import Roles from "./Components/Roles/Roles";
 import KPI from "./Components/KPI/KPI";
 import axios from "axios";
-import SingleTeam from "./Components/Teams/SingleTeam";
 import capitalizeFirstLetter from "./utils/capitalizeFirstLetter";
 import TeamsDashboard from "./Components/Pages/TeamsDashboard";
+import SingleTeamDashboard from "./Components/Pages/SingleTeamDashboard";
 
 const App = () => {
   /**
@@ -102,7 +102,6 @@ const App = () => {
       const {
         data: { team },
       } = response;
-      console.log(team);
       setTeam(team);
       document.title = `${capitalizeFirstLetter(team.name)} Team | ERP Teams`;
     } catch (error) {
@@ -156,10 +155,11 @@ const App = () => {
             <Route
               index
               element={
-                <SingleTeam
+                <SingleTeamDashboard
                   team={team}
                   loadingTeam={loadingTeam}
                   getTeam={getTeam}
+                  token={token}
                 />
               }
             />

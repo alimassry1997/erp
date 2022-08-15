@@ -5,6 +5,16 @@
   border-radius: 5px;
 }
 
+.single-team-manage {
+  display: flex;
+  column-gap: 1rem !important;
+}
+
+.single-team-manage .btn {
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
 .single-team-container header {
   color: var(--secondary-color);
   flex-direction: column;

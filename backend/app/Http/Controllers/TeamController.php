@@ -135,6 +135,7 @@ class TeamController extends Controller
 
         return response()->json([
             "message" => "Team Successfully Updated",
+            "slug" => $inputs["slug"],
         ]);
     }
 

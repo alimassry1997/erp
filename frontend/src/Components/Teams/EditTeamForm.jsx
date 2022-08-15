@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineTeam } from "react-icons/ai";
 import "./AddTeamForm.css";
 import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 import MultiSelect from "../Layout/MultiSelect";
 import StructureSelect from "../../utils/StructureSelect";
 
@@ -24,11 +25,14 @@ const EditTeamForm = ({
   const [optionRelatedSelected, setOptionRelatedSelected] = useState([]);
   const [relatedEmployees, setRelatedEmployees] = useState([]);
   const [loadingRelatedEmployees, setLoadingRelatedEmployees] = useState(true);
+  const [newSlug, setNewSlug] = useState("");
 
   let canSubmit = false;
   let employees = [];
   let assignedEmployees = [];
   const { name, size, slug } = formData;
+  const navigate = useNavigate();
+  const location = useLocation();
 
   if (!loadingEmployees) {
     StructureSelect(employeesList, employees);
@@ -75,6 +79,7 @@ const EditTeamForm = ({
         data.append("_method", "PUT");
         const message = await EditTeam(data);
         setSuccess(message.message);
+        setNewSlug(message.slug);
         setReloadTeams(!reloadTeams);
       } catch (err) {
         console.log(err);
@@ -109,6 +114,10 @@ const EditTeamForm = ({
     if (success) {
       setTimeout(() => {
         setSuccess("");
+        console.log(location.pathname);
+        if (location.pathname === `/teams/${slug}`) {
+          navigate(`/teams/${newSlug}`);
+        }
       }, 5000);
     }
   }, [errorMessage, success]);

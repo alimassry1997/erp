@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const DeleteTeamAlert = ({
@@ -11,6 +12,7 @@ const DeleteTeamAlert = ({
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { name, slug } = deleteTeam;
+  const navigate = useNavigate();
 
   // Submission Function
   const DeleteTeam = async () => {
@@ -54,6 +56,7 @@ const DeleteTeamAlert = ({
     }
     setTimeout(() => {
       setSuccess("");
+      navigate("/teams");
     }, 5000);
   }, [errorMessage]);
 
