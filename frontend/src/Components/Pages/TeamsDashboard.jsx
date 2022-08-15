@@ -3,6 +3,7 @@ import Teams from "../Teams/Teams";
 import Popup from "../Layout/Popup";
 import AddTeamForm from "../Teams/AddTeamForm";
 import axios from "axios";
+import EditTeamForm from "../Teams/EditTeamForm";
 
 const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
   /**
@@ -14,6 +15,7 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
    * Edit Team Form State Popup
    */
   const [showEditTeamForm, setShowEditTeamForm] = useState(false);
+  const [editTeam, setEditTeam] = useState("");
 
   /**
    * Refresh Teams Table after each add, edit and delete request
@@ -23,33 +25,41 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
   /**
    * Unassigned Employees State
    */
-  const [unassignedEmployees, setUnassignedEmployees] = useState([]);
-  const [loadingUnassignedEmployees, setLoadingUnassignedEmployees] =
-    useState(true);
+  const [employeesList, setEmployeesList] = useState([]);
+  const [loadingEmployees, setLoadingEmployees] = useState(true);
 
   /**
    * Get All unassigned employees
    * @returns {Promise<void>}
    */
-  const getUnassignedEmployees = async () => {
+  const getEmployees = async (team, loading, list) => {
     try {
-      setLoadingUnassignedEmployees(true);
-      const response = await axios.get(`/api/teams/filter/unassigned`, {
+      loading(true);
+      const response = await axios.get(`/api/teams/filter/${team}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
         data: { employees },
       } = response;
-      setUnassignedEmployees(employees);
-      setLoadingUnassignedEmployees(false);
+      list(employees);
+      loading(false);
     } catch (error) {
       console.log(error.message);
     }
   };
 
+  /**
+   * Popup Functions
+   */
   const showAddTeamFormPopup = () => {
     setShowAddTeamForm(true);
   };
+
+  const showEditTeamPopup = (team) => {
+    setEditTeam(team);
+    setShowEditTeamForm(true);
+  };
+
   useEffect(() => {
     fetchTeams();
   }, [reloadTeams]);
@@ -60,6 +70,7 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
         teams={teams}
         loadingTeams={loadingTeams}
         showAddTeamFormPopup={showAddTeamFormPopup}
+        showEditTeamPopup={showEditTeamPopup}
       />
       {/* Teams Add Form Popup */}
       {showAddTeamForm && (
@@ -71,9 +82,31 @@ const TeamsDashboard = ({ teams, loadingTeams, fetchTeams, token }) => {
               token={token}
               reloadTeams={reloadTeams}
               setReloadTeams={setReloadTeams}
-              getUnassignedEmployees={getUnassignedEmployees}
-              loadingUnassignedEmployees={loadingUnassignedEmployees}
-              unassignedEmployees={unassignedEmployees}
+              getEmployees={getEmployees}
+              loadingEmployees={loadingEmployees}
+              setLoadingEmployees={setLoadingEmployees}
+              employeesList={employeesList}
+              setEmployeesList={setEmployeesList}
+            />
+          }
+        />
+      )}
+      {/* Teams Edit Form Popup */}
+      {showEditTeamForm && (
+        <Popup
+          show={showEditTeamForm}
+          setShow={setShowEditTeamForm}
+          component={
+            <EditTeamForm
+              token={token}
+              reloadTeams={reloadTeams}
+              setReloadTeams={setReloadTeams}
+              getEmployees={getEmployees}
+              loadingEmployees={loadingEmployees}
+              setLoadingEmployees={setLoadingEmployees}
+              employeesList={employeesList}
+              setEmployeesList={setEmployeesList}
+              editTeam={editTeam}
             />
           }
         />

@@ -4,7 +4,12 @@ import Team from "./Team";
 import { FaPlusSquare } from "react-icons/fa";
 import { AiOutlineTeam } from "react-icons/ai";
 
-const Teams = ({ teams, loadingTeams, showAddTeamFormPopup }) => {
+const Teams = ({
+  teams,
+  loadingTeams,
+  showAddTeamFormPopup,
+  showEditTeamPopup,
+}) => {
   document.title = "Teams Dashboard | ERP";
   if (loadingTeams) {
     return <Spinner />;
@@ -43,6 +48,7 @@ const Teams = ({ teams, loadingTeams, showAddTeamFormPopup }) => {
                   slug={team.slug}
                   created_at={team.created_at}
                   updated_at={team.updated_at}
+                  showEditTeamPopup={showEditTeamPopup}
                 />
               ))}
             </tbody>

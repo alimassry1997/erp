@@ -5,7 +5,7 @@ import axios from "axios";
 import MultiSelect from "../Layout/MultiSelect";
 import StructureSelect from "../../utils/StructureSelect";
 
-const AddTeamForm = ({
+const EditTeamForm = ({
   token,
   setReloadTeams,
   reloadTeams,
@@ -14,20 +14,28 @@ const AddTeamForm = ({
   setEmployeesList,
   loadingEmployees,
   setLoadingEmployees,
+  editTeam,
 }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-  });
+  const [formData, setFormData] = useState(editTeam);
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [optionSelected, setOptionSelected] = useState([]);
+  const [optionRelatedSelected, setOptionRelatedSelected] = useState([]);
+  const [relatedEmployees, setRelatedEmployees] = useState([]);
+  const [loadingRelatedEmployees, setLoadingRelatedEmployees] = useState(true);
+
   let canSubmit = false;
   let employees = [];
-  const { name } = formData;
+  let assignedEmployees = [];
+  const { name, size, slug } = formData;
 
   if (!loadingEmployees) {
     StructureSelect(employeesList, employees);
+  }
+
+  if (!loadingRelatedEmployees) {
+    StructureSelect(relatedEmployees, assignedEmployees);
   }
 
   // On Change for controlled fields
@@ -39,7 +47,7 @@ const AddTeamForm = ({
   };
 
   // Submission Function
-  const AddNewTeam = async (userData) => {
+  const EditTeam = async (userData) => {
     try {
       const response = await axios.post("/api/teams/", userData, {
         headers: { Authorization: `Bearer ${token}` },
@@ -63,7 +71,7 @@ const AddTeamForm = ({
         const data = new FormData();
         data.append("name", name);
         data.append("employees", JSON.stringify(optionSelected));
-        const message = await AddNewTeam(data);
+        const message = await EditTeam(data);
         setSuccess(message.message);
         setReloadTeams(!reloadTeams);
         setFormData({
@@ -93,6 +101,7 @@ const AddTeamForm = ({
   // Reset Messages after 5 seconds
   useEffect(() => {
     getEmployees("unassigned", setLoadingEmployees, setEmployeesList);
+    getEmployees(slug, setLoadingRelatedEmployees, setRelatedEmployees);
     if (errorMessage) {
       setTimeout(() => {
         setErrorMessage("");
@@ -115,7 +124,6 @@ const AddTeamForm = ({
         {success && <p className="succeed-msg">{success}</p>}
         {errorMessage && <p className="error-msg">{errorMessage}</p>}
       </section>
-
       <section className="form">
         <form onSubmit={onSubmit}>
           <div className="form-group">
@@ -128,6 +136,7 @@ const AddTeamForm = ({
               name="name"
               id="name"
               placeholder="Enter your team name"
+              value={name}
               onChange={onChange}
             />
             <p>{errors.name}</p>
@@ -141,6 +150,20 @@ const AddTeamForm = ({
             loading={loadingEmployees}
             setSelectedOptions={setOptionSelected}
           />
+          {size > 0 && (
+            <>
+              <label htmlFor="related-select" className="form-label">
+                Remove an employee
+              </label>
+              <MultiSelect
+                id="related-select"
+                options={assignedEmployees}
+                loading={loadingRelatedEmployees}
+                setSelectedOptions={setOptionRelatedSelected}
+                defaultValue={assignedEmployees}
+              />
+            </>
+          )}
           <div className="form-group">
             <input
               type="submit"
@@ -154,4 +177,4 @@ const AddTeamForm = ({
   );
 };
 
-export default AddTeamForm;
+export default EditTeamForm;

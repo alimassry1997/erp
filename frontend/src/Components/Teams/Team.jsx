@@ -4,7 +4,14 @@ import { BiShowAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import CapitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 
-const Team = ({ name, size, created_at, updated_at, slug }) => {
+const Team = ({
+  name,
+  size,
+  created_at,
+  updated_at,
+  slug,
+  showEditTeamPopup,
+}) => {
   return (
     <tr>
       <td>{CapitalizeFirstLetter(name)}</td>
@@ -18,7 +25,7 @@ const Team = ({ name, size, created_at, updated_at, slug }) => {
           </Link>
           <button
             className="btn edit-btn"
-            // onClick={() => showEditClassFormPopup(singleClass)}
+            onClick={() => showEditTeamPopup({ name, size, slug })}
           >
             <FaEdit />
           </button>
