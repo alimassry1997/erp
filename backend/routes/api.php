@@ -42,5 +42,6 @@ Route::post('update-employee/{id}', [UserController::class, 'update']);
 
 
 Route::post('add-role', [RoleController::class, 'store']);
+Route::get('roles', [RoleController::class, 'index']);
 
 

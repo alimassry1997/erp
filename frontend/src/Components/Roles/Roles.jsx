@@ -1,53 +1,55 @@
-import axios from "axios";
-import React from "react";
-import { useState } from "react";
-import swal from "sweetalert";
-import "./Roles.css";
-
-const Roles = () => {
-
-  const [roleInp, setRoleInp] = useState({
-    rname:"",
-  });
-
-  const handleRInput = (e) => {
-    e.persist();
-    setRoleInp({ ...roleInp, [e.target.name]: e.target.value })
-  }
+import axios from 'axios';
+import React from 'react'
+import { useEffect } from 'react';
+import { useState } from 'react'
 
 
-  const saveRole = (e) => {
-    e.preventDefault();
 
-    const data = {
-      rname: roleInp.rname,
-    }
- 
-    axios.post('http://localhost:8080/api/add-role', data).then(res => {
-      if (res.data.status === 200) {
-        swal("Success", res.data.message, "success");
-        console.log("Role is Created");
-        setRoleInp({
-          rname:"",
-        })
-      } else {
-        
-      }
+
+
+function Roles() {
+  const [loading, setLoading] = useState(true);
+  const [roleList, setRoleList] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/roles').then(res => {
+      if (res.status === 200) {
+       setRoleList(res.data.role) 
+      } setLoading(false);
     })
+  }, []);
 
+  let viewRole_table = "";
+  if (loading) {
+    return <h1>Loading ... </h1>
+  } else {
+    viewRole_table = roleList.map((item) => {
+      return (
+        <tr key={item.id}>
+          <td>{item.rname}</td>
+          <td>
+            <button>Edit</button>
+            <button type='button'>Delete</button>
+          </td>
+          </tr>
+      )
+    });
   }
 
+  return (
+    <div>
+      <h1>Roles Table</h1>
+      <table>
+        <thead>
+          <th>Name</th>
+          <th>Actions</th>
+        </thead>
+        <tbody>
+          {viewRole_table}
+        </tbody>
+      </table>
+    </div>
+  )
+}
 
-  return <div>
-    <h1>Add Role</h1> 
-    <form onSubmit={saveRole}>
-      <label>Role Name</label>
-      <input type="text" name="rname" onChange={handleRInput} value={roleInp.rname}  placeholder="Role Name">
-      </input>
-      <button type="submit">Create the role</button>
-    </form>
-  </div>;
-};
-
-export default Roles;
-
+export default Roles
