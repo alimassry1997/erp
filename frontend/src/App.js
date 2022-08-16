@@ -23,7 +23,7 @@ function App() {
         <Route exact path="/employees/edit-employee/:id" element={<EditEmployee />} />
         <Route exact path="/admins" element={<Admins />} />
         <Route exact path="/roles" element={<Roles/>}/>
-        <Route exact path="/add-roles" element={<AddRoles/>}/>
+        {/* <Route exact path="/add-roles" element={<AddRoles/>}/> */}
       </Routes>
       </Router>
   );

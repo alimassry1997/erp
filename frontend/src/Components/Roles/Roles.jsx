@@ -3,11 +3,15 @@ import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react'
 import swal from 'sweetalert';
+import { FaPlusSquare } from "react-icons/fa";
+import RPopup from './Add-Roles/add-rPopup';
+import AddRoles from './Add-Roles/add-roles';
 
 
 function Roles() {
   const [loading, setLoading] = useState(true);
   const [roleList, setRoleList] = useState([]);
+  const [openRPopup, setROpenPopup] = useState(false);
 
 
   const deleteRole = (e, id) => {
@@ -55,6 +59,7 @@ function Roles() {
   return (
     <div>
       <h1>Roles Table</h1>
+      <button onClick={()=>{setROpenPopup(true)}}> <FaPlusSquare /></button>
       <table>
         <thead>
           <th>Name</th>
@@ -64,6 +69,11 @@ function Roles() {
           {viewRole_table}
         </tbody>
       </table>
+      <RPopup
+      openRPopup={openRPopup}
+      setROpenPopup={setROpenPopup}>
+         <AddRoles />
+      </RPopup>
     </div>
   )
 }
