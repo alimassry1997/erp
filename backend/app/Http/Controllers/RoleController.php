@@ -3,28 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        $role = Role::all();
+        $roles = Role::latest()->get();
         return response()->json([
-            'status'=> 200,
-            'role'=> $role,
+            "roles" => $roles,
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -34,25 +37,27 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        $role = new Role;
-        $role -> rname = $request -> input('rname');
-        $role ->save();
+        $request->validate([
+            "name" => "required|unique:roles",
+        ]);
+        $inputs["name"] = $request["name"];
+        $inputs["slug"] = Str::slug($request["name"], "-");
+        Role::create($inputs);
         return response()->json([
-            'status'=> 200,
-            'message' => 'Role Added Successfully',
+            "message" => "Role Added Successfully",
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
+     * @param Role $role
+     * @return Response
      */
     public function show(Role $role)
     {
@@ -62,8 +67,8 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
+     * @param Role $role
+     * @return Response
      */
     public function edit(Role $role)
     {
@@ -73,35 +78,34 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Role $role
+     * @return JsonResponse
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, Role $role): JsonResponse
     {
-        //
+        $request->validate([
+            "name" => ["required", Rule::unique("skills")->ignore($role->id)],
+        ]);
+        $inputs["name"] = $request["name"];
+        $inputs["slug"] = Str::slug($request["name"], "-");
+        $role->update($inputs);
+        return response()->json([
+            "message" => "Role Successfully Updated",
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
+     * @param Role $role
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Role $role): JsonResponse
     {
-        $role = Role::find($id);
-        if($role){
-            $role -> delete();
-            return response()->json([
-                'status'=> 200,
-                'message' => 'Role is Deleted',
-            ]);
-        } else {
-            return response()->json([
-                'status'=> 404,
-                'message' => 'No Role Id is found',
-            ]);
-        }
+        $role->delete();
+        return response()->json([
+            "message" => "Role Deleted Successfully",
+        ]);
     }
 }

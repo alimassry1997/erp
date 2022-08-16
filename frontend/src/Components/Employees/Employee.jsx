@@ -2,8 +2,6 @@ import { FaEdit } from "react-icons/fa";
 import { BiShowAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import IsActiveButton from "./IsActiveButton";
-import axios from "axios";
-import { useState } from "react";
 
 const Employee = ({
   firstName,

@@ -8,8 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
-    protected $table = 'roles';
-    protected $fillable = [
-        'rname',
-    ];
+    protected $fillable = ["name", "slug"];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return "slug";
+    }
 }

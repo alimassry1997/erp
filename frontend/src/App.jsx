@@ -5,15 +5,14 @@ import Admins from "./Components/Admins/Admins";
 import Reports from "./Components/Reports/Reports";
 import LoginPage from "./Components/Pages/LoginPage";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
-import Roles from "./Components/Roles/Roles";
 import axios from "axios";
 import capitalizeFirstLetter from "./utils/capitalizeFirstLetter";
 import TeamsDashboard from "./Components/Pages/TeamsDashboard";
 import SingleTeamDashboard from "./Components/Pages/SingleTeamDashboard";
 import SkillsDashboard from "./Components/Pages/SkillsDashboard";
 import ProjectsDashboard from "./Components/Pages/ProjectsDashboard";
-import Employees from "./Components/Employees/Employees";
 import EmployeesDashboard from "./Components/Pages/EmployeesDashboard";
+import RolesDashboard from "./Components/Pages/RolesDashboard";
 
 const App = () => {
   /**
@@ -55,6 +54,13 @@ const App = () => {
    */
   const [loadingSkills, setLoadingSkills] = useState(true);
   const [skills, setSkills] = useState([]);
+
+  /**
+   * Roles States
+   * Loading & Roles
+   */
+  const [loadingRoles, setLoadingRoles] = useState(true);
+  const [roles, setRoles] = useState([]);
 
   /**
    * Projects States
@@ -118,6 +124,26 @@ const App = () => {
       } = response;
       setSkills(skills);
       setLoadingSkills(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  /**
+   * Get All skills
+   * @returns {Promise<void>}
+   */
+  const fetchRoles = async () => {
+    try {
+      setLoadingRoles(true);
+      const response = await axios.get(`/api/roles/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { roles },
+      } = response;
+      setRoles(roles);
+      setLoadingRoles(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -249,7 +275,17 @@ const App = () => {
             path="/roles"
             element={<DashboardLayout auth={auth} setAuth={setAuth} />}
           >
-            <Route index element={<Roles />} />
+            <Route
+              index
+              element={
+                <RolesDashboard
+                  roles={roles}
+                  loadingRoles={loadingRoles}
+                  fetchRoles={fetchRoles}
+                  token={token}
+                />
+              }
+            />
           </Route>
           <Route
             path="/skills"

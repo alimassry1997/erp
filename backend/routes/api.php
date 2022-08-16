@@ -38,6 +38,15 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
     Route::delete("/skills/{skill}", [SkillController::class, "destroy"]);
 
     /**
+     * Roles Routes
+     */
+    Route::get("/roles", [RoleController::class, "index"]);
+    Route::post("/roles", [RoleController::class, "store"]);
+    Route::get("/roles/{role}", [RoleController::class, "show"]);
+    Route::put("/roles/{role}", [RoleController::class, "update"]);
+    Route::delete("/roles/{role}", [RoleController::class, "destroy"]);
+
+    /**
      * Projects Routes
      */
     Route::get("/projects", [ProjectController::class, "index"]);
@@ -68,10 +77,3 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
         "update_status",
     ]);
 });
-
-// update status
-// Route::get('update-status/{id}', [UserController::class, 'status_update']);
-
-Route::post("add-role", [RoleController::class, "store"]);
-Route::get("roles", [RoleController::class, "index"]);
-Route::delete("delete-role/{id}", [RoleController::class, "destroy"]);
