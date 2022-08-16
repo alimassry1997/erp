@@ -10,12 +10,22 @@ const Employee = ({
   email,
   status,
   phoneNumber,
+  showEditEmployeePopup,
+  employee,
 }) => {
+  const string = "placeholder";
   return (
     <tr>
       <td>
         <div>
-          <img src={image} alt="profile image" />
+          <img
+            src={
+              image.includes(string)
+                ? image
+                : `${process.env.REACT_APP_BACKEND_URL}${image}`
+            }
+            alt="profile image"
+          />
         </div>
       </td>
       <td>{firstName}</td>
@@ -30,15 +40,9 @@ const Employee = ({
           </Link>
           <button
             className="btn edit-btn"
-            // onClick={() => showEditClassFormPopup(singleClass)}
+            onClick={() => showEditEmployeePopup(employee)}
           >
             <FaEdit />
-          </button>
-          <button
-            className="btn delete-btn"
-            // onClick={() => showDeleteClassFormPopup({ id, name })}
-          >
-            <FaTrashAlt />
           </button>
         </div>
       </td>

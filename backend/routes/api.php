@@ -4,12 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TeamController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,25 +55,19 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
     Route::put("/teams/{team}", [TeamController::class, "update"]);
     Route::delete("/teams/{team}", [TeamController::class, "destroy"]);
     Route::get("/teams/filter/{team}", [TeamController::class, "filterByTeam"]);
-// Get the Employee Info
-Route::get('edit-employee/{id}', [UserController::class, 'edit']);
 
     /**
      * Employees Routes
      */
     Route::get("/employees", [UserController::class, "index"]);
     Route::post("/employees", [UserController::class, "store"]);
-    Route::get("/employees/{user}", [UserController::class, "edit"]);
+    Route::get("edit-employee/{id}", [UserController::class, "edit"]);
+    Route::put("/employees/{user}", [UserController::class, "update"]);
 });
-// Update the Employee
-Route::post('update-employee/{id}', [UserController::class, 'update']);
 
 // update status
 // Route::get('update-status/{id}', [UserController::class, 'status_update']);
 
-
-Route::post('add-role', [RoleController::class, 'store']);
-Route::get('roles', [RoleController::class, 'index']);
-Route::delete('delete-role/{id}',[RoleController::class, 'destroy']);
-
-
+Route::post("add-role", [RoleController::class, "store"]);
+Route::get("roles", [RoleController::class, "index"]);
+Route::delete("delete-role/{id}", [RoleController::class, "destroy"]);

@@ -1,31 +1,16 @@
 import "./Employees.css";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
 import Spinner from "../Layout/Spinner";
-import { AiOutlineTeam } from "react-icons/ai";
-import { FaPlusSquare } from "react-icons/fa";
 import Employee from "./Employee";
 import { AiOutlineTeam } from "react-icons/ai";
 import { FaPlusSquare } from "react-icons/fa";
-import Popup from "./Add-Employees/add-Popup";
-import AddEmployee from "./Add-Employees/add-employee";
-import PopUp from "./Edit-Employees/edit-Popup";
-import EditEmployee from "./Edit-Employees/edit-employee";
 
-
-
-const Employees = () => {
-  const [loading, setLoading] = useState(true);
-  const [employeeList, setEmployeeList] = useState([]);
-  const [openPopup, setOpenPopup] = useState(false);
-  const [eopenPopup, esetOpenPopup] = useState(false);
-
-const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
+const Employees = ({
+  employees,
+  loadingEmployees,
+  showEditEmployeePopup,
+  showAddEmployeeFormPopup,
+}) => {
+  document.title = "Employees Dashboard | ERP";
   if (loadingEmployees) {
     return <Spinner />;
   } else {
@@ -36,7 +21,10 @@ const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
             <AiOutlineTeam />
             Employees Management
           </h2>
-          <button className="btn add-btn">
+          <button
+            className="btn add-btn"
+            onClick={() => showAddEmployeeFormPopup()}
+          >
             <FaPlusSquare />
           </button>
         </div>
@@ -63,6 +51,8 @@ const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
                   email={employee.email}
                   phoneNumber={employee.phone_number}
                   status={employee.status}
+                  showEditEmployeePopup={showEditEmployeePopup}
+                  employee={employee}
                 />
               ))}
             </tbody>
@@ -74,4 +64,3 @@ const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
 };
 
 export default Employees;
-

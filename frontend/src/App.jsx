@@ -2,7 +2,6 @@ import "./App.css";
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Admins from "./Components/Admins/Admins";
-import Employees from "./Components/Employees/Employees";
 import Reports from "./Components/Reports/Reports";
 import LoginPage from "./Components/Pages/LoginPage";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
@@ -13,6 +12,8 @@ import TeamsDashboard from "./Components/Pages/TeamsDashboard";
 import SingleTeamDashboard from "./Components/Pages/SingleTeamDashboard";
 import SkillsDashboard from "./Components/Pages/SkillsDashboard";
 import ProjectsDashboard from "./Components/Pages/ProjectsDashboard";
+import Employees from "./Components/Employees/Employees";
+import EmployeesDashboard from "./Components/Pages/EmployeesDashboard";
 
 const App = () => {
   /**
@@ -235,10 +236,11 @@ const App = () => {
             <Route
               index
               element={
-                <Employees
+                <EmployeesDashboard
                   fetchEmployees={fetchEmployees}
                   employees={employees}
                   loadingEmployees={loadingEmployees}
+                  token={token}
                 />
               }
             />
