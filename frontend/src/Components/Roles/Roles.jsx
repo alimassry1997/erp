@@ -2,14 +2,30 @@ import axios from 'axios';
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react'
-
-
-
+import swal from 'sweetalert';
 
 
 function Roles() {
   const [loading, setLoading] = useState(true);
   const [roleList, setRoleList] = useState([]);
+
+
+  const deleteRole = (e, id) => {
+    e.preventDefault();
+
+    const thisClicked = e.currentTarget;
+    thisClicked.innerText = "Deleting";
+
+    axios.delete(`http://localhost:8080/api/delete-role/${id}`).then(res => {
+      if (res.data.status === 200) {
+        swal("Success", res.data.message, "Success");
+        thisClicked.closest("tr").remove();
+      } else if (res.data.status === 404) {
+        thisClicked.innerText = "Delete";
+      }
+    })
+
+  }
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/roles').then(res => {
@@ -29,7 +45,7 @@ function Roles() {
           <td>{item.rname}</td>
           <td>
             <button>Edit</button>
-            <button type='button'>Delete</button>
+            <button type='button' onClick={(e)=> deleteRole(e, item.id)}>Delete</button>
           </td>
           </tr>
       )

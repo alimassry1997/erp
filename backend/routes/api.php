@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\Role;
 use Termwind\Components\Raw;
 
 /*
@@ -43,5 +44,6 @@ Route::post('update-employee/{id}', [UserController::class, 'update']);
 
 Route::post('add-role', [RoleController::class, 'store']);
 Route::get('roles', [RoleController::class, 'index']);
+Route::delete('delete-role/{id}',[RoleController::class, 'destroy']);
 
 

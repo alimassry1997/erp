@@ -88,8 +88,20 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy($id)
     {
-        //
+        $role = Role::find($id);
+        if($role){
+            $role -> delete();
+            return response()->json([
+                'status'=> 200,
+                'message' => 'Role is Deleted',
+            ]);
+        } else {
+            return response()->json([
+                'status'=> 404,
+                'message' => 'No Role Id is found',
+            ]);
+        }
     }
 }
