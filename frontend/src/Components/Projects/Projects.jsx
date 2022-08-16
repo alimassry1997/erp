@@ -41,3 +41,4 @@ function Projects({ projects, loadingProjects }) {
 }
 
 export default Projects;
+

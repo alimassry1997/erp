@@ -158,3 +158,4 @@ const LoginPage = ({ auth, setAuth }) => {
 };
 
 export default LoginPage;
+
