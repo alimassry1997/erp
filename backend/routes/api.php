@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TeamController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -27,6 +29,33 @@ Route::post("/login", [AuthController::class, "login"]);
  */
 Route::group(["middleware" => ["auth:sanctum"]], static function () {
     /**
+     * Skills Routes
+     */
+    Route::get("/skills", [SkillController::class, "index"]);
+    Route::post("/skills", [SkillController::class, "store"]);
+    Route::get("/skills/{skill}", [SkillController::class, "show"]);
+    Route::put("/skills/{skill}", [SkillController::class, "update"]);
+    Route::delete("/skills/{skill}", [SkillController::class, "destroy"]);
+
+    /**
+     * Roles Routes
+     */
+    Route::get("/roles", [RoleController::class, "index"]);
+    Route::post("/roles", [RoleController::class, "store"]);
+    Route::get("/roles/{role}", [RoleController::class, "show"]);
+    Route::put("/roles/{role}", [RoleController::class, "update"]);
+    Route::delete("/roles/{role}", [RoleController::class, "destroy"]);
+
+    /**
+     * Projects Routes
+     */
+    Route::get("/projects", [ProjectController::class, "index"]);
+    Route::post("/projects", [ProjectController::class, "store"]);
+    Route::get("/projects/{project}", [ProjectController::class, "show"]);
+    Route::put("/projects/{project}", [ProjectController::class, "update"]);
+    Route::delete("/projects/{project}", [ProjectController::class, "destroy"]);
+
+    /**
      * Teams Routes
      */
     Route::get("/teams", [TeamController::class, "index"]);
@@ -41,5 +70,10 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
      */
     Route::get("/employees", [UserController::class, "index"]);
     Route::post("/employees", [UserController::class, "store"]);
-    Route::get("/employees/{user}", [UserController::class, "edit"]);
+    Route::get("edit-employee/{id}", [UserController::class, "edit"]);
+    Route::put("/employees/{user}", [UserController::class, "update"]);
+    Route::put("/employees/{user}/status", [
+        UserController::class,
+        "update_status",
+    ]);
 });

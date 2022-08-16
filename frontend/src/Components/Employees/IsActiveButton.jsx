@@ -1,16 +1,16 @@
-const isActiveButton = ({ status }) => {
+const isActiveButton = ({ status, showDeleteEmployeePopup, employee }) => {
   if (status === 1) {
     return (
       <button
         className="btn add-btn status"
-        // onClick={() => showDeleteClassFormPopup({ id, name })}
+        onClick={() => showDeleteEmployeePopup(employee, false)}
       ></button>
     );
   }
   return (
     <button
       className="btn delete-btn status"
-      // onClick={() => showDeleteClassFormPopup({ id, name })}
+      onClick={() => showDeleteEmployeePopup(employee, true)}
     ></button>
   );
 };

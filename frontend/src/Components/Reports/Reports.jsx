@@ -1,10 +1,5 @@
-import React from 'react'
-import './Reports.css'
+const Reports = () => {
+  return <div>Reports</div>;
+};
 
-function Reports() {
-  return (
-    <div className='main'>Reports page</div>
-  )
-}
-
-export default Reports
+export default Reports;

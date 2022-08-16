@@ -1,14 +1,18 @@
 import "./Employees.css";
-import { useEffect } from "react";
 import Spinner from "../Layout/Spinner";
+import Employee from "./Employee";
 import { AiOutlineTeam } from "react-icons/ai";
 import { FaPlusSquare } from "react-icons/fa";
-import Employee from "./Employee";
 
-const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
+const Employees = ({
+  employees,
+  token,
+  loadingEmployees,
+  showEditEmployeePopup,
+  showAddEmployeeFormPopup,
+  showDeleteEmployeePopup,
+}) => {
+  document.title = "Employees Dashboard | ERP";
   if (loadingEmployees) {
     return <Spinner />;
   } else {
@@ -19,7 +23,10 @@ const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
             <AiOutlineTeam />
             Employees Management
           </h2>
-          <button className="btn add-btn">
+          <button
+            className="btn add-btn"
+            onClick={() => showAddEmployeeFormPopup()}
+          >
             <FaPlusSquare />
           </button>
         </div>
@@ -30,7 +37,6 @@ const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
                 <th>Image</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Team Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Status</th>
@@ -41,13 +47,16 @@ const Employees = ({ fetchEmployees, employees, loadingEmployees }) => {
               {employees.map((employee) => (
                 <Employee
                   key={employee.id}
+                  token={token}
                   image={employee.picture}
                   firstName={employee.first_name}
                   lastName={employee.last_name}
-                  teamName={employee.team.name}
                   email={employee.email}
                   phoneNumber={employee.phone_number}
                   status={employee.status}
+                  showEditEmployeePopup={showEditEmployeePopup}
+                  showDeleteEmployeePopup={showDeleteEmployeePopup}
+                  employee={employee}
                 />
               ))}
             </tbody>

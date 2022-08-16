@@ -1,0 +1,24 @@
+.project {
+  background-color: var(--white-color);
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.project-header,
+.project-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-footer {
+  color: var(--secondary-color);
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--link-color);
+}
+
+.project-header {
+  color: var(--primary-color);
+  padding-bottom: 2rem;
+}

@@ -114,7 +114,6 @@ const EditTeamForm = ({
     if (success) {
       setTimeout(() => {
         setSuccess("");
-        console.log(location.pathname);
         if (location.pathname === `/teams/${slug}`) {
           navigate(`/teams/${newSlug}`);
         }
@@ -126,7 +125,7 @@ const EditTeamForm = ({
     <div className="form-section add-team-form">
       <section className="heading">
         <h2>
-          <AiOutlineTeam /> Add New Team
+          <AiOutlineTeam /> Edit Team
         </h2>
         <p>Enter your information below</p>
         {success && <p className="succeed-msg">{success}</p>}

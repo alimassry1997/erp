@@ -7,16 +7,13 @@ import { TbReportSearch } from "react-icons/tb";
 import { AiOutlineProject, AiOutlineTeam, AiOutlineUser } from "react-icons/ai";
 import { FaUsersCog } from "react-icons/fa";
 import { GiSkills } from "react-icons/gi";
-import { FiLogOut } from "react-icons/fi";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-const Sidebar = ({ setAuth }) => {
-  const navigate = useNavigate();
-  const onLogout = () => {
-    localStorage.removeItem("user");
-    setAuth(null);
-    navigate("/login");
-  };
+const Sidebar = ({
+  auth: {
+    user: { system_role_id },
+  },
+}) => {
   return (
     <section className="sidebar">
       <div className="brand">
@@ -30,11 +27,14 @@ const Sidebar = ({ setAuth }) => {
             <TbReportSearch /> Reports
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/admins">
-            <RiAdminFill /> Admins
-          </NavLink>
-        </li>
+        {/* Show Admin Tab Only for SuperAdmins*/}
+        {system_role_id === 3 && (
+          <li>
+            <NavLink to="/admins">
+              <RiAdminFill /> Admins
+            </NavLink>
+          </li>
+        )}
         <li>
           <NavLink to={"/projects"}>
             <AiOutlineProject /> Projects
@@ -56,15 +56,11 @@ const Sidebar = ({ setAuth }) => {
           </NavLink>
         </li>
         <li>
-          <NavLink to={"/kpi"}>
+          <NavLink to={"/skills"}>
             <GiSkills /> KPI
           </NavLink>
         </li>
-        <li>
-          <button onClick={onLogout}>
-            <FiLogOut /> Logout
-          </button>
-        </li>
+        <li></li>
       </ul>
     </section>
   );

@@ -82,6 +82,7 @@ class TeamController extends Controller
         return response()->json([
             "employees" => $team
                 ->users()
+                ->whereNotIn("status", [0])
                 ->select("email", "first_name")
                 ->get(),
         ]);

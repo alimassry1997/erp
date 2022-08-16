@@ -1,31 +1,47 @@
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { BiShowAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import IsActiveButton from "./IsActiveButton";
-import CapitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 
 const Employee = ({
   firstName,
   lastName,
-  teamName,
   image,
   email,
   status,
   phoneNumber,
+  showEditEmployeePopup,
+  showDeleteEmployeePopup,
+  employee,
 }) => {
+  const string = "placeholder";
   return (
     <tr>
       <td>
         <div>
-          <img src={image} alt="profile image" />
+          <img
+            src={
+              image.includes(string)
+                ? image
+                : `${process.env.REACT_APP_BACKEND_URL}${image}`
+            }
+            alt="profile image"
+          />
         </div>
       </td>
       <td>{firstName}</td>
       <td>{lastName}</td>
-      <td>{CapitalizeFirstLetter(teamName)}</td>
       <td>{email}</td>
       <td>{phoneNumber}</td>
-      <td>{<IsActiveButton status={status} />}</td>
+      <td>
+        {
+          <IsActiveButton
+            status={status}
+            showDeleteEmployeePopup={showDeleteEmployeePopup}
+            employee={employee}
+          />
+        }
+      </td>
       <td>
         <div className="flex-btn">
           <Link to={`/employees/${email}`} className="btn view-btn">
@@ -33,15 +49,9 @@ const Employee = ({
           </Link>
           <button
             className="btn edit-btn"
-            // onClick={() => showEditClassFormPopup(singleClass)}
+            onClick={() => showEditEmployeePopup(employee)}
           >
             <FaEdit />
-          </button>
-          <button
-            className="btn delete-btn"
-            // onClick={() => showDeleteClassFormPopup({ id, name })}
-          >
-            <FaTrashAlt />
           </button>
         </div>
       </td>

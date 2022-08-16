@@ -32,7 +32,7 @@ class AuthController extends Controller
         $user = Auth::user();
         $token = $user->createToken("auth_token")->plainTextToken;
         return response()->json([
-            "user" => $user,
+            "user" => $user->only(["first_name", "picture", "system_role_id"]),
             "access_token" => $token,
         ]);
     }
