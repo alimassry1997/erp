@@ -9,6 +9,7 @@ import {
 } from "react-router-dom"
 import EditEmployee from './Components/Employees/Edit-Employees/edit-employee';
 import Sidebar from './Components/Layout/Sidebar';
+import Roles from './Components/Roles/Roles';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/employees" element={<Employees />} />
         <Route exact path="/employees/edit-employee/:id" element={<EditEmployee />} />
         <Route exact path="/admins" element={<Admins />} />
+        <Route exact path="/roles" element={<Roles/>}/>
       </Routes>
       </Router>
   );

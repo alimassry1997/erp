@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Termwind\Components\Raw;
 
@@ -38,5 +39,8 @@ Route::post('update-employee/{id}', [UserController::class, 'update']);
 
 // update status 
 // Route::get('update-status/{id}', [UserController::class, 'status_update']);
+
+
+Route::post('add-role', [RoleController::class, 'store']);
 
 
