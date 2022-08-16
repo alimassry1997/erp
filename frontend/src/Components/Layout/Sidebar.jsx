@@ -9,8 +9,11 @@ import { FaUsersCog } from "react-icons/fa";
 import { GiSkills } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
 
-const Sidebar = ({ auth: { user } }) => {
-  const { system_role_id } = user;
+const Sidebar = ({
+  auth: {
+    user: { system_role_id },
+  },
+}) => {
   return (
     <section className="sidebar">
       <div className="brand">

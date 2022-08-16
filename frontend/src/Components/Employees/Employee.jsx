@@ -1,7 +1,9 @@
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { BiShowAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import IsActiveButton from "./IsActiveButton";
+import axios from "axios";
+import { useState } from "react";
 
 const Employee = ({
   firstName,
@@ -11,6 +13,7 @@ const Employee = ({
   status,
   phoneNumber,
   showEditEmployeePopup,
+  showDeleteEmployeePopup,
   employee,
 }) => {
   const string = "placeholder";
@@ -32,7 +35,15 @@ const Employee = ({
       <td>{lastName}</td>
       <td>{email}</td>
       <td>{phoneNumber}</td>
-      <td>{<IsActiveButton status={status} />}</td>
+      <td>
+        {
+          <IsActiveButton
+            status={status}
+            showDeleteEmployeePopup={showDeleteEmployeePopup}
+            employee={employee}
+          />
+        }
+      </td>
       <td>
         <div className="flex-btn">
           <Link to={`/employees/${email}`} className="btn view-btn">

@@ -1,7 +1,89 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { AiFillDelete } from "react-icons/ai";
+import axios from "axios";
 
-const DeleteEmployeeAlert = () => {
-  return <div></div>;
+const DeleteEmployeeAlert = ({
+  token,
+  setReloadEmployees,
+  deleteEmployee,
+  reloadEmployees,
+  status,
+}) => {
+  const [success, setSuccess] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const { first_name, email } = deleteEmployee;
+
+  // Submission Function
+  const changeStatus = async (email) => {
+    try {
+      const response = await axios.post(
+        `/api/employees/${email}/status`,
+        { _method: "PUT" },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (response.data) {
+        const { data: message } = response;
+        return message;
+      }
+    } catch (err) {
+      console.log(err.response.data);
+      throw new Error();
+    }
+  };
+
+  // On Submit Action
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const message = await changeStatus(email);
+      setSuccess(message.message);
+      setReloadEmployees(!reloadEmployees);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // Reset Messages after 5 seconds
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+    }
+    setTimeout(() => {
+      setSuccess("");
+    }, 5000);
+  }, [errorMessage]);
+
+  return (
+    <div className="form-section category-form delete-category-form">
+      <section className="heading">
+        <h2>
+          <AiFillDelete />{" "}
+          {status ? "Activate Employee" : "Deactivate Employee"}
+        </h2>
+        <p>
+          Are you sure you want to {status ? "activate" : "deactivate"} this{" "}
+          {first_name}
+        </p>
+        {success && <p className="succeed-msg">{success}</p>}
+        {errorMessage && <p className="error-msg">{errorMessage}</p>}
+      </section>
+      <section className="form">
+        <form onSubmit={onSubmit}>
+          <div className="form-group">
+            <input
+              type="submit"
+              className="btn btn-block"
+              value={status ? "Activate Employee" : "Deactivate Employee"}
+            />
+          </div>
+        </form>
+      </section>
+    </div>
+  );
 };
 
 export default DeleteEmployeeAlert;

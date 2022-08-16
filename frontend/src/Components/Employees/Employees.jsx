@@ -6,9 +6,11 @@ import { FaPlusSquare } from "react-icons/fa";
 
 const Employees = ({
   employees,
+  token,
   loadingEmployees,
   showEditEmployeePopup,
   showAddEmployeeFormPopup,
+  showDeleteEmployeePopup,
 }) => {
   document.title = "Employees Dashboard | ERP";
   if (loadingEmployees) {
@@ -45,6 +47,7 @@ const Employees = ({
               {employees.map((employee) => (
                 <Employee
                   key={employee.id}
+                  token={token}
                   image={employee.picture}
                   firstName={employee.first_name}
                   lastName={employee.last_name}
@@ -52,6 +55,7 @@ const Employees = ({
                   phoneNumber={employee.phone_number}
                   status={employee.status}
                   showEditEmployeePopup={showEditEmployeePopup}
+                  showDeleteEmployeePopup={showDeleteEmployeePopup}
                   employee={employee}
                 />
               ))}

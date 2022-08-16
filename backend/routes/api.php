@@ -63,6 +63,10 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
     Route::post("/employees", [UserController::class, "store"]);
     Route::get("edit-employee/{id}", [UserController::class, "edit"]);
     Route::put("/employees/{user}", [UserController::class, "update"]);
+    Route::put("/employees/{user}/status", [
+        UserController::class,
+        "update_status",
+    ]);
 });
 
 // update status

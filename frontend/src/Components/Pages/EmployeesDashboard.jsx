@@ -27,6 +27,7 @@ const EmployeesDashboard = ({
    */
   const [showDeleteEmployeeForm, setShowDeleteEmployeeForm] = useState(false);
   const [deleteEmployee, setDeleteEmployee] = useState("");
+  const [employeeStatus, setEmployeeStatus] = useState("");
 
   /**
    * Refresh Employees Table after each add, edit and delete request
@@ -40,13 +41,14 @@ const EmployeesDashboard = ({
     setShowAddEmployeeForm(true);
   };
 
-  const showEditEmployeePopup = (team) => {
-    setEditEmployee(team);
+  const showEditEmployeePopup = (employee) => {
+    setEditEmployee(employee);
     setShowEditEmployeeForm(true);
   };
 
-  const showDeleteEmployeePopup = (team) => {
-    setDeleteEmployee(team);
+  const showDeleteEmployeePopup = (employee, status) => {
+    setDeleteEmployee(employee);
+    setEmployeeStatus(status);
     setShowDeleteEmployeeForm(true);
   };
 
@@ -62,6 +64,7 @@ const EmployeesDashboard = ({
         showAddEmployeeFormPopup={showAddEmployeeFormPopup}
         showEditEmployeePopup={showEditEmployeePopup}
         showDeleteEmployeePopup={showDeleteEmployeePopup}
+        token={token}
       />
       {/* Employees Add Form Popup */}
       {showAddEmployeeForm && (
@@ -103,6 +106,7 @@ const EmployeesDashboard = ({
               reloadEmployees={reloadEmployees}
               setReloadEmployees={setReloadEmployees}
               deleteEmployee={deleteEmployee}
+              status={employeeStatus}
             />
           }
         />

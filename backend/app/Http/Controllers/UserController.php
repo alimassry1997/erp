@@ -99,20 +99,17 @@ class UserController extends Controller
         ]);
     }
 
-    // public function status_update($id) {
-
-    //     $emp_status = User::find($id)->select('status');
-    //       if($emp_status === 1){
-    //         $status = 0;
-    //       } else {
-    //         $status = 1;
-    //       }
-
-    //       $value = array('status' => $status);
-    //       $emp_status -> update()->where('id', $id);
-    //       return response()->json([
-    //         'status' => 200,
-    //         'message' => 'Status Updated Successfully',
-    //        ]);
-    // }
+    public function update_status(User $user): JsonResponse
+    {
+        $user->status = !$user->status;
+        $user->save();
+        if ($user->status === true) {
+            return response()->json([
+                "message" => "Employee Activated",
+            ]);
+        }
+        return response()->json([
+            "message" => "Employee Deactivated",
+        ]);
+    }
 }
