@@ -16,7 +16,9 @@ class ProjectController extends Controller
      */
     public function index(): JsonResponse
     {
-        $projects = Project::latest()->get();
+        $projects = Project::latest()
+            ->orderBy("status", "ASC")
+            ->get();
         return response()->json([
             "projects" => $projects,
         ]);

@@ -18,6 +18,11 @@
   border-top: 1px solid var(--link-color);
 }
 
+.project-footer p {
+  display: flex;
+  align-items: center;
+}
+
 .project-header {
   color: var(--primary-color);
   padding-bottom: 2rem;
