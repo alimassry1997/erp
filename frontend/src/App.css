@@ -75,6 +75,43 @@ h6 {
 }
 
 /**
+Tabs Styling
+ */
+
+.react-tabs__tab-list {
+  padding-left: 1rem !important;
+  display: flex;
+  justify-content: center;
+  border-bottom: none !important;
+}
+
+.react-tabs__tab:focus:after {
+  background: none !important;
+}
+
+.react-tabs__tab--selected {
+  background: var(--secondary-color) !important;
+  color: var(--white-color) !important;
+}
+
+.react-tabs__tab:first-child {
+  border-radius: 2rem 0 0 2rem;
+}
+
+.react-tabs__tab:last-child {
+  border-radius: 0 2rem 2rem 0;
+}
+
+.react-tabs__tab-list li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  width: 200px;
+  border: 1px solid var(--secondary-color) !important;
+}
+
+/**
 Forms Design
  */
 
@@ -234,6 +271,11 @@ Forms Design
 @media (max-width: 650px) {
   .form-section {
     width: 350px;
+  }
+
+  .react-tabs__tab-list li {
+    font-size: 0.8rem;
+    width: 150px;
   }
 }
 
