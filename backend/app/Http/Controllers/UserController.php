@@ -138,7 +138,7 @@ class UserController extends Controller
     public function indexAdmin(): JsonResponse
     {
         $admins = User::latest()
-            ->whereIn("team_id", [1])
+            ->whereIn("system_role_id", [1])
             ->get();
         return response()->json([
             "message" => "Admins are here",

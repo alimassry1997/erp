@@ -13,6 +13,7 @@ import SkillsDashboard from "./Components/Pages/SkillsDashboard";
 import ProjectsDashboard from "./Components/Pages/ProjectsDashboard";
 import EmployeesDashboard from "./Components/Pages/EmployeesDashboard";
 import RolesDashboard from "./Components/Pages/RolesDashboard";
+import AdminsDashboard from "./Components/Pages/AdminsDashboard";
 
 const App = () => {
   /**
@@ -47,6 +48,14 @@ const App = () => {
    */
   const [loadingEmployees, setLoadingEmployees] = useState(true);
   const [employees, setEmployees] = useState([]);
+
+
+  /**
+   * Admins States
+   * Loading & Admins
+   */
+   const [loadingAdmins, setLoadingAdmins] = useState(true);
+   const [admins, setAdmins] = useState([]);
 
   /**
    * Skills States
@@ -169,6 +178,27 @@ const App = () => {
     }
   };
 
+
+  /**
+   * Get all admins
+   * @returns {Promise<void>}
+   */
+   const fetchAdmins = async () => {
+    try {
+      setLoadingAdmins(true);
+      const response = await axios.get(`/api/admins`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { admins },
+      } = response;
+      setAdmins(admins);
+      setLoadingAdmins(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   /**
    * Get a single Team by SLug
    * @param slug
@@ -205,7 +235,13 @@ const App = () => {
             path="/admins"
             element={<DashboardLayout auth={auth} setAuth={setAuth} />}
           >
-            <Route index element={<Admins />} />
+            <Route index element={<AdminsDashboard
+            fetchAdmins={fetchAdmins}
+            admins={admins}
+            loadingAdmins={loadingAdmins}
+              token={token}
+            />}
+            />
           </Route>
           <Route
             path="/projects"

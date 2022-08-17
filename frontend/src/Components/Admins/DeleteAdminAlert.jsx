@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import axios from "axios";
 
-const DeleteEmployeeAlert = ({
+const DeleteAdminAlert = ({
   token,
-  setReloadEmployees,
-  deleteEmployee,
-  reloadEmployees,
+  setReloadAdmins,
+  deleteAdmin,
+  reloadAdmins,
   status,
 }) => {
   const [success, setSuccess] = useState("");

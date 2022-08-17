@@ -1,4 +1,4 @@
-const isActiveButton = ({ status, showDeleteEmployeePopup, employee }) => {
+const IsActiveButton = ({ status, showDeleteEmployeePopup, employee }) => {
   if (status === 1) {
     return (
       <button
@@ -14,4 +14,4 @@ const isActiveButton = ({ status, showDeleteEmployeePopup, employee }) => {
     ></button>
   );
 };
-export default isActiveButton;
+export default IsActiveButton;

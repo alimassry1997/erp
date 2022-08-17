@@ -32,7 +32,7 @@ const EditEmployeeForm = ({
   // Submission Function
   const EditEmployee = async (userData) => {
     try {
-      const response = await axios.post(`/api/employees/${email}`, userData, {
+      const response = await axios.post(`/api/user/${email}`, userData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data) {
