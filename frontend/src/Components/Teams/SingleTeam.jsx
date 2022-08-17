@@ -31,10 +31,12 @@ const SingleTeam = ({
     return (
       <div className="single-team-container">
         <header>
-          <h2>{name} Team</h2>
-          <div>
-            <HiUserGroup />
-            Team Size: {employees.length}
+          <div className="description">
+            <h2>{name} Team</h2>
+            <div>
+              <HiUserGroup />
+              Team Size: {employees.length}
+            </div>
           </div>
           <div className="single-team-manage">
             <button
@@ -62,7 +64,9 @@ const SingleTeam = ({
             </Tab>
           </TabList>
           <TabPanel>
-            <h2>Projects Here</h2>
+            <div className="dashboard team-employees-dashboard">
+              <h2>Projects Here</h2>
+            </div>
           </TabPanel>
           <TabPanel>
             {size > 0 ? (
