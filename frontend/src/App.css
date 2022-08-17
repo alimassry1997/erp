@@ -268,14 +268,24 @@ Forms Design
   grid-template-rows: auto 1fr auto;
 }
 
-@media (max-width: 650px) {
-  .form-section {
-    width: 350px;
-  }
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 1rem;
+  margin-top: 3rem;
+}
 
+@media (max-width: 700px) {
   .react-tabs__tab-list li {
     font-size: 0.8rem;
     width: 150px;
+  }
+}
+
+@media (max-width: 650px) {
+  .form-section {
+    width: 350px;
   }
 }
 
@@ -285,6 +295,13 @@ Forms Design
   }
   .active {
     width: 100%;
+  }
+}
+
+@media (max-width: 450px) {
+  .react-tabs__tab-list li {
+    font-size: 0.5rem;
+    width: 100px;
   }
 }
 

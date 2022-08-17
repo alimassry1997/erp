@@ -40,6 +40,7 @@ const App = () => {
    */
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState([]);
+  const [relatedEmployeesTeam, setRelatedEmployeesTeam] = useState([]);
 
   /**
    * Employees States
@@ -181,9 +182,10 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { team },
+        data: { team, employees },
       } = response;
       setTeam(team);
+      setRelatedEmployeesTeam(employees);
       document.title = `${capitalizeFirstLetter(team.name)} Team | ERP Teams`;
     } catch (error) {
       console.log(error.message);
@@ -248,6 +250,7 @@ const App = () => {
               element={
                 <SingleTeamDashboard
                   team={team}
+                  relatedEmployeesTeam={relatedEmployeesTeam}
                   loadingTeam={loadingTeam}
                   getTeam={getTeam}
                   token={token}
