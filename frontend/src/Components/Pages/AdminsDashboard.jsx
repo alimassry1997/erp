@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Popup from "../Layout/Popup";
 import Admins from "../Admins/Admins";
-// import AddEmployeeForm from "../Employees/AddEmployeeForm";
+import AddAdminForm from "../Admins/AddAdminForm";
 // import EditEmployeeForm from "../Employees/EditEmployeeForm";
-// import DeleteEmployeeAlert from "../Employees/DeleteEmployeeAlert";
+import DeleteAdminAlert from "../Admins/DeleteAdminAlert";
 
 const AdminsDashboard = ({
   admins,
@@ -61,13 +61,13 @@ const AdminsDashboard = ({
       <Admins
         admins={admins}
         loadingAdmins={loadingAdmins}
-        // showAddAdminFormPopup={showAddAdminFormPopup}
+        showAddAdminFormPopup={showAddAdminFormPopup}
         // showEditAdminPopup={showEditAdminPopup}
-        // showDeleteAdminPopup={showDeleteAdminPopup}
+        showDeleteAdminPopup={showDeleteAdminPopup}
         token={token}
       />
       {/* Admins Add Form Popup */}
-      {/* {showAddAdminForm && (
+      {showAddAdminForm && (
         <Popup
           show={showAddAdminForm}
           setShow={setShowAddAdminForm}
@@ -79,7 +79,7 @@ const AdminsDashboard = ({
             />
           }
         />
-      )} */}
+      )}
       {/* Admins Edit Form Popup */}
       {/* {showEditAdminForm && (
         <Popup
@@ -96,7 +96,7 @@ const AdminsDashboard = ({
         />
       )} */}
       {/* Admins Delete Form Popup */}
-      {/* {showDeleteAdminForm && (
+      {showDeleteAdminForm && (
         <Popup
           show={showDeleteAdminForm}
           setShow={setShowDeleteAdminForm}
@@ -110,7 +110,7 @@ const AdminsDashboard = ({
             />
           }
         />
-      )} */}
+      )}
     </>
   );
 };

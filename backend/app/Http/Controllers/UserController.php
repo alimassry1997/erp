@@ -163,7 +163,9 @@ class UserController extends Controller
             $admin->picture = "uploads/" . $filename;
         }
         $admin->system_role_id = $request->input("system_role_id");
+        
         if ($admin->system_role_id === "1") {
+            $admin->password = $request->input("password");
             $admin->team_id = 1;
         }
         $admin->save();

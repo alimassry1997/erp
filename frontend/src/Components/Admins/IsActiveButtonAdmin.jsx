@@ -14,5 +14,5 @@ const IsActiveButtonAdmin = ({ status, showDeleteAdminPopup, admin }) => {
       ></button>
     );
   };
-  export default IsActiveButtonAdmin;
+export default IsActiveButtonAdmin;
   

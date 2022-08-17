@@ -11,7 +11,7 @@ const DeleteAdminAlert = ({
 }) => {
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { first_name, email } = deleteEmployee;
+  const { first_name, email } = deleteAdmin;
 
   // Submission Function
   const changeStatus = async (email) => {
@@ -39,7 +39,7 @@ const DeleteAdminAlert = ({
     try {
       const message = await changeStatus(email);
       setSuccess(message.message);
-      setReloadEmployees(!reloadEmployees);
+      setReloadAdmins(!reloadAdmins);
     } catch (err) {
       console.log(err);
     }
@@ -62,7 +62,7 @@ const DeleteAdminAlert = ({
       <section className="heading">
         <h2>
           <AiFillDelete />{" "}
-          {status ? "Activate Employee" : "Deactivate Employee"}
+          {status ? "Activate Admin" : "Deactivate Admin"}
         </h2>
         <p>
           Are you sure you want to {status ? "activate" : "deactivate"} this{" "}
@@ -77,7 +77,7 @@ const DeleteAdminAlert = ({
             <input
               type="submit"
               className="btn btn-block"
-              value={status ? "Activate Employee" : "Deactivate Employee"}
+              value={status ? "Activate Admin" : "Deactivate Admin"}
             />
           </div>
         </form>
@@ -86,4 +86,4 @@ const DeleteAdminAlert = ({
   );
 };
 
-export default DeleteEmployeeAlert;
+export default DeleteAdminAlert;
