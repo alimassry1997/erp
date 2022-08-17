@@ -76,4 +76,20 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
         UserController::class,
         "update_status",
     ]);
+
+
+
+
+
+/**
+     * Admins Routes
+     */
+    Route::get("/admins", [UserController::class, "indexAdmin"]);
+    Route::post("/admins", [UserController::class, "storeAdmin"]);
+    // Route::get("edit-employee/{id}", [UserController::class, "edit"]);
+    // Route::put("/admins/{user}", [UserController::class, "update"]);
+    // Route::put("/admins/{user}/status", [
+    //     UserController::class,
+    //     "update_status",
+    // ]);
 });

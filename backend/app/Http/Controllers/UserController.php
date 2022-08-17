@@ -69,47 +69,139 @@ class UserController extends Controller
 
     public function update(Request $request, User $user): JsonResponse
     {
-        if ($user) {
-            $user->first_name = $request->input("first_name");
-            $user->last_name = $request->input("last_name");
-            $user->email = $request->input("email");
-            $user->phone_number = $request->input("phone_number");
 
-            if ($request->hasFile("image")) {
-                $path = $user->picture;
-                if (File::exists($path)) {
-                    File::delete($path);
-                }
-                $file = $request->file("image");
-                $extension = $file->getClientOriginalExtension();
-                $filename = time() . "." . $extension;
-                $file->move("uploads/", $filename);
-                $user->picture = "uploads/" . $filename;
+        $user->first_name = $request->input("first_name");
+        $user->last_name = $request->input("last_name");
+        $user->email = $request->input("email");
+        $user->phone_number = $request->input("phone_number");
+
+        if ($request->hasFile("image")) {
+            $path = $user->picture;
+            if (File::exists($path)) {
+                File::delete($path);
             }
-            $user->system_role_id = $request->input("system_role_id");
-            $user->update();
+            $file = $request->file("image");
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . "." . $extension;
+            $file->move("uploads/", $filename);
+            $user->picture = "uploads/" . $filename;
+        }
+
+        $user->update();
+        if ($user->team_id != 1) {
             return response()->json([
                 "message" => "Employee Updated Successfully",
+            ]);
+        } else {
+            return response()->json([
+                "message" => "Admin Updated Successfully",
             ]);
         }
 
         return response()->json([
             "status" => 404,
-            "message" => "Employee Not Found",
+            "message" => "User Not Found",
         ]);
     }
 
     public function update_status(User $user): JsonResponse
     {
-        $user->status = !$user->status;
-        $user->save();
-        if ($user->status === true) {
+        if ($user->team_id !== 1) {
+            $user->status = !$user->status;
+            $user->save();
+            if ($user->status === true) {
+                return response()->json([
+                    "message" => "Employee Activated",
+                ]);
+            }
             return response()->json([
-                "message" => "Employee Activated",
+                "message" => "Employee Deactivated",
+            ]);
+        } else if ($user->team_id == 1 && $user->system_role_id == 1) {
+            $user->status = !$user->status;
+            $user->save();
+            if ($user->status === true) {
+                return response()->json([
+                    "message" => "Admin Activated",
+                ]);
+            }
+            return response()->json([
+                "message" => "Admin Deactivated",
             ]);
         }
+    }
+
+    /**
+     * Get all Admins
+     * 
+     */
+    public function indexAdmin(): JsonResponse
+    {
+        $admins = User::latest()
+            ->whereIn("team_id", [1])
+            ->get();
         return response()->json([
-            "message" => "Employee Deactivated",
+            "message" => "Admins are here",
+            "admins" => $admins,
         ]);
     }
+
+
+    public function storeAdmin(Request $request): JsonResponse
+    {
+        $admin = new User();
+        $admin->first_name = $request->input("first_name");
+        $admin->last_name = $request->input("last_name");
+        $admin->email = $request->input("email");
+        $admin->phone_number = $request->input("phone_number");
+
+        if ($request->hasFile("image")) {
+            $file = $request->file("image");
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . "." . $extension;
+            $file->move("uploads/", $filename);
+            $admin->picture = "uploads/" . $filename;
+        }
+        $admin->system_role_id = $request->input("system_role_id");
+        if ($admin->system_role_id === "1") {
+            $admin->team_id = 1;
+        }
+        $admin->save();
+        return response()->json([
+            "message" => "Admin Added Successfully",
+        ]);
+    }
+
+    // public function updateAdmin(Request $request, User $user): JsonResponse
+    // {
+    //     if ($user) {
+    //         $user->first_name = $request->input("first_name");
+    //         $user->last_name = $request->input("last_name");
+    //         $user->email = $request->input("email");
+    //         $user->phone_number = $request->input("phone_number");
+
+    //         if ($request->hasFile("image")) {
+    //             $path = $user->picture;
+    //             if (File::exists($path)) {
+    //                 File::delete($path);
+    //             }
+    //             $file = $request->file("image");
+    //             $extension = $file->getClientOriginalExtension();
+    //             $filename = time() . "." . $extension;
+    //             $file->move("uploads/", $filename);
+    //             $user->picture = "uploads/" . $filename;
+    //         }
+    //         $user->system_role_id = $request->input("system_role_id");
+    //         $user->update();
+    //         return response()->json([
+    //             "message" => "Employee Updated Successfully",
+    //         ]);
+    //     }
+
+    //     return response()->json([
+    //         "status" => 404,
+    //         "message" => "Employee Not Found",
+    //     ]);
+    // }
+
 }
