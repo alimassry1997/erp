@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-// import Popup from "../Layout/Popup";
+import Popup from "../Layout/Popup";
 import Projects from "../Projects/Projects";
+import AddProjectForm from "../Projects/AddProjectForm";
 
 const ProjectsDashboard = ({
   projects,
@@ -9,10 +10,10 @@ const ProjectsDashboard = ({
   token,
 }) => {
   /**
-   * Add Team Form State Popup
+   * Add Project Form State Popup
    */
-  // const [showAddProjectForm, setShowAddProjectForm] = useState(false);
-  //
+  const [showAddProjectForm, setShowAddProjectForm] = useState(false);
+
   // /**
   //  * Edit Project Form State Popup
   //  */
@@ -30,18 +31,12 @@ const ProjectsDashboard = ({
    */
   const [reloadProjects, setReloadProjects] = useState(false);
 
-  // /**
-  //  * Unassigned Employees State
-  //  */
-  // const [employeesList, setEmployeesList] = useState([]);
-  // const [loadingEmployees, setLoadingEmployees] = useState(true);
-
   /**
    * Popup Functions
    */
-  // const showAddProjectFormPopup = () => {
-  //   setShowAddProjectForm(true);
-  // };
+  const showAddProjectFormPopup = () => {
+    setShowAddProjectForm(true);
+  };
   //
   // const showEditProjectPopup = (team) => {
   //   setEditProject(team);
@@ -62,24 +57,24 @@ const ProjectsDashboard = ({
       <Projects
         projects={projects}
         loadingProjects={loadingProjects}
-        // showAddProjectFormPopup={showAddProjectFormPopup}
+        showAddProjectFormPopup={showAddProjectFormPopup}
         // showEditProjectPopup={showEditProjectPopup}
         // showDeleteProjectPopup={showDeleteProjectPopup}
       />
       {/* Projects Add Form Popup */}
-      {/*{showAddProjectForm && (*/}
-      {/*  <Popup*/}
-      {/*    show={showAddProjectForm}*/}
-      {/*    setShow={setShowAddProjectForm}*/}
-      {/*    component={*/}
-      {/*      <AddProjectForm*/}
-      {/*        token={token}*/}
-      {/*        reloadProjects={reloadProjects}*/}
-      {/*        setReloadProjects={setReloadProjects}*/}
-      {/*      />*/}
-      {/*    }*/}
-      {/*  />*/}
-      {/*)}*/}
+      {showAddProjectForm && (
+        <Popup
+          show={showAddProjectForm}
+          setShow={setShowAddProjectForm}
+          component={
+            <AddProjectForm
+              token={token}
+              reloadProjects={reloadProjects}
+              setReloadProjects={setReloadProjects}
+            />
+          }
+        />
+      )}
       {/* Projects Edit Form Popup */}
       {/*{showEditProjectForm && (*/}
       {/*  <Popup*/}
@@ -115,4 +110,3 @@ const ProjectsDashboard = ({
 };
 
 export default ProjectsDashboard;
-

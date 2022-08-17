@@ -30,7 +30,7 @@ class ProjectController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            "name" => "required|unique:skills",
+            "name" => "required|unique:projects",
         ]);
         $inputs["name"] = $request["name"];
         $inputs["slug"] = Str::slug($request["name"], "-");

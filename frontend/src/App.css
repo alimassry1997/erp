@@ -174,6 +174,10 @@ Forms Design
   border-bottom: 3px solid var(--secondary-color) !important;
 }
 
+.dark-btn {
+  background-color: var(--secondary-color);
+}
+
 .add-btn {
   background-color: var(--success-color);
 }
@@ -188,6 +192,12 @@ Forms Design
 
 .disabled-btn {
   background-color: lightgray;
+}
+
+.dark-btn:hover {
+  color: var(--secondary-color);
+  background-color: var(--white-color);
+  border: 1px solid var(--secondary-color);
 }
 
 .disabled-btn:hover {

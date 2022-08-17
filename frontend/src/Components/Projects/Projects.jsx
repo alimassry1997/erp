@@ -4,7 +4,7 @@ import { AiOutlineProject } from "react-icons/ai";
 import { FaPlusSquare } from "react-icons/fa";
 import Project from "./Project";
 
-function Projects({ projects, loadingProjects }) {
+function Projects({ projects, loadingProjects, showAddProjectFormPopup }) {
   document.title = "Projects Dashboard | ERP";
   if (loadingProjects) {
     return <Spinner />;
@@ -17,8 +17,8 @@ function Projects({ projects, loadingProjects }) {
             Projects Management
           </h2>
           <button
-            className="btn add-btn"
-            // onClick={() => showAddSkillFormPopup()}
+            className="btn dark-btn"
+            onClick={() => showAddProjectFormPopup()}
           >
             <FaPlusSquare />
           </button>
@@ -41,4 +41,3 @@ function Projects({ projects, loadingProjects }) {
 }
 
 export default Projects;
-
