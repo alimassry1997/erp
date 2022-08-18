@@ -52,6 +52,18 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Get specific user according to id
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function show(User $user): JsonResponse
+    {
+        return response()->json([
+            "user" => $user,
+        ]);
+    }
+
     // edit employee
     public function edit($id): JsonResponse
     {
@@ -61,20 +73,20 @@ class UserController extends Controller
                 "status" => 200,
                 "employee" => $employee,
             ]);
-        } else {
-            return response()->json([
-                "status" => 404,
-                "message" => "Employee Does not Exist",
-            ]);
         }
+
+        return response()->json([
+            "status" => 404,
+            "message" => "Employee Does not Exist",
+        ]);
     }
 
     public function update(Request $request, User $user): JsonResponse
     {
-        $validator = Validator::make($request->all(),[
-            'email' => 'required|email',
-            'password_confirmation' => 'required|same:password',
-          ]);
+        $validator = Validator::make($request->all(), [
+            "email" => "required|email",
+            "password_confirmation" => "required|same:password",
+        ]);
         $user->first_name = $request->input("first_name");
         $user->last_name = $request->input("last_name");
         $user->email = $request->input("email");
@@ -91,34 +103,30 @@ class UserController extends Controller
             $file->move("uploads/", $filename);
             $user->picture = "uploads/" . $filename;
         }
-        
+
         if ($user->team_id != 1) {
             $user->update();
             return response()->json([
                 "message" => "Employee Updated Successfully",
             ]);
-        } else {
-            if ($request->input("password")) {
-                $user->password = Hash::make($request->input("password"));
-            }
-            if($validator -> fails()){
-                return response()->json(
-                    [
-                        "message" => $validator,
-                    ],
-                    403
-                );
-            } else {
-            $user->update();
-            return response()->json([
-                "message" => "Admin Updated Successfully",
-            ]);
-        }
         }
 
+        if ($request->input("password")) {
+            $user->password = Hash::make($request->input("password"));
+        }
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    "message" => $validator,
+                ],
+                403
+            );
+        }
+
+        $user->update();
         return response()->json([
-            "status" => 404,
-            "message" => "User Not Found",
+            "message" => "Admin Updated Successfully",
         ]);
     }
 
@@ -135,7 +143,9 @@ class UserController extends Controller
             return response()->json([
                 "message" => "Employee Deactivated",
             ]);
-        } else if ($user->team_id == 1 && $user->system_role_id == 1) {
+        }
+
+        if ($user->team_id == 1 && $user->system_role_id == 1) {
             $user->status = !$user->status;
             $user->save();
             if ($user->status === true) {
@@ -147,11 +157,17 @@ class UserController extends Controller
                 "message" => "Admin Deactivated",
             ]);
         }
+        return response()->json(
+            [
+                "message" => "Error Occurred",
+            ],
+            400
+        );
     }
 
     /**
      * Get all Admins
-     * 
+     *
      */
     public function indexAdmin(): JsonResponse
     {
@@ -165,13 +181,12 @@ class UserController extends Controller
         ]);
     }
 
-
     public function storeAdmin(Request $request): JsonResponse
     {
-          $validator = Validator::make($request->all(),[
-            'email' => 'required|email',
-            'password_confirmation' => 'required|same:password',
-          ]);
+        $validator = Validator::make($request->all(), [
+            "email" => "required|email",
+            "password_confirmation" => "required|same:password",
+        ]);
         $admin = new User();
         $admin->first_name = $request->input("first_name");
         $admin->last_name = $request->input("last_name");
@@ -192,17 +207,18 @@ class UserController extends Controller
             $admin->team_id = 1;
         }
 
-        if($validator -> fails()){
+        if ($validator->fails()) {
             return response()->json(
                 [
                     "message" => $validator,
                 ],
                 403
             );
-        } else {
+        }
+
         $admin->save();
         return response()->json([
             "message" => "Admin Updated Successfully",
-        ]);}
+        ]);
     }
 }

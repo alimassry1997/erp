@@ -1,7 +1,6 @@
 import "./App.css";
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Admins from "./Components/Admins/Admins";
 import Reports from "./Components/Reports/Reports";
 import LoginPage from "./Components/Pages/LoginPage";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
@@ -15,6 +14,7 @@ import EmployeesDashboard from "./Components/Pages/EmployeesDashboard";
 import RolesDashboard from "./Components/Pages/RolesDashboard";
 import SingleProjectDashboard from "./Components/Pages/SingleProjectDahboard";
 import AdminsDashboard from "./Components/Pages/AdminsDashboard";
+import SingleEmployeeDashboard from "./Components/Pages/SingleEmployeeDashboard";
 
 const App = () => {
   /**
@@ -52,19 +52,25 @@ const App = () => {
   const [project, setProject] = useState([]);
 
   /**
+   * Single Employee States
+   * Loading & Employee
+   */
+  const [loadingEmployee, setLoadingEmployee] = useState(true);
+  const [employee, setEmployee] = useState([]);
+
+  /**
    * Employees States
    * Loading & Employees
    */
   const [loadingEmployees, setLoadingEmployees] = useState(true);
   const [employees, setEmployees] = useState([]);
 
-
   /**
    * Admins States
    * Loading & Admins
    */
-   const [loadingAdmins, setLoadingAdmins] = useState(true);
-   const [admins, setAdmins] = useState([]);
+  const [loadingAdmins, setLoadingAdmins] = useState(true);
+  const [admins, setAdmins] = useState([]);
 
   /**
    * Skills States
@@ -187,12 +193,11 @@ const App = () => {
     }
   };
 
-
   /**
    * Get all admins
    * @returns {Promise<void>}
    */
-   const fetchAdmins = async () => {
+  const fetchAdmins = async () => {
     try {
       setLoadingAdmins(true);
       const response = await axios.get(`/api/admins`, {
@@ -255,6 +260,30 @@ const App = () => {
     setLoadingProject(false);
   };
 
+  /**
+   * Get a single Employee by SLug
+   * @param email
+   * @returns {Promise<void>}
+   */
+  const getEmployee = async (email) => {
+    setLoadingEmployee(true);
+    try {
+      const response = await axios.get(`/api/employees/${email}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { user },
+      } = response;
+      setEmployee(user);
+      document.title = `${capitalizeFirstLetter(
+        user.first_name
+      )} | ERP Employees`;
+    } catch (error) {
+      console.log(error.message);
+    }
+    setLoadingEmployee(false);
+  };
+
   return (
     <Router>
       <>
@@ -269,12 +298,16 @@ const App = () => {
             path="/admins"
             element={<DashboardLayout auth={auth} setAuth={setAuth} />}
           >
-            <Route index element={<AdminsDashboard
-            fetchAdmins={fetchAdmins}
-            admins={admins}
-            loadingAdmins={loadingAdmins}
-              token={token}
-            />}
+            <Route
+              index
+              element={
+                <AdminsDashboard
+                  fetchAdmins={fetchAdmins}
+                  admins={admins}
+                  loadingAdmins={loadingAdmins}
+                  token={token}
+                />
+              }
             />
           </Route>
           <Route
@@ -353,6 +386,22 @@ const App = () => {
                   fetchEmployees={fetchEmployees}
                   employees={employees}
                   loadingEmployees={loadingEmployees}
+                  token={token}
+                />
+              }
+            />
+          </Route>
+          <Route
+            path="/employees/:email"
+            element={<DashboardLayout auth={auth} setAuth={setAuth} />}
+          >
+            <Route
+              index
+              element={
+                <SingleEmployeeDashboard
+                  getEmployee={getEmployee}
+                  employee={employee}
+                  loadingEmployee={loadingEmployee}
                   token={token}
                 />
               }
