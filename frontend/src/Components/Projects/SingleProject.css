@@ -1,0 +1,92 @@
+.single-project-container {
+  background-color: var(--white-color);
+  margin: 1rem;
+  border-radius: 5px;
+}
+
+.status-project {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 1rem;
+  column-gap: 1rem;
+}
+
+.status-project div {
+  display: flex;
+  align-items: center;
+}
+
+.status-project button {
+  border-radius: 5px;
+  margin: 0;
+}
+
+.single-project-manage {
+  display: flex;
+  column-gap: 1rem !important;
+}
+
+.single-project-manage .btn {
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin: 0;
+}
+
+.single-project-container header .description {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  column-gap: 0.2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.single-project-container header .description div {
+  display: flex;
+  align-items: center;
+}
+
+.single-project-container header {
+  padding: 1rem 1rem 0.5rem 1rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.single-project-container header h2 {
+  color: var(--secondary-color);
+}
+
+@media (max-width: 700px) {
+  .single-project-container header {
+    font-size: 1rem;
+    padding-left: 1rem;
+    text-align: center;
+  }
+
+  .single-project-container {
+    margin: 10px 10px 10px 0;
+  }
+}
+
+@media (max-width: 450px) {
+  .single-project-container header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .single-project-container header .description {
+    align-items: center;
+  }
+
+  .single-project-manage .btn {
+    padding: 0.3rem;
+    border-radius: 5px;
+  }
+
+  .single-project-container {
+    padding: 0.3rem;
+  }
+}

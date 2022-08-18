@@ -13,6 +13,7 @@ import SkillsDashboard from "./Components/Pages/SkillsDashboard";
 import ProjectsDashboard from "./Components/Pages/ProjectsDashboard";
 import EmployeesDashboard from "./Components/Pages/EmployeesDashboard";
 import RolesDashboard from "./Components/Pages/RolesDashboard";
+import SingleProjectDashboard from "./Components/Pages/SingleProjectDahboard";
 
 const App = () => {
   /**
@@ -41,6 +42,13 @@ const App = () => {
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState([]);
   const [relatedEmployeesTeam, setRelatedEmployeesTeam] = useState([]);
+
+  /**
+   * Single Project States
+   * Loading & Project
+   */
+  const [loadingProject, setLoadingProject] = useState(true);
+  const [project, setProject] = useState([]);
 
   /**
    * Employees States
@@ -193,6 +201,30 @@ const App = () => {
     setLoadingTeam(false);
   };
 
+  /**
+   * Get a single Project by SLug
+   * @param slug
+   * @returns {Promise<void>}
+   */
+  const getProject = async (slug) => {
+    setLoadingProject(true);
+    try {
+      const response = await axios.get(`/api/projects/${slug}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { project },
+      } = response;
+      setProject(project);
+      document.title = `${capitalizeFirstLetter(
+        project.name
+      )} Project | ERP Projects`;
+    } catch (error) {
+      console.log(error.message);
+    }
+    setLoadingProject(false);
+  };
+
   return (
     <Router>
       <>
@@ -253,6 +285,22 @@ const App = () => {
                   relatedEmployeesTeam={relatedEmployeesTeam}
                   loadingTeam={loadingTeam}
                   getTeam={getTeam}
+                  token={token}
+                />
+              }
+            />
+          </Route>
+          <Route
+            path="/projects/:slug/"
+            element={<DashboardLayout auth={auth} setAuth={setAuth} />}
+          >
+            <Route
+              index
+              element={
+                <SingleProjectDashboard
+                  project={project}
+                  loadingProject={loadingProject}
+                  getProject={getProject}
                   token={token}
                 />
               }

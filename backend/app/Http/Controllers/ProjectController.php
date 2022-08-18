@@ -43,9 +43,11 @@ class ProjectController extends Controller
     /**
      * Get Single Project
      */
-    public function show(Project $project): Project
+    public function show(Project $project): JsonResponse
     {
-        return $project;
+        return response()->json([
+            "project" => $project,
+        ]);
     }
 
     /**
