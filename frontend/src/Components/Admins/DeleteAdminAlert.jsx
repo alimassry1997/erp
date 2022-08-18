@@ -11,7 +11,7 @@ const DeleteAdminAlert = ({
 }) => {
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { first_name, email } = deleteAdmin;
+  const { first_name, email, last_name} = deleteAdmin;
 
   // Submission Function
   const changeStatus = async (email) => {
@@ -65,8 +65,8 @@ const DeleteAdminAlert = ({
           {status ? "Activate Admin" : "Deactivate Admin"}
         </h2>
         <p>
-          Are you sure you want to {status ? "activate" : "deactivate"} this{" "}
-          {first_name}
+          Are you sure you want to {status ? "activate" : "deactivate"}{" "}
+          {first_name} {last_name}
         </p>
         {success && <p className="succeed-msg">{success}</p>}
         {errorMessage && <p className="error-msg">{errorMessage}</p>}

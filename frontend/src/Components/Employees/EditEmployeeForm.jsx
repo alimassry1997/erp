@@ -13,6 +13,7 @@ const EditEmployeeForm = ({
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [pic, setPic] = useState([]);
+  const [uniqueEmail, setUniqueEmail] = useState("");
 
   let canSubmit = false;
   const { first_name, last_name, email, phone_number } = formData;
@@ -32,7 +33,7 @@ const EditEmployeeForm = ({
   // Submission Function
   const EditEmployee = async (userData) => {
     try {
-      const response = await axios.post(`/api/user/${email}`, userData, {
+      const response = await axios.post(`/api/user/${uniqueEmail}`, userData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data) {
@@ -112,6 +113,7 @@ const EditEmployeeForm = ({
 
   // Reset Messages after 5 seconds
   useEffect(() => {
+    setUniqueEmail(email);
     if (errorMessage) {
       setTimeout(() => {
         setErrorMessage("");
@@ -128,7 +130,7 @@ const EditEmployeeForm = ({
     <div className="form-section add-team-form">
       <section className="heading">
         <h2>
-          <AiOutlineTeam /> Edit Team
+          <AiOutlineTeam /> Edit Employee
         </h2>
         <p>Enter your information below</p>
         {success && <p className="succeed-msg">{success}</p>}

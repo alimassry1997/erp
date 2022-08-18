@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Popup from "../Layout/Popup";
 import Admins from "../Admins/Admins";
 import AddAdminForm from "../Admins/AddAdminForm";
-// import EditEmployeeForm from "../Employees/EditEmployeeForm";
+import EditAdminForm from "../Admins/EditAdminForm";
 import DeleteAdminAlert from "../Admins/DeleteAdminAlert";
 
 const AdminsDashboard = ({
@@ -62,7 +62,7 @@ const AdminsDashboard = ({
         admins={admins}
         loadingAdmins={loadingAdmins}
         showAddAdminFormPopup={showAddAdminFormPopup}
-        // showEditAdminPopup={showEditAdminPopup}
+        showEditAdminPopup={showEditAdminPopup}
         showDeleteAdminPopup={showDeleteAdminPopup}
         token={token}
       />
@@ -81,7 +81,7 @@ const AdminsDashboard = ({
         />
       )}
       {/* Admins Edit Form Popup */}
-      {/* {showEditAdminForm && (
+      {showEditAdminForm && (
         <Popup
           show={showEditAdminForm}
           setShow={setShowEditAdminForm}
@@ -94,7 +94,7 @@ const AdminsDashboard = ({
             />
           }
         />
-      )} */}
+      )}
       {/* Admins Delete Form Popup */}
       {showDeleteAdminForm && (
         <Popup
