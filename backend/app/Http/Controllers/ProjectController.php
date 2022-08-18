@@ -16,7 +16,9 @@ class ProjectController extends Controller
      */
     public function index(): JsonResponse
     {
-        $projects = Project::latest()->get();
+        $projects = Project::latest()
+            ->orderBy("status", "ASC")
+            ->get();
         return response()->json([
             "projects" => $projects,
         ]);
@@ -28,7 +30,7 @@ class ProjectController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            "name" => "required|unique:skills",
+            "name" => "required|unique:projects",
         ]);
         $inputs["name"] = $request["name"];
         $inputs["slug"] = Str::slug($request["name"], "-");
@@ -41,9 +43,11 @@ class ProjectController extends Controller
     /**
      * Get Single Project
      */
-    public function show(Project $project): Project
+    public function show(Project $project): JsonResponse
     {
-        return $project;
+        return response()->json([
+            "project" => $project,
+        ]);
     }
 
     /**

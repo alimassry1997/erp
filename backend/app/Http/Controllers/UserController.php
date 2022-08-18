@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -18,6 +19,7 @@ class UserController extends Controller
     {
         $employees = User::latest()
             ->whereNotIn("team_id", [1])
+            ->orderBy("status", "desc")
             ->get();
         return response()->json([
             "employees" => $employees,
@@ -50,6 +52,18 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Get specific user according to id
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function show(User $user): JsonResponse
+    {
+        return response()->json([
+            "user" => $user,
+        ]);
+    }
+
     // edit employee
     public function edit($id): JsonResponse
     {
@@ -59,17 +73,20 @@ class UserController extends Controller
                 "status" => 200,
                 "employee" => $employee,
             ]);
-        } else {
-            return response()->json([
-                "status" => 404,
-                "message" => "Employee Does not Exist",
-            ]);
         }
+
+        return response()->json([
+            "status" => 404,
+            "message" => "Employee Does not Exist",
+        ]);
     }
 
     public function update(Request $request, User $user): JsonResponse
     {
-
+        $validator = Validator::make($request->all(), [
+            "email" => "required|email",
+            "password_confirmation" => "required|same:password",
+        ]);
         $user->first_name = $request->input("first_name");
         $user->last_name = $request->input("last_name");
         $user->email = $request->input("email");
@@ -87,20 +104,29 @@ class UserController extends Controller
             $user->picture = "uploads/" . $filename;
         }
 
-        $user->update();
         if ($user->team_id != 1) {
+            $user->update();
             return response()->json([
                 "message" => "Employee Updated Successfully",
             ]);
-        } else {
-            return response()->json([
-                "message" => "Admin Updated Successfully",
-            ]);
         }
 
+        if ($request->input("password")) {
+            $user->password = Hash::make($request->input("password"));
+        }
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    "message" => $validator,
+                ],
+                403
+            );
+        }
+
+        $user->update();
         return response()->json([
-            "status" => 404,
-            "message" => "User Not Found",
+            "message" => "Admin Updated Successfully",
         ]);
     }
 
@@ -117,7 +143,9 @@ class UserController extends Controller
             return response()->json([
                 "message" => "Employee Deactivated",
             ]);
-        } else if ($user->team_id == 1 && $user->system_role_id == 1) {
+        }
+
+        if ($user->team_id == 1 && $user->system_role_id == 1) {
             $user->status = !$user->status;
             $user->save();
             if ($user->status === true) {
@@ -129,16 +157,23 @@ class UserController extends Controller
                 "message" => "Admin Deactivated",
             ]);
         }
+        return response()->json(
+            [
+                "message" => "Error Occurred",
+            ],
+            400
+        );
     }
 
     /**
      * Get all Admins
-     * 
+     *
      */
     public function indexAdmin(): JsonResponse
     {
         $admins = User::latest()
             ->whereIn("system_role_id", [1])
+            ->orderBy("status", "desc")
             ->get();
         return response()->json([
             "message" => "Admins are here",
@@ -146,9 +181,12 @@ class UserController extends Controller
         ]);
     }
 
-
     public function storeAdmin(Request $request): JsonResponse
     {
+        $validator = Validator::make($request->all(), [
+            "email" => "required|email",
+            "password_confirmation" => "required|same:password",
+        ]);
         $admin = new User();
         $admin->first_name = $request->input("first_name");
         $admin->last_name = $request->input("last_name");
@@ -163,47 +201,24 @@ class UserController extends Controller
             $admin->picture = "uploads/" . $filename;
         }
         $admin->system_role_id = $request->input("system_role_id");
-        
+
         if ($admin->system_role_id === "1") {
-            $admin->password = $request->input("password");
+            $admin->password = Hash::make($request->input("password"));
             $admin->team_id = 1;
         }
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    "message" => $validator,
+                ],
+                403
+            );
+        }
+
         $admin->save();
         return response()->json([
-            "message" => "Admin Added Successfully",
+            "message" => "Admin Updated Successfully",
         ]);
     }
-
-    // public function updateAdmin(Request $request, User $user): JsonResponse
-    // {
-    //     if ($user) {
-    //         $user->first_name = $request->input("first_name");
-    //         $user->last_name = $request->input("last_name");
-    //         $user->email = $request->input("email");
-    //         $user->phone_number = $request->input("phone_number");
-
-    //         if ($request->hasFile("image")) {
-    //             $path = $user->picture;
-    //             if (File::exists($path)) {
-    //                 File::delete($path);
-    //             }
-    //             $file = $request->file("image");
-    //             $extension = $file->getClientOriginalExtension();
-    //             $filename = time() . "." . $extension;
-    //             $file->move("uploads/", $filename);
-    //             $user->picture = "uploads/" . $filename;
-    //         }
-    //         $user->system_role_id = $request->input("system_role_id");
-    //         $user->update();
-    //         return response()->json([
-    //             "message" => "Employee Updated Successfully",
-    //         ]);
-    //     }
-
-    //     return response()->json([
-    //         "status" => 404,
-    //         "message" => "Employee Not Found",
-    //     ]);
-    // }
-
 }

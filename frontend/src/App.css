@@ -75,6 +75,43 @@ h6 {
 }
 
 /**
+Tabs Styling
+ */
+
+.react-tabs__tab-list {
+  padding-left: 1rem !important;
+  display: flex;
+  justify-content: center;
+  border-bottom: none !important;
+}
+
+.react-tabs__tab:focus:after {
+  background: none !important;
+}
+
+.react-tabs__tab--selected {
+  background: var(--secondary-color) !important;
+  color: var(--white-color) !important;
+}
+
+.react-tabs__tab:first-child {
+  border-radius: 2rem 0 0 2rem;
+}
+
+.react-tabs__tab:last-child {
+  border-radius: 0 2rem 2rem 0;
+}
+
+.react-tabs__tab-list li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  width: 200px;
+  border: 1px solid var(--secondary-color) !important;
+}
+
+/**
 Forms Design
  */
 
@@ -174,6 +211,10 @@ Forms Design
   border-bottom: 3px solid var(--secondary-color) !important;
 }
 
+.dark-btn {
+  background-color: var(--secondary-color);
+}
+
 .add-btn {
   background-color: var(--success-color);
 }
@@ -188,6 +229,12 @@ Forms Design
 
 .disabled-btn {
   background-color: lightgray;
+}
+
+.dark-btn:hover {
+  color: var(--secondary-color);
+  background-color: var(--white-color);
+  border: 1px solid var(--secondary-color);
 }
 
 .disabled-btn:hover {
@@ -221,6 +268,21 @@ Forms Design
   grid-template-rows: auto 1fr auto;
 }
 
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 1rem;
+  margin-top: 3rem;
+}
+
+@media (max-width: 700px) {
+  .react-tabs__tab-list li {
+    font-size: 0.8rem;
+    width: 150px;
+  }
+}
+
 @media (max-width: 650px) {
   .form-section {
     width: 350px;
@@ -233,6 +295,13 @@ Forms Design
   }
   .active {
     width: 100%;
+  }
+}
+
+@media (max-width: 450px) {
+  .react-tabs__tab-list li {
+    font-size: 0.5rem;
+    width: 100px;
   }
 }
 

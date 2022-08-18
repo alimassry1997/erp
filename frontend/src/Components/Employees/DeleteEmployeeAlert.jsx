@@ -11,7 +11,7 @@ const DeleteEmployeeAlert = ({
 }) => {
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { first_name, email } = deleteEmployee;
+  const { first_name, email, last_name } = deleteEmployee;
 
   // Submission Function
   const changeStatus = async (email) => {
@@ -65,8 +65,8 @@ const DeleteEmployeeAlert = ({
           {status ? "Activate Employee" : "Deactivate Employee"}
         </h2>
         <p>
-          Are you sure you want to {status ? "activate" : "deactivate"} this{" "}
-          {first_name}
+          Are you sure you want to {status ? "activate" : "deactivate"}{" "}
+          {first_name} {last_name}
         </p>
         {success && <p className="succeed-msg">{success}</p>}
         {errorMessage && <p className="error-msg">{errorMessage}</p>}

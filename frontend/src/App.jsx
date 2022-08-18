@@ -1,7 +1,6 @@
 import "./App.css";
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Admins from "./Components/Admins/Admins";
 import Reports from "./Components/Reports/Reports";
 import LoginPage from "./Components/Pages/LoginPage";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
@@ -13,7 +12,9 @@ import SkillsDashboard from "./Components/Pages/SkillsDashboard";
 import ProjectsDashboard from "./Components/Pages/ProjectsDashboard";
 import EmployeesDashboard from "./Components/Pages/EmployeesDashboard";
 import RolesDashboard from "./Components/Pages/RolesDashboard";
+import SingleProjectDashboard from "./Components/Pages/SingleProjectDahboard";
 import AdminsDashboard from "./Components/Pages/AdminsDashboard";
+import SingleEmployeeDashboard from "./Components/Pages/SingleEmployeeDashboard";
 
 const App = () => {
   /**
@@ -41,6 +42,21 @@ const App = () => {
    */
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState([]);
+  const [relatedEmployeesTeam, setRelatedEmployeesTeam] = useState([]);
+
+  /**
+   * Single Project States
+   * Loading & Project
+   */
+  const [loadingProject, setLoadingProject] = useState(true);
+  const [project, setProject] = useState([]);
+
+  /**
+   * Single Employee States
+   * Loading & Employee
+   */
+  const [loadingEmployee, setLoadingEmployee] = useState(true);
+  const [employee, setEmployee] = useState([]);
 
   /**
    * Employees States
@@ -49,13 +65,12 @@ const App = () => {
   const [loadingEmployees, setLoadingEmployees] = useState(true);
   const [employees, setEmployees] = useState([]);
 
-
   /**
    * Admins States
    * Loading & Admins
    */
-   const [loadingAdmins, setLoadingAdmins] = useState(true);
-   const [admins, setAdmins] = useState([]);
+  const [loadingAdmins, setLoadingAdmins] = useState(true);
+  const [admins, setAdmins] = useState([]);
 
   /**
    * Skills States
@@ -178,12 +193,11 @@ const App = () => {
     }
   };
 
-
   /**
    * Get all admins
    * @returns {Promise<void>}
    */
-   const fetchAdmins = async () => {
+  const fetchAdmins = async () => {
     try {
       setLoadingAdmins(true);
       const response = await axios.get(`/api/admins`, {
@@ -211,14 +225,63 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { team },
+        data: { team, employees },
       } = response;
       setTeam(team);
+      setRelatedEmployeesTeam(employees);
       document.title = `${capitalizeFirstLetter(team.name)} Team | ERP Teams`;
     } catch (error) {
       console.log(error.message);
     }
     setLoadingTeam(false);
+  };
+
+  /**
+   * Get a single Project by SLug
+   * @param slug
+   * @returns {Promise<void>}
+   */
+  const getProject = async (slug) => {
+    setLoadingProject(true);
+    try {
+      const response = await axios.get(`/api/projects/${slug}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { project },
+      } = response;
+      setProject(project);
+      document.title = `${capitalizeFirstLetter(
+        project.name
+      )} Project | ERP Projects`;
+    } catch (error) {
+      console.log(error.message);
+    }
+    setLoadingProject(false);
+  };
+
+  /**
+   * Get a single Employee by SLug
+   * @param email
+   * @returns {Promise<void>}
+   */
+  const getEmployee = async (email) => {
+    setLoadingEmployee(true);
+    try {
+      const response = await axios.get(`/api/employees/${email}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { user },
+      } = response;
+      setEmployee(user);
+      document.title = `${capitalizeFirstLetter(
+        user.first_name
+      )} | ERP Employees`;
+    } catch (error) {
+      console.log(error.message);
+    }
+    setLoadingEmployee(false);
   };
 
   return (
@@ -235,12 +298,16 @@ const App = () => {
             path="/admins"
             element={<DashboardLayout auth={auth} setAuth={setAuth} />}
           >
-            <Route index element={<AdminsDashboard
-            fetchAdmins={fetchAdmins}
-            admins={admins}
-            loadingAdmins={loadingAdmins}
-              token={token}
-            />}
+            <Route
+              index
+              element={
+                <AdminsDashboard
+                  fetchAdmins={fetchAdmins}
+                  admins={admins}
+                  loadingAdmins={loadingAdmins}
+                  token={token}
+                />
+              }
             />
           </Route>
           <Route
@@ -284,8 +351,25 @@ const App = () => {
               element={
                 <SingleTeamDashboard
                   team={team}
+                  relatedEmployeesTeam={relatedEmployeesTeam}
                   loadingTeam={loadingTeam}
                   getTeam={getTeam}
+                  token={token}
+                />
+              }
+            />
+          </Route>
+          <Route
+            path="/projects/:slug/"
+            element={<DashboardLayout auth={auth} setAuth={setAuth} />}
+          >
+            <Route
+              index
+              element={
+                <SingleProjectDashboard
+                  project={project}
+                  loadingProject={loadingProject}
+                  getProject={getProject}
                   token={token}
                 />
               }
@@ -302,6 +386,22 @@ const App = () => {
                   fetchEmployees={fetchEmployees}
                   employees={employees}
                   loadingEmployees={loadingEmployees}
+                  token={token}
+                />
+              }
+            />
+          </Route>
+          <Route
+            path="/employees/:email"
+            element={<DashboardLayout auth={auth} setAuth={setAuth} />}
+          >
+            <Route
+              index
+              element={
+                <SingleEmployeeDashboard
+                  getEmployee={getEmployee}
+                  employee={employee}
+                  loadingEmployee={loadingEmployee}
                   token={token}
                 />
               }

@@ -4,7 +4,7 @@ import "./Navbar.css";
 
 const Navbar = ({ auth: { user }, setAuth }) => {
   const navigate = useNavigate();
-  const { first_name, picture } = user;
+  const { first_name, email, picture } = user;
   const onLogout = () => {
     localStorage.removeItem("user");
     setAuth(null);
@@ -13,7 +13,7 @@ const Navbar = ({ auth: { user }, setAuth }) => {
   return (
     <nav>
       <div>
-        <Link to="/">
+        <Link to={`/employees/${email}`}>
           <img src={picture} alt="profile image" />
           <p>{first_name}</p>
         </Link>

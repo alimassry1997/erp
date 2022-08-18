@@ -70,18 +70,12 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
      */
     Route::get("/employees", [UserController::class, "index"]);
     Route::post("/employees", [UserController::class, "store"]);
+    Route::get("/employees/{user}", [UserController::class, "show"]);
     Route::get("edit-employee/{id}", [UserController::class, "edit"]);
     Route::put("/user/{user}", [UserController::class, "update"]);
-    Route::put("/user/{user}/status", [
-        UserController::class,
-        "update_status",
-    ]);
+    Route::put("/user/{user}/status", [UserController::class, "update_status"]);
 
-
-
-
-
-/**
+    /**
      * Admins Routes
      */
     Route::get("/admins", [UserController::class, "indexAdmin"]);
