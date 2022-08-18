@@ -15,6 +15,10 @@
   column-gap: 2rem;
 }
 
+.single-team-employees-container a {
+  width: 300px;
+}
+
 .single-team-manage {
   display: flex;
   column-gap: 1rem !important;
@@ -89,6 +93,10 @@
   .single-team-employees-container {
     grid-template-columns: 1fr;
     padding: 2rem 0 2rem 0;
+  }
+
+  .single-team-employees-container a {
+    width: 200px;
   }
 
   .single-team-manage .btn {
