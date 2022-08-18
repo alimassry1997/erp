@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineTeam } from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
 import axios from "axios";
 
-const EditEmployeeForm = ({
-  token,
-  setReloadEmployees,
-  reloadEmployees,
-  editEmployee,
-}) => {
-  const [formData, setFormData] = useState(editEmployee);
+const AddAdminForm = ({ token, setReloadAdmins, reloadAdmins }) => {
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    password: "",
+    password_confirmation: "",
+  });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [pic, setPic] = useState([]);
-  const [uniqueEmail, setUniqueEmail] = useState("");
-
   let canSubmit = false;
-  const { first_name, last_name, email, phone_number } = formData;
+  const { first_name, last_name, email, phone_number, password, password_confirmation } = formData;
 
   const handleImage = (e) => {
     setPic({ image: e.target.files[0] });
@@ -31,9 +31,9 @@ const EditEmployeeForm = ({
   };
 
   // Submission Function
-  const EditEmployee = async (userData) => {
+  const AddNewAdmin = async (userData) => {
     try {
-      const response = await axios.post(`/api/user/${uniqueEmail}`, userData, {
+      const response = await axios.post("/api/admins/", userData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data) {
@@ -47,34 +47,42 @@ const EditEmployeeForm = ({
   };
 
   // On Submit Action
-  const onSubmit = async (a) => {
-    a.preventDefault();
-    setErrors(validate(formData));
-    if (canSubmit) {
-      try {
-        const { image } = pic;
-        const data = new FormData();
-        data.append("image", image);
-        data.append("first_name", first_name);
-        data.append("last_name", last_name);
-        data.append("email", email);
-        data.append("phone_number", phone_number);
-        data.append("system_role_id", "2");
-        data.append("_method", "PUT");
-        const message = await EditEmployee(data);
-        setSuccess(message.message);
-        setReloadEmployees(!reloadEmployees);
-        setFormData({
-          first_name: "",
-          last_name: "",
-          email: "",
-          phone_number: "",
-        });
-      } catch (err) {
-        console.log(err);
+
+ 
+    const onSubmit = async (a) => {
+      a.preventDefault();
+      setErrors(validate(formData));
+      console.log("can", canSubmit);
+      if (canSubmit) {
+        try {
+          const { image } = pic;
+          const data = new FormData();
+          data.append("image", image);
+          data.append("first_name", first_name);
+          data.append("last_name", last_name);
+          data.append("email", email);
+          data.append("phone_number", phone_number);
+          data.append("password", password);
+          data.append("password_confirmation", password_confirmation);
+          data.append("system_role_id", "1");
+
+          const message = await AddNewAdmin(data);
+          setSuccess(message.message);
+          setReloadAdmins(!reloadAdmins);
+          setFormData({
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone_number: "",
+            password: "",
+            password_confirmation: "",
+          });
+        } catch (err) {
+          console.log(err);
+        }
       }
-    }
-  };
+    };
+  
 
   // Validation for Enroll Form
   const validate = (values) => {
@@ -100,12 +108,29 @@ const EditEmployeeForm = ({
     } else {
       errorMessages.phone_number = "";
     }
+    if (values.password === "") {
+      errorMessages.password = "Password is required";
+    } else if (values.password.length < 8) {
+      errorMessages.password = "Password must contain at least 8 characters";
+    }
+    else {
+      errorMessages.password = "";
+    }
+     if (values.password_confirmation !== values.password) {
+      errorMessages.password_confirmation = "You Must Confirm your password";
+    } else {
+      errorMessages.password_confirmation = "";
+    }
+
     if (
       errorMessages.first_name === "" &&
       errorMessages.last_name === "" &&
       errorMessages.email === "" &&
-      errorMessages.phone_number === ""
+      errorMessages.phone_number === "" &&
+      errorMessages.password === "" && 
+      errorMessages.password_confirmation === ""
     ) {
+      console.log(true);
       canSubmit = true;
     }
     return errorMessages;
@@ -113,7 +138,6 @@ const EditEmployeeForm = ({
 
   // Reset Messages after 5 seconds
   useEffect(() => {
-    setUniqueEmail(email);
     if (errorMessage) {
       setTimeout(() => {
         setErrorMessage("");
@@ -130,7 +154,7 @@ const EditEmployeeForm = ({
     <div className="form-section add-team-form">
       <section className="heading">
         <h2>
-          <AiOutlineTeam /> Edit Employee
+          <AiOutlineUser /> Add New Admin
         </h2>
         <p>Enter your information below</p>
         {success && <p className="succeed-msg">{success}</p>}
@@ -147,9 +171,8 @@ const EditEmployeeForm = ({
               className={errors.first_name ? "error" : "form-valid"}
               name="first_name"
               id="first_name"
-              placeholder="Enter your employee name"
+              placeholder="Enter admin first name"
               onChange={onChange}
-              value={first_name}
             />
             <p>{errors.first_name}</p>
           </div>
@@ -162,9 +185,8 @@ const EditEmployeeForm = ({
               className={errors.last_name ? "error" : "form-valid"}
               name="last_name"
               id="last_name"
-              placeholder="Enter your last name"
+              placeholder="Enter admin last name"
               onChange={onChange}
-              value={last_name}
             />
             <p>{errors.last_name}</p>
           </div>
@@ -179,7 +201,6 @@ const EditEmployeeForm = ({
               id="email"
               placeholder="Enter your email"
               onChange={onChange}
-              value={email}
             />
             <p>{errors.email}</p>
           </div>
@@ -194,9 +215,36 @@ const EditEmployeeForm = ({
               id="phone_number"
               placeholder="Enter your phone number"
               onChange={onChange}
-              value={phone_number}
             />
             <p>{errors.phone_number}</p>
+          </div>
+          <div className="form-group">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <input
+              type="password"
+              className={errors.password ? "error" : "form-valid"}
+              name="password"
+              id="password"
+              placeholder="Enter your Password"
+              onChange={onChange}
+            />
+            <p>{errors.password}</p>
+          </div>
+          <div className="form-group">
+            <label htmlFor="password" className="form-label">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              className={errors.password_confirmation ? "error" : "form-valid"}
+              name="password_confirmation"
+              id="password_confirmation"
+              onChange={onChange}
+              placeholder="Confirm your Password"
+            />
+            <p>{errors.password_confirmation}</p>
           </div>
           <input
             type="file"
@@ -208,7 +256,7 @@ const EditEmployeeForm = ({
             <input
               type="submit"
               className="btn btn-block"
-              value="Edit Employee"
+              value="Add New Admin"
             />
           </div>
         </form>
@@ -217,4 +265,4 @@ const EditEmployeeForm = ({
   );
 };
 
-export default EditEmployeeForm;
+export default AddAdminForm;

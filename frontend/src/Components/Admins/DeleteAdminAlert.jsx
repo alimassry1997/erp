@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import axios from "axios";
 
-const DeleteEmployeeAlert = ({
+const DeleteAdminAlert = ({
   token,
-  setReloadEmployees,
-  deleteEmployee,
-  reloadEmployees,
+  setReloadAdmins,
+  deleteAdmin,
+  reloadAdmins,
   status,
 }) => {
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { first_name, email, last_name } = deleteEmployee;
+  const { first_name, email, last_name} = deleteAdmin;
 
   // Submission Function
   const changeStatus = async (email) => {
@@ -39,7 +39,7 @@ const DeleteEmployeeAlert = ({
     try {
       const message = await changeStatus(email);
       setSuccess(message.message);
-      setReloadEmployees(!reloadEmployees);
+      setReloadAdmins(!reloadAdmins);
     } catch (err) {
       console.log(err);
     }
@@ -62,7 +62,7 @@ const DeleteEmployeeAlert = ({
       <section className="heading">
         <h2>
           <AiFillDelete />{" "}
-          {status ? "Activate Employee" : "Deactivate Employee"}
+          {status ? "Activate Admin" : "Deactivate Admin"}
         </h2>
         <p>
           Are you sure you want to {status ? "activate" : "deactivate"}{" "}
@@ -77,7 +77,7 @@ const DeleteEmployeeAlert = ({
             <input
               type="submit"
               className="btn btn-block"
-              value={status ? "Activate Employee" : "Deactivate Employee"}
+              value={status ? "Activate Admin" : "Deactivate Admin"}
             />
           </div>
         </form>
@@ -86,4 +86,4 @@ const DeleteEmployeeAlert = ({
   );
 };
 
-export default DeleteEmployeeAlert;
+export default DeleteAdminAlert;

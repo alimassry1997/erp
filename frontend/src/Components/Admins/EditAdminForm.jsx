@@ -2,13 +2,8 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineTeam } from "react-icons/ai";
 import axios from "axios";
 
-const EditEmployeeForm = ({
-  token,
-  setReloadEmployees,
-  reloadEmployees,
-  editEmployee,
-}) => {
-  const [formData, setFormData] = useState(editEmployee);
+const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
+  const [formData, setFormData] = useState(editAdmin);
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -16,8 +11,7 @@ const EditEmployeeForm = ({
   const [uniqueEmail, setUniqueEmail] = useState("");
 
   let canSubmit = false;
-  const { first_name, last_name, email, phone_number } = formData;
-
+  const { first_name, last_name, email, phone_number, password,  password_confirmation} = formData;
   const handleImage = (e) => {
     setPic({ image: e.target.files[0] });
   };
@@ -31,7 +25,7 @@ const EditEmployeeForm = ({
   };
 
   // Submission Function
-  const EditEmployee = async (userData) => {
+  const EditAdmin = async (userData) => {
     try {
       const response = await axios.post(`/api/user/${uniqueEmail}`, userData, {
         headers: { Authorization: `Bearer ${token}` },
@@ -59,16 +53,20 @@ const EditEmployeeForm = ({
         data.append("last_name", last_name);
         data.append("email", email);
         data.append("phone_number", phone_number);
-        data.append("system_role_id", "2");
+        data.append("password", password);
+        data.append("password_confirmation", password_confirmation);
+        data.append("system_role_id", "1");
         data.append("_method", "PUT");
-        const message = await EditEmployee(data);
+        const message = await EditAdmin(data);
         setSuccess(message.message);
-        setReloadEmployees(!reloadEmployees);
+        setReloadAdmins(!reloadAdmins);
         setFormData({
           first_name: "",
           last_name: "",
           email: "",
           phone_number: "",
+          password: "",
+          password_confirmation: "",
         });
       } catch (err) {
         console.log(err);
@@ -100,11 +98,25 @@ const EditEmployeeForm = ({
     } else {
       errorMessages.phone_number = "";
     }
+    if (values.password === "") {
+      errorMessages.password = "Password is required";
+    } else if (values.password.length < 8) {
+      errorMessages.password = "Password must contain at least 8 characters";
+    } else {
+      errorMessages.password = "";
+    }
+    if (values.password_confirmation !== values.password) {
+      errorMessages.password_confirmation = "You Must Confirm your password";
+    } else {
+      errorMessages.password_confirmation = "";
+    }
     if (
       errorMessages.first_name === "" &&
       errorMessages.last_name === "" &&
       errorMessages.email === "" &&
-      errorMessages.phone_number === ""
+      errorMessages.phone_number === "" &&
+      errorMessages.password === "" && 
+      errorMessages.password_confirmation === ""
     ) {
       canSubmit = true;
     }
@@ -130,7 +142,7 @@ const EditEmployeeForm = ({
     <div className="form-section add-team-form">
       <section className="heading">
         <h2>
-          <AiOutlineTeam /> Edit Employee
+          <AiOutlineTeam /> Edit Admin
         </h2>
         <p>Enter your information below</p>
         {success && <p className="succeed-msg">{success}</p>}
@@ -198,6 +210,34 @@ const EditEmployeeForm = ({
             />
             <p>{errors.phone_number}</p>
           </div>
+          <div className="form-group">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <input
+              type="password"
+              className={errors.password ? "error" : "form-valid"}
+              name="password"
+              id="password"
+              placeholder="Enter your Password"
+              onChange={onChange}
+            />
+            <p>{errors.password}</p>
+          </div>
+          <div className="form-group">
+            <label htmlFor="password" className="form-label">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              className={errors.password_confirmation ? "error" : "form-valid"}
+              name="password_confirmation"
+              id="password_confirmation"
+              onChange={onChange}
+              placeholder="Confirm your Password"
+            />
+            <p>{errors.password_confirmation}</p>
+          </div>
           <input
             type="file"
             name="picture"
@@ -205,11 +245,7 @@ const EditEmployeeForm = ({
             placeholder="Upload your Image"
           ></input>
           <div className="form-group">
-            <input
-              type="submit"
-              className="btn btn-block"
-              value="Edit Employee"
-            />
+            <input type="submit" className="btn btn-block" value="Edit Admin" />
           </div>
         </form>
       </section>
@@ -217,4 +253,4 @@ const EditEmployeeForm = ({
   );
 };
 
-export default EditEmployeeForm;
+export default EditAdminForm;
