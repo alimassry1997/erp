@@ -66,9 +66,13 @@ class TeamController extends Controller
      */
     public function show(Team $team): JsonResponse
     {
-        $team->users;
+        $employees = $team
+            ->users()
+            ->orderBy("status", "DESC")
+            ->get();
         return response()->json([
             "team" => $team,
+            "employees" => $employees,
         ]);
     }
 

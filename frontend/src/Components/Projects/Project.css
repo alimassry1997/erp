@@ -2,6 +2,20 @@
   background-color: var(--white-color);
   padding: 1rem;
   border-radius: 5px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.project:hover {
+  transform: scale(1.02);
+  transition: -webkit-transform 0.3s;
+  box-shadow: 0 0 8px 1px var(--primary-color);
+}
+
+.project .project-body {
+  color: var(--secondary-color);
 }
 
 .project-header,
@@ -16,6 +30,11 @@
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--link-color);
+}
+
+.project-footer p {
+  display: flex;
+  align-items: center;
 }
 
 .project-header {

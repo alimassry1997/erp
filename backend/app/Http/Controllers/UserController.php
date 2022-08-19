@@ -53,6 +53,18 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Get specific user according to id
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function show(User $user): JsonResponse
+    {
+        return response()->json([
+            "user" => $user,
+        ]);
+    }
+
     // edit employee
     public function edit($id): JsonResponse
     {
@@ -62,19 +74,24 @@ class UserController extends Controller
                 "status" => 200,
                 "employee" => $employee,
             ]);
-        } else {
-            return response()->json([
-                "status" => 404,
-                "message" => "Employee Does not Exist",
-            ]);
         }
+
+        return response()->json([
+            "status" => 404,
+            "message" => "Employee Does not Exist",
+        ]);
     }
 
     public function update(Request $request, User $user): JsonResponse
     {
         $validator = Validator::make($request->all(), [
+<<<<<<< HEAD
             'email' => 'required|email',
             'password_confirmation' => 'required|same:password',
+=======
+            "email" => "required|email",
+            "password_confirmation" => "required|same:password",
+>>>>>>> 3620ad7bd073a52edd89764851d1f0d7165d6258
         ]);
         $user->first_name = $request->input("first_name");
         $user->last_name = $request->input("last_name");
@@ -98,6 +115,7 @@ class UserController extends Controller
             return response()->json([
                 "message" => "Employee Updated Successfully",
             ]);
+<<<<<<< HEAD
         } else {
             if ($request->input("password")) {
                 $user->password = Hash::make($request->input("password"));
@@ -115,11 +133,26 @@ class UserController extends Controller
                     "message" => "Admin Updated Successfully",
                 ]);
             }
+=======
+>>>>>>> 3620ad7bd073a52edd89764851d1f0d7165d6258
         }
 
+        if ($request->input("password")) {
+            $user->password = Hash::make($request->input("password"));
+        }
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    "message" => $validator,
+                ],
+                403
+            );
+        }
+
+        $user->update();
         return response()->json([
-            "status" => 404,
-            "message" => "User Not Found",
+            "message" => "Admin Updated Successfully",
         ]);
     }
 
@@ -136,7 +169,9 @@ class UserController extends Controller
             return response()->json([
                 "message" => "Employee Deactivated",
             ]);
-        } else if ($user->team_id == 1 && $user->system_role_id == 1) {
+        }
+
+        if ($user->team_id == 1 && $user->system_role_id == 1) {
             $user->status = !$user->status;
             $user->save();
             if ($user->status === true) {
@@ -148,11 +183,17 @@ class UserController extends Controller
                 "message" => "Admin Deactivated",
             ]);
         }
+        return response()->json(
+            [
+                "message" => "Error Occurred",
+            ],
+            400
+        );
     }
 
     /**
      * Get all Admins
-     * 
+     *
      */
     public function indexAdmin(): JsonResponse
     {
@@ -166,12 +207,16 @@ class UserController extends Controller
         ]);
     }
 
-
     public function storeAdmin(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
+<<<<<<< HEAD
             'email' => 'required|email',
             'password_confirmation' => 'required|same:password',
+=======
+            "email" => "required|email",
+            "password_confirmation" => "required|same:password",
+>>>>>>> 3620ad7bd073a52edd89764851d1f0d7165d6258
         ]);
         $admin = new User();
         $admin->first_name = $request->input("first_name");
@@ -200,11 +245,20 @@ class UserController extends Controller
                 ],
                 403
             );
+<<<<<<< HEAD
         } else {
             $admin->save();
             return response()->json([
                 "message" => "Admin Updated Successfully",
             ]);
         }
+=======
+        }
+
+        $admin->save();
+        return response()->json([
+            "message" => "Admin Updated Successfully",
+        ]);
+>>>>>>> 3620ad7bd073a52edd89764851d1f0d7165d6258
     }
 }

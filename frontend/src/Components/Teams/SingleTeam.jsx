@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Spinner from "../Layout/Spinner";
 import "./SingleTeam.css";
-import "./SingleTeamEmployees.css";
 import { HiUserGroup } from "react-icons/hi";
-import { AiOutlineTeam } from "react-icons/ai";
-import { FaEdit, FaPlusSquare, FaTrashAlt } from "react-icons/fa";
+import { AiOutlineProject, AiOutlineUser } from "react-icons/ai";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import SingleTeamEmployees from "./SingleTeamEmployees";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
 
 const SingleTeam = ({
   team,
@@ -14,6 +15,7 @@ const SingleTeam = ({
   getTeam,
   showDeleteTeamPopup,
   showEditTeamPopup,
+  relatedEmployeesTeam,
 }) => {
   const { slug } = useParams();
 
@@ -24,15 +26,17 @@ const SingleTeam = ({
   if (loadingTeam) {
     return <Spinner />;
   } else {
-    const { name, users: employees } = team;
-    const size = employees.length;
+    const { name } = team;
+    const size = relatedEmployeesTeam.length;
     return (
       <div className="single-team-container">
         <header>
-          <h2>{name} Team</h2>
-          <div>
-            <HiUserGroup />
-            Team Size: {employees.length}
+          <div className="description">
+            <h2>{name} Team</h2>
+            <div>
+              <HiUserGroup />
+              Team Size: {size}
+            </div>
           </div>
           <div className="single-team-manage">
             <button
@@ -50,51 +54,40 @@ const SingleTeam = ({
             </button>
           </div>
         </header>
-        {size > 0 ? (
-          <div className="dashboard team-employees-dashboard">
-            <div className="header">
-              <h2>
-                <AiOutlineTeam />
-                Employees Assigned
-              </h2>
-              <button className="btn add-btn">
-                <FaPlusSquare />
-              </button>
+        <Tabs>
+          <TabList>
+            <Tab>
+              <AiOutlineProject /> Projects
+            </Tab>
+            <Tab>
+              <AiOutlineUser /> Team Members
+            </Tab>
+          </TabList>
+          <TabPanel>
+            <div className="no-data">
+              <h2>Projects Here</h2>
             </div>
-            <div className="table-responsive">
-              <table className="table table-team-employees">
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Status</th>
-                    <th>Manage</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {employees.map((employee) => (
-                    <SingleTeamEmployees
-                      key={employee.id}
-                      image={employee.picture}
-                      firstName={employee.first_name}
-                      lastName={employee.last_name}
-                      email={employee.email}
-                      phoneNumber={employee.phone_number}
-                      status={employee.status}
-                    />
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        ) : (
-          <div className="dashboard team-employees-dashboard">
-            No Employees Assigned
-          </div>
-        )}
+          </TabPanel>
+          <TabPanel>
+            {size > 0 ? (
+              <div className="single-team-employees-container">
+                {relatedEmployeesTeam.map((employee) => (
+                  <SingleTeamEmployees
+                    key={employee.id}
+                    picture={employee.picture}
+                    firstName={employee.first_name}
+                    lastName={employee.last_name}
+                    status={employee.status}
+                    email={employee.email}
+                    phoneNumber={employee.phone_number}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="no-data">No Employees Assigned</div>
+            )}
+          </TabPanel>
+        </Tabs>
       </div>
     );
   }

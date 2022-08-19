@@ -6,7 +6,13 @@ import DeleteTeamAlert from "../Teams/DeleteTeamAlert";
 import SingleTeam from "../Teams/SingleTeam";
 import { useParams } from "react-router-dom";
 
-const SingleTeamDashboard = ({ team, loadingTeam, getTeam, token }) => {
+const SingleTeamDashboard = ({
+  team,
+  loadingTeam,
+  getTeam,
+  token,
+  relatedEmployeesTeam,
+}) => {
   const { slug } = useParams();
   /**
    * Edit Team Form State Popup
@@ -76,6 +82,7 @@ const SingleTeamDashboard = ({ team, loadingTeam, getTeam, token }) => {
         getTeam={getTeam}
         showEditTeamPopup={showEditTeamPopup}
         showDeleteTeamPopup={showDeleteTeamPopup}
+        relatedEmployeesTeam={relatedEmployeesTeam}
       />
       {/* Teams Edit Form Popup */}
       {showEditTeamForm && (

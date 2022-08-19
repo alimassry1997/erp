@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string("name")->unique();
             $table->string("slug");
-            $table->boolean("status")->default(true);
+            $table->boolean("status")->default(false);
             $table->date("finished_at")->nullable();
             $table->timestamps();
         });
