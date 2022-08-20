@@ -34,6 +34,7 @@ function Projects({ projects, loadingProjects, showAddProjectFormPopup }) {
               status={project.status}
               finished_at={project.finished_at}
               created_at={project.created_at}
+              teams_count={project.teams_count}
             />
           ))}
         </div>
