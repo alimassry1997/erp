@@ -27,11 +27,21 @@ class Project extends Model
     protected $fillable = ["name", "slug", "status", "finished_at"];
 
     /**
-     * Get the users that belongs to this skill.
+     * Get the teams that belongs to this project.
      */
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class)->withTimestamps();
+    }
+
+    /**
+     * Get the assignments that belongs to this project.
+     */
+    public function assignments(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot("end_date")
+            ->withTimestamps();
     }
 
     /**

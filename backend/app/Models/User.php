@@ -125,4 +125,14 @@ class User extends Authenticatable
             ->withPivot("score", "feedback")
             ->withTimestamps();
     }
+
+    /**
+     * Get the assignments that belongs to this user.
+     */
+    public function assignments(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class)
+            ->withPivot("end_date")
+            ->withTimestamps();
+    }
 }
