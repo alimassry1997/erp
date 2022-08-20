@@ -65,6 +65,7 @@ class ProjectController extends Controller
     {
         return response()->json([
             "project" => $project,
+            "related_teams" => $project->teams,
         ]);
     }
 

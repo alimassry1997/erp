@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Spinner from "../Layout/Spinner";
 import "./SingleProject.css";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import "react-tabs/style/react-tabs.css";
 import ProjectStatus from "./ProjectStatus";
 import { IoMdDoneAll } from "react-icons/io";
+import { AiOutlineTeam } from "react-icons/ai";
+import RelatedTeamsProject from "./RelatedTeamsProject";
 
 const SingleProject = ({ project, loadingProject, getProject }) => {
   const { slug } = useParams();
@@ -16,7 +18,8 @@ const SingleProject = ({ project, loadingProject, getProject }) => {
   if (loadingProject) {
     return <Spinner />;
   } else {
-    const { name, status, finished_at } = project;
+    const { name, status, finished_at, teams } = project;
+    const size = teams.length;
     return (
       <div className="single-project-container">
         <header>
@@ -44,6 +47,24 @@ const SingleProject = ({ project, loadingProject, getProject }) => {
             {finished_at && <IoMdDoneAll />} {finished_at && finished_at}
           </div>
         </div>
+        {size > 0 ? (
+          <div className="single-project-teams-container">
+            <h2>
+              <AiOutlineTeam /> Teams
+            </h2>
+            <div className="teams">
+              {teams.map((team) => (
+                <RelatedTeamsProject
+                  key={team.id}
+                  id={team.id}
+                  name={team.name}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="no-data">No Teams Assigned</div>
+        )}
       </div>
     );
   }
