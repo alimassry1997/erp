@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Team;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use JsonException;
 
 class ProjectController extends Controller
 {
@@ -26,6 +28,7 @@ class ProjectController extends Controller
 
     /**
      * Create a new project record
+     * @throws JsonException
      */
     public function store(Request $request): JsonResponse
     {
@@ -34,7 +37,21 @@ class ProjectController extends Controller
         ]);
         $inputs["name"] = $request["name"];
         $inputs["slug"] = Str::slug($request["name"], "-");
-        Project::create($inputs);
+        $project = Project::create($inputs);
+        if ($request["teams"]) {
+            $teams = json_decode(
+                $request["teams"],
+                false,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+            $id_teams = [];
+            foreach ($teams as $team) {
+                $id_teams[] = $team->value;
+            }
+            $teams_database = Team::findOrFail($id_teams);
+            $project->teams()->attach($teams_database);
+        }
         return response()->json([
             "message" => "Project Added Successfully",
         ]);

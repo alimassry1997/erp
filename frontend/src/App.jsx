@@ -154,7 +154,7 @@ const App = () => {
   };
 
   /**
-   * Get All skills
+   * Get All roles
    * @returns {Promise<void>}
    */
   const fetchRoles = async () => {
@@ -322,6 +322,9 @@ const App = () => {
                   loadingProjects={loadingProjects}
                   fetchProjects={fetchProjects}
                   token={token}
+                  teams={teams}
+                  loadingTeams={loadingTeams}
+                  fetchTeams={fetchTeams}
                 />
               }
             />
