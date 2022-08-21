@@ -1,8 +1,29 @@
-const ProjectStatus = ({ status }) => {
+const ProjectStatus = ({
+  name,
+  status,
+  showStatusProjectFormPopup,
+  project_slug,
+}) => {
   if (status === 0) {
-    return <button className="btn add-btn">Active</button>;
+    return (
+      <button
+        className="btn add-btn"
+        onClick={() =>
+          showStatusProjectFormPopup({ status, name, project_slug })
+        }
+      >
+        Active
+      </button>
+    );
   }
-  return <button className="btn edit-btn">Done</button>;
+  return (
+    <button
+      className="btn edit-btn"
+      onClick={() => showStatusProjectFormPopup({ status, name, project_slug })}
+    >
+      Done
+    </button>
+  );
 };
 
 export default ProjectStatus;

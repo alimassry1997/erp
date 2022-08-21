@@ -55,6 +55,10 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
         ProjectController::class,
         "assign_employees",
     ]);
+    Route::put("/projects/{project}/status", [
+        ProjectController::class,
+        "update_status",
+    ]);
     Route::get("/projects/{project}", [ProjectController::class, "show"]);
     Route::put("/projects/{project}", [ProjectController::class, "update"]);
     Route::delete("/projects/{project}", [ProjectController::class, "destroy"]);

@@ -14,6 +14,7 @@ const SingleProject = ({
   loadingProject,
   getProject,
   showAssignProjectFormPopup,
+  showStatusProjectFormPopup,
 }) => {
   const { slug } = useParams();
   useEffect(() => {
@@ -47,7 +48,12 @@ const SingleProject = ({
           </div>
         </header>
         <div className="status-project">
-          <ProjectStatus status={status} />
+          <ProjectStatus
+            status={status}
+            showStatusProjectFormPopup={showStatusProjectFormPopup}
+            name={name}
+            project_slug={project_slug}
+          />
           <div>
             {finished_at && <IoMdDoneAll />} {finished_at && finished_at}
           </div>

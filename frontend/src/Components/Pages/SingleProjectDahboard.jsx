@@ -5,13 +5,13 @@ import { useParams } from "react-router-dom";
 import SingleProject from "../Projects/SingleProject";
 import Popup from "../Layout/Popup";
 import AssignRolesForm from "../Projects/AssignRolesForm";
+import ChangeProjectStatus from "../Projects/ChangeProjectStatus";
 
 const SingleProjectDashboard = ({
   project,
   loadingProject,
   getProject,
   token,
-  team,
   roles,
   fetchRoles,
   getTeam,
@@ -26,6 +26,12 @@ const SingleProjectDashboard = ({
    */
   const [showAssignProjectForm, setShowAssignProjectForm] = useState(false);
   const [assignTeam, setAssignTeam] = useState("");
+
+  /**
+   * Change Project Status
+   */
+  const [showStatusProjectForm, setShowStatusProjectForm] = useState(false);
+  const [statusProject, setStatusProject] = useState("");
 
   /**
    * Edit Project Form State Popup
@@ -51,6 +57,10 @@ const SingleProjectDashboard = ({
     setAssignTeam(team);
     setShowAssignProjectForm(true);
   };
+  const showStatusProjectFormPopup = (project) => {
+    setStatusProject(project);
+    setShowStatusProjectForm(true);
+  };
   // const showEditProjectPopup = (project) => {
   //   setEditProject(project);
   //   setShowEditProjectForm(true);
@@ -73,6 +83,7 @@ const SingleProjectDashboard = ({
         loadingProject={loadingProject}
         getProject={getProject}
         showAssignProjectFormPopup={showAssignProjectFormPopup}
+        showStatusProjectFormPopup={showStatusProjectFormPopup}
         // showEditProjectPopup={showEditProjectPopup}
         // showDeleteProjectPopup={showDeleteProjectPopup}
       />
@@ -90,6 +101,21 @@ const SingleProjectDashboard = ({
               getTeam={getTeam}
               relatedEmployeesTeam={relatedEmployeesTeam}
               loadingTeam={loadingTeam}
+            />
+          }
+        />
+      )}
+      {/* Project Status Form Popup */}
+      {showStatusProjectForm && (
+        <Popup
+          show={showStatusProjectForm}
+          setShow={setShowStatusProjectForm}
+          component={
+            <ChangeProjectStatus
+              token={token}
+              reloadProject={reloadProject}
+              setReloadProject={setReloadProject}
+              statusProject={statusProject}
             />
           }
         />

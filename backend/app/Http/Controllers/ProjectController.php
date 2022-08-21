@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use JsonException;
+use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -20,8 +21,8 @@ class ProjectController extends Controller
     public function index(): JsonResponse
     {
         $projects = Project::withCount("teams")
-            ->latest()
             ->orderBy("status", "ASC")
+            ->latest()
             ->get();
         return response()->json([
             "projects" => $projects,
@@ -67,6 +68,28 @@ class ProjectController extends Controller
         return response()->json([
             "project" => $project,
             "related_teams" => $project->teams,
+        ]);
+    }
+
+    /**
+     * Change Status of the project
+     * @param Project $project
+     * @return JsonResponse
+     */
+    public function update_status(Project $project): JsonResponse
+    {
+        $project->status = !$project->status;
+        if ($project->status === true) {
+            $project->finished_at = Carbon::now();
+            $project->save();
+            return response()->json([
+                "message" => "Project Deactivated",
+            ]);
+        }
+        $project->finished_at = null;
+        $project->save();
+        return response()->json([
+            "message" => "Project Activated",
         ]);
     }
 
