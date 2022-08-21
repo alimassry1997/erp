@@ -70,9 +70,11 @@ class TeamController extends Controller
             ->users()
             ->orderBy("status", "DESC")
             ->get();
+        $projects = $team->projects;
         return response()->json([
             "team" => $team,
             "employees" => $employees,
+            "projects" => $projects,
         ]);
     }
 
