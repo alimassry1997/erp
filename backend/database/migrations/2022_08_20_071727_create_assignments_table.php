@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId("project_id")->constrained("projects");
             $table->foreignId("user_id")->constrained("users");
-            $table->unsignedBigInteger("role_id")->nullable();
+            $table->foreignId("role_id")->constrained("roles");
             $table->date("end_date")->nullable();
             $table->timestamps();
         });

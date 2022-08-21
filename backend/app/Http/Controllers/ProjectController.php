@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -82,7 +81,7 @@ class ProjectController extends Controller
         $request->validate([
             "assignments" => ["required", "string"],
         ]);
-
+        $count = 0;
         $assignments = json_decode(
             $request["assignments"],
             false,
@@ -98,8 +97,13 @@ class ProjectController extends Controller
             $employees[] = $assignment->user_id;
         }
         $employees_database = User::findOrFail($employees);
-        $roles_database = Role::findOrFail($roles);
-        $project->assignments()->attach($employees_database);
+        $project->users()->attach($employees_database, ["role_id" => 1]);
+        foreach ($employees_database as $employee) {
+            foreach ($employee->projects as $proj) {
+                $proj->pivot->update(["role_id" => $roles[$count]]);
+                $count++;
+            }
+        }
         return response()->json([
             "message" => "Assignment was successful",
         ]);
