@@ -14,25 +14,28 @@ const AssignRolesForm = ({
   relatedEmployeesTeam,
   loadingTeam,
 }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-  });
-  const { name: teamName, slug } = assignTeam;
-  const [errors, setErrors] = useState({});
+  const { name: teamName, slug, project_slug } = assignTeam;
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectErrors, setSelectErrors] = useState("");
   const [optionSelected, setOptionSelected] = useState([]);
   let canSubmit = false;
   const animatedComponents = makeAnimated();
-  const { name } = formData;
   const rolesList = [];
 
-  // On Change for controlled fields
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
+  const onChange = (index, item, user_id) => {
+    const { value } = item;
+    const values = [...optionSelected];
+    const isFound = values.some((assign) => {
+      return assign.id === index;
+    });
+    if (isFound) {
+      values[index].user_id = user_id;
+      values[index].role = value;
+    } else {
+      values.push({ id: index, user_id, role: value });
+    }
+    setOptionSelected(values);
   };
 
   if (!loadingRoles) {
@@ -45,11 +48,15 @@ const AssignRolesForm = ({
   }
 
   // Submission Function
-  const AddNewProject = async (userData) => {
+  const AssignEmployees = async (userData) => {
     try {
-      const response = await axios.post("/api/projects/", userData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.post(
+        `/api/projects/assignments/${project_slug}`,
+        userData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       if (response.data) {
         const { data: message } = response;
         return message;
@@ -62,37 +69,23 @@ const AssignRolesForm = ({
 
   // On Submit Action
   const onSubmit = async (a) => {
+    canSubmit = true;
+    setSelectErrors("");
     a.preventDefault();
-    setErrors(validate(formData));
+    if (optionSelected.length !== relatedEmployeesTeam.length) {
+      canSubmit = false;
+      setSelectErrors("Please Assign Employees");
+    }
     if (canSubmit) {
       try {
         const data = new FormData();
-        data.append("name", name);
-        data.append("teams", JSON.stringify(optionSelected));
-        const message = await AddNewProject(data);
+        data.append("assignments", JSON.stringify(optionSelected));
+        const message = await AssignEmployees(data);
         setSuccess(message.message);
-        setFormData({
-          name: "",
-        });
       } catch (err) {
         console.log(err);
       }
     }
-  };
-
-  // Validation for Enroll Form
-  const validate = (values) => {
-    canSubmit = false;
-    const errorMessages = {};
-    if (values.name === "") {
-      errorMessages.name = "Name is required";
-    } else {
-      errorMessages.name = "";
-    }
-    if (errorMessages.name === "") {
-      canSubmit = true;
-    }
-    return errorMessages;
   };
 
   // Reset Messages after 5 seconds
@@ -119,22 +112,35 @@ const AssignRolesForm = ({
         <p>Assign Roles to this team's employees</p>
         {success && <p className="succeed-msg">{success}</p>}
         {errorMessage && <p className="error-msg">{errorMessage}</p>}
+        {selectErrors && <p className="error-msg">{selectErrors}</p>}
       </section>
 
       <section className="form">
         <form onSubmit={onSubmit}>
           {!loadingTeam &&
-            relatedEmployeesTeam.map((employee) => <div>{employee.name}</div>)}
-          <Select
-            components={animatedComponents}
-            onChange={(item) => setOptionSelected(item)}
-            options={rolesList}
-            isSearchable
-            isLoading={loadingRoles}
-            closeMenuOnSelect={false}
-          />
+            relatedEmployeesTeam.map((employee, index) => (
+              <div key={employee.id} className="form-group">
+                <label htmlFor={`select-${index + 1}`} className="form-label">
+                  {employee.first_name} {employee.last_name}:
+                </label>
+                <Select
+                  id={`select-${index + 1}`}
+                  components={animatedComponents}
+                  onChange={(item) => onChange(index, item, employee.id)}
+                  options={rolesList}
+                  isSearchable
+                  isLoading={loadingRoles}
+                  closeMenuOnSelect={true}
+                />
+              </div>
+            ))}
+
           <div className="form-group">
-            <input type="submit" className="btn btn-block" value="Submit" />
+            <input
+              type="submit"
+              className="btn btn-block"
+              value="Assign Roles"
+            />
           </div>
         </form>
       </section>

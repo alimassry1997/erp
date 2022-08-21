@@ -131,7 +131,17 @@ class User extends Authenticatable
      */
     public function assignments(): BelongsToMany
     {
-        return $this->belongsToMany(Project::class)
+        return $this->belongsToMany(Project::class, "assignments")
+            ->withPivot("end_date")
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the assignments that belongs to this user.
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, "assignments")
             ->withPivot("end_date")
             ->withTimestamps();
     }

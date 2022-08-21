@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Role;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -66,6 +68,40 @@ class ProjectController extends Controller
         return response()->json([
             "project" => $project,
             "related_teams" => $project->teams,
+        ]);
+    }
+
+    /**
+     * Assignment for employees in project
+     * @throws JsonException
+     */
+    public function assign_employees(
+        Project $project,
+        Request $request
+    ): JsonResponse {
+        $request->validate([
+            "assignments" => ["required", "string"],
+        ]);
+
+        $assignments = json_decode(
+            $request["assignments"],
+            false,
+            512,
+            JSON_THROW_ON_ERROR
+        );
+        $roles = [];
+        foreach ($assignments as $assignment) {
+            $roles[] = $assignment->role;
+        }
+        $employees = [];
+        foreach ($assignments as $assignment) {
+            $employees[] = $assignment->user_id;
+        }
+        $employees_database = User::findOrFail($employees);
+        $roles_database = Role::findOrFail($roles);
+        $project->assignments()->attach($employees_database);
+        return response()->json([
+            "message" => "Assignment was successful",
         ]);
     }
 

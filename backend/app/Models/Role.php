@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Role extends Model
 {
@@ -12,11 +12,13 @@ class Role extends Model
     protected $fillable = ["name", "slug"];
 
     /**
-     * Get the assignments for role.
+     * Get the users for role.
      */
-    public function assignments(): HasMany
+    public function users(): BelongsToMany
     {
-        return $this->hasMany(Assignment::class);
+        return $this->BelongsToMany(User::class, "assignments")
+            ->withPivot("end_date")
+            ->withTimestamps();
     }
 
     /**

@@ -23,7 +23,7 @@ const SingleProject = ({
   if (loadingProject) {
     return <Spinner />;
   } else {
-    const { name, status, finished_at, teams } = project;
+    const { name, status, finished_at, teams, slug: project_slug } = project;
     const size = teams.length;
     return (
       <div className="single-project-container">
@@ -63,6 +63,7 @@ const SingleProject = ({
                   key={team.id}
                   slug={team.slug}
                   name={team.name}
+                  project_slug={project_slug}
                   showAssignProjectFormPopup={showAssignProjectFormPopup}
                 />
               ))}

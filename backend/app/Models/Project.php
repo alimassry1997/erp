@@ -39,7 +39,7 @@ class Project extends Model
      */
     public function assignments(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)
+        return $this->belongsToMany(User::class, "assignments")
             ->withPivot("end_date")
             ->withTimestamps();
     }
