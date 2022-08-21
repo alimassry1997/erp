@@ -11,7 +11,6 @@ const AddProjectForm = ({
   setReloadProjects,
   reloadProjects,
 }) => {
-  document.title = "Create New Project | ERP";
   const [formData, setFormData] = useState({
     name: "",
   });

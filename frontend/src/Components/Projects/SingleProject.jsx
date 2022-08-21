@@ -9,7 +9,12 @@ import { IoMdDoneAll } from "react-icons/io";
 import { AiOutlineTeam } from "react-icons/ai";
 import RelatedTeamsProject from "./RelatedTeamsProject";
 
-const SingleProject = ({ project, loadingProject, getProject }) => {
+const SingleProject = ({
+  project,
+  loadingProject,
+  getProject,
+  showAssignProjectFormPopup,
+}) => {
   const { slug } = useParams();
   useEffect(() => {
     getProject(slug);
@@ -56,8 +61,9 @@ const SingleProject = ({ project, loadingProject, getProject }) => {
               {teams.map((team) => (
                 <RelatedTeamsProject
                   key={team.id}
-                  id={team.id}
+                  slug={team.slug}
                   name={team.name}
+                  showAssignProjectFormPopup={showAssignProjectFormPopup}
                 />
               ))}
             </div>

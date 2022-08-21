@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignId("project_id")->constrained("projects");
             $table->foreignId("user_id")->constrained("users");
             $table->foreignId("role_id")->constrained("roles");
-            $table->date("end_date");
+            $table->date("end_date")->nullable();
             $table->timestamps();
         });
     }

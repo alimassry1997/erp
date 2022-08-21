@@ -3,14 +3,30 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import { useParams } from "react-router-dom";
 import SingleProject from "../Projects/SingleProject";
+import Popup from "../Layout/Popup";
+import AssignRolesForm from "../Projects/AssignRolesForm";
 
 const SingleProjectDashboard = ({
   project,
   loadingProject,
   getProject,
-  // token,
+  token,
+  team,
+  roles,
+  fetchRoles,
+  getTeam,
+  loadingTeam,
+  relatedEmployeesTeam,
+  loadingRoles,
 }) => {
   const { slug } = useParams();
+
+  /**
+   * Assign Employees to project
+   */
+  const [showAssignProjectForm, setShowAssignProjectForm] = useState(false);
+  const [assignTeam, setAssignTeam] = useState("");
+
   /**
    * Edit Project Form State Popup
    */
@@ -31,6 +47,10 @@ const SingleProjectDashboard = ({
   /**
    * Popup Functions
    */
+  const showAssignProjectFormPopup = (team) => {
+    setAssignTeam(team);
+    setShowAssignProjectForm(true);
+  };
   // const showEditProjectPopup = (project) => {
   //   setEditProject(project);
   //   setShowEditProjectForm(true);
@@ -43,6 +63,7 @@ const SingleProjectDashboard = ({
 
   useEffect(() => {
     getProject(slug);
+    fetchRoles();
   }, [reloadProject]);
 
   return (
@@ -51,9 +72,28 @@ const SingleProjectDashboard = ({
         project={project}
         loadingProject={loadingProject}
         getProject={getProject}
+        showAssignProjectFormPopup={showAssignProjectFormPopup}
         // showEditProjectPopup={showEditProjectPopup}
         // showDeleteProjectPopup={showDeleteProjectPopup}
       />
+      {/* Projects Edit Form Popup */}
+      {showAssignProjectForm && (
+        <Popup
+          show={showAssignProjectForm}
+          setShow={setShowAssignProjectForm}
+          component={
+            <AssignRolesForm
+              token={token}
+              roles={roles}
+              loadingRoles={loadingRoles}
+              assignTeam={assignTeam}
+              getTeam={getTeam}
+              relatedEmployeesTeam={relatedEmployeesTeam}
+              loadingTeam={loadingTeam}
+            />
+          }
+        />
+      )}
       {/* Projects Edit Form Popup */}
       {/*{showEditProjectForm && (*/}
       {/*    <Popup*/}
