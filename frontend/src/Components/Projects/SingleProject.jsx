@@ -15,6 +15,7 @@ const SingleProject = ({
   getProject,
   showAssignProjectFormPopup,
   showStatusProjectFormPopup,
+  showDeleteProjectPopup,
 }) => {
   const { slug } = useParams();
   useEffect(() => {
@@ -40,8 +41,9 @@ const SingleProject = ({
               <FaEdit />
             </button>
             <button
-              className="btn delete-btn"
-              // onClick={() => showDeleteProjectPopup({ name, slug })}
+              disabled={size > 0}
+              className={`btn ${size > 0 ? "disabled-btn" : "delete-btn"}`}
+              onClick={() => showDeleteProjectPopup({ name, slug })}
             >
               <FaTrashAlt />
             </button>

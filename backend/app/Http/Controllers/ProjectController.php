@@ -161,6 +161,15 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project): JsonResponse
     {
+        if ($project->teams()->exists()) {
+            return response()->json(
+                [
+                    "message" =>
+                        "Project has teams, please remove all teams to delete.",
+                ],
+                403
+            );
+        }
         $project->delete();
         return response()->json([
             "message" => "Project Deleted Successfully",

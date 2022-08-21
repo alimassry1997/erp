@@ -374,7 +374,6 @@ const App = () => {
                   loadingProject={loadingProject}
                   getProject={getProject}
                   token={token}
-                  team={team}
                   getTeam={getTeam}
                   loadingTeam={loadingTeam}
                   roles={roles}
