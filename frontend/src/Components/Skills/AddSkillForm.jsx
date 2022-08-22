@@ -107,7 +107,7 @@ const AddSkillForm = ({ token, setReloadSkills, reloadSkills }) => {
               className={errors.name ? "error" : "form-valid"}
               name="name"
               id="name"
-              placeholder="Enter your team name"
+              placeholder="Enter your skill name"
               onChange={onChange}
             />
             <p>{errors.name}</p>

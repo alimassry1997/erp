@@ -104,7 +104,7 @@ class ProjectController extends Controller
         $request->validate([
             "assignments" => ["required", "string"],
         ]);
-        $count = 0;
+        
         $assignments = json_decode(
             $request["assignments"],
             false,
@@ -122,6 +122,7 @@ class ProjectController extends Controller
         $employees_database = User::findOrFail($employees);
         $project->users()->attach($employees_database, ["role_id" => 1]);
         foreach ($employees_database as $employee) {
+            $count = 0;
             foreach ($employee->projects as $proj) {
                 $proj->pivot->update(["role_id" => $roles[$count]]);
                 $count++;

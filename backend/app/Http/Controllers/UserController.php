@@ -17,9 +17,8 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        $employees = User::latest()
+        $employees = User::orderBy("status", "desc")->latest()
             ->whereNotIn("team_id", [1])
-            ->orderBy("status", "desc")
             ->get();
         return response()->json([
             "employees" => $employees,
@@ -61,7 +60,9 @@ class UserController extends Controller
     public function show(User $user): JsonResponse
     {
         return response()->json([
+            "team" => $user->team->users->count(),
             "user" => $user,
+            
         ]);
     }
 
@@ -173,9 +174,9 @@ class UserController extends Controller
      */
     public function indexAdmin(): JsonResponse
     {
-        $admins = User::latest()
+        $admins = User::orderBy("status", "desc")->latest()
             ->whereIn("system_role_id", [1])
-            ->orderBy("status", "desc")
+
             ->get();
         return response()->json([
             "message" => "Admins are here",
@@ -217,7 +218,6 @@ class UserController extends Controller
                 ],
                 403
             );
-
         }
         $admin->save();
         return response()->json([

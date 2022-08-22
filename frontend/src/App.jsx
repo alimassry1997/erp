@@ -58,6 +58,7 @@ const App = () => {
    */
   const [loadingEmployee, setLoadingEmployee] = useState(true);
   const [employee, setEmployee] = useState([]);
+  const [empTeam, setEmpTeam] = useState([]);
 
   /**
    * Employees States
@@ -274,9 +275,10 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { user },
+        data: { user, team },
       } = response;
       setEmployee(user);
+      setEmpTeam(team);
       document.title = `${capitalizeFirstLetter(
         user.first_name
       )} | ERP Employees`;
@@ -415,6 +417,7 @@ const App = () => {
                   employee={employee}
                   loadingEmployee={loadingEmployee}
                   token={token}
+                  empTeam={empTeam}
                 />
               }
             />

@@ -3,8 +3,16 @@ import { useEffect } from "react";
 import Spinner from "../Layout/Spinner";
 import { FaEdit } from "react-icons/fa";
 import "./SingleEmployee.css";
+import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 
-const SingleEmployee = ({ employee, loadingEmployee, getEmployee }) => {
+const SingleEmployee = ({
+  employee,
+  loadingEmployee,
+  getEmployee,
+  empTeam,
+  showEditEmployeePopup,
+  showDeleteEmployeePopup,
+}) => {
   const { email } = useParams();
   useEffect(() => {
     getEmployee(email);
@@ -18,44 +26,61 @@ const SingleEmployee = ({ employee, loadingEmployee, getEmployee }) => {
       last_name,
       email,
       phone_number,
-      picture
+      picture,
+      status,
+      team: { name },
+      system_role_id,
     } = employee;
     return (
-      <div className="single-team-container">
-        <div className="content">
-          <div className="profile">
-            <img src={picture} alt="profile" />
+      <div className="whole-single-container">
+        <div className="profile-image">
+          <img src={picture} alt="Single Profile" />
+          <div className="btns">
+            <button
+              className="btn edit-btn"
+              onClick={() => showEditEmployeePopup(employee)}
+            >
+              <FaEdit />
+            </button>
+            <button
+              className={status === 1 ? "btn delete-btn" : "btn add-btn"}
+              onClick={() => showDeleteEmployeePopup(employee)}
+            >
+              {status === 1 ? "Deactivate" : "Activate"}
+            </button>
           </div>
-          <div className="profile-head">
-            <div className="buttons">
-              <button
-                className="btn edit-btn"
-                // onClick={() =>
-                //   showEditEmployeePopup({
-                //     first_name,
-                //     last_name,
-                //     phone_number,
-                //     email,
-                //     picture,
-                //   })
-                // }
-              >
-                <FaEdit />
-              </button>
-              <button className="btn add-btn">Active</button>
+        </div>
+        <div className="prof">
+          <div className="block">
+            <h2>Personal Information:</h2>
+            <div className="the-form">
+              <span> Name: </span>
+              {first_name} {last_name}
             </div>
-            <div className="profile-content">
-              <h4>
-                <span>Credentials:</span>
-              </h4>
-              <h4>
-                Name: {first_name} {last_name}
-              </h4>
-              <h4>Phone: {phone_number}</h4>
-              <h4>Email: {email}</h4>
-              <h4>
-                <span>Details:</span>
-              </h4>
+            <div className="the-form">
+              <span> Email: </span>
+              {email}
+            </div>
+            <div className="the-form">
+              <span> Phone: </span>
+              {phone_number}
+            </div>{" "}
+          </div>
+          <div>
+            <div className="block-2">
+              <h2>Work Description:</h2>
+              <div className="the-form">
+                <span> Team Name: </span>
+                {capitalizeFirstLetter(name)}
+              </div>
+              <div className="the-form">
+                <span> Post: </span>
+                {system_role_id === 2 ? "Employee" : "Admin"}
+              </div>
+              <div className="the-form">
+                <span> Team Size: </span>
+                {empTeam}
+              </div>
             </div>
           </div>
         </div>
