@@ -120,12 +120,11 @@ class ProjectController extends Controller
             $employees[] = $assignment->user_id;
         }
         $employees_database = User::findOrFail($employees);
-        $project->users()->attach($employees_database, ["role_id" => 1]);
         foreach ($employees_database as $employee) {
-            foreach ($employee->projects as $proj) {
-                $proj->pivot->update(["role_id" => $roles[$count]]);
-                $count++;
-            }
+            $project
+                ->users()
+                ->attach($employee->id, ["role_id" => $roles[$count]]);
+            $count++;
         }
         return response()->json([
             "message" => "Assignment was successful",
