@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
+    /** 
      * Get all Employees
      * @return JsonResponse
      */
@@ -85,13 +85,9 @@ class UserController extends Controller
     public function update(Request $request, User $user): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-<<<<<<< HEAD
-            'email' => 'required|email',
-            'password_confirmation' => 'required|same:password',
-=======
+
             "email" => "required|email",
             "password_confirmation" => "required|same:password",
->>>>>>> 3620ad7bd073a52edd89764851d1f0d7165d6258
         ]);
         $user->first_name = $request->input("first_name");
         $user->last_name = $request->input("last_name");
@@ -115,26 +111,6 @@ class UserController extends Controller
             return response()->json([
                 "message" => "Employee Updated Successfully",
             ]);
-<<<<<<< HEAD
-        } else {
-            if ($request->input("password")) {
-                $user->password = Hash::make($request->input("password"));
-            }
-            if ($validator->fails()) {
-                return response()->json(
-                    [
-                        "message" => $validator,
-                    ],
-                    403
-                );
-            } else {
-                $user->update();
-                return response()->json([
-                    "message" => "Admin Updated Successfully",
-                ]);
-            }
-=======
->>>>>>> 3620ad7bd073a52edd89764851d1f0d7165d6258
         }
 
         if ($request->input("password")) {
@@ -210,13 +186,9 @@ class UserController extends Controller
     public function storeAdmin(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-<<<<<<< HEAD
-            'email' => 'required|email',
-            'password_confirmation' => 'required|same:password',
-=======
+
             "email" => "required|email",
             "password_confirmation" => "required|same:password",
->>>>>>> 3620ad7bd073a52edd89764851d1f0d7165d6258
         ]);
         $admin = new User();
         $admin->first_name = $request->input("first_name");
@@ -245,20 +217,11 @@ class UserController extends Controller
                 ],
                 403
             );
-<<<<<<< HEAD
-        } else {
-            $admin->save();
-            return response()->json([
-                "message" => "Admin Updated Successfully",
-            ]);
-        }
-=======
-        }
 
+        }
         $admin->save();
         return response()->json([
             "message" => "Admin Updated Successfully",
         ]);
->>>>>>> 3620ad7bd073a52edd89764851d1f0d7165d6258
     }
 }
