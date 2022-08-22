@@ -16,6 +16,9 @@ const SingleProject = ({
   showAssignProjectFormPopup,
   showStatusProjectFormPopup,
   showDeleteProjectPopup,
+  relatedUnassignedTeams,
+  reloadProject,
+  setReloadProject,
 }) => {
   const { slug } = useParams();
   useEffect(() => {
@@ -25,8 +28,8 @@ const SingleProject = ({
   if (loadingProject) {
     return <Spinner />;
   } else {
-    const { name, status, finished_at, teams, slug: project_slug } = project;
-    const size = teams.length;
+    const { name, status, finished_at, slug: project_slug } = project;
+    const size = relatedUnassignedTeams.length;
     return (
       <div className="single-project-container">
         <header>
@@ -66,7 +69,7 @@ const SingleProject = ({
               <AiOutlineTeam /> Teams
             </h2>
             <div className="teams">
-              {teams.map((team) => (
+              {relatedUnassignedTeams.map((team) => (
                 <RelatedTeamsProject
                   key={team.id}
                   slug={team.slug}

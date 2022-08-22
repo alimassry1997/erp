@@ -51,6 +51,7 @@ const App = () => {
    */
   const [loadingProject, setLoadingProject] = useState(true);
   const [project, setProject] = useState([]);
+  const [relatedUnassignedTeams, setRelatedUnassignedTeams] = useState([]);
 
   /**
    * Single Employee States
@@ -250,8 +251,9 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { project },
+        data: { project, related_teams },
       } = response;
+      setRelatedUnassignedTeams(related_teams);
       setProject(project);
       document.title = `${capitalizeFirstLetter(
         project.name
@@ -383,6 +385,7 @@ const App = () => {
                   loadingRoles={loadingRoles}
                   fetchRoles={fetchRoles}
                   relatedEmployeesTeam={relatedEmployeesTeam}
+                  relatedUnassignedTeams={relatedUnassignedTeams}
                 />
               }
             />

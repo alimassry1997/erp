@@ -19,6 +19,7 @@ const SingleProjectDashboard = ({
   loadingTeam,
   relatedEmployeesTeam,
   loadingRoles,
+  relatedUnassignedTeams,
 }) => {
   const { slug } = useParams();
 
@@ -82,10 +83,13 @@ const SingleProjectDashboard = ({
         project={project}
         loadingProject={loadingProject}
         getProject={getProject}
+        relatedUnassignedTeams={relatedUnassignedTeams}
         showAssignProjectFormPopup={showAssignProjectFormPopup}
         showStatusProjectFormPopup={showStatusProjectFormPopup}
         // showEditProjectPopup={showEditProjectPopup}
         showDeleteProjectPopup={showDeleteProjectPopup}
+        setReloadProject={setReloadProject}
+        reloadProject={reloadProject}
       />
       {/* Projects Edit Form Popup */}
       {showAssignProjectForm && (

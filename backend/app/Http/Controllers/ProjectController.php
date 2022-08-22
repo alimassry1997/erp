@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
 use App\Models\Project;
 use App\Models\Team;
 use App\Models\User;
@@ -65,9 +66,19 @@ class ProjectController extends Controller
      */
     public function show(Project $project): JsonResponse
     {
+        $related_teams = [];
+        foreach ($project->teams as $team) {
+            foreach ($team->users as $user) {
+                if (!$user->projects()->exists()) {
+                    $related_teams[] = $team;
+                    break;
+                }
+                break;
+            }
+        }
         return response()->json([
             "project" => $project,
-            "related_teams" => $project->teams,
+            "related_teams" => $related_teams,
         ]);
     }
 
