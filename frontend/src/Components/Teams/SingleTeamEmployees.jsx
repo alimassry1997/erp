@@ -3,7 +3,7 @@ import { MdEmail } from "react-icons/md";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
-const Employee = ({
+const SingleTeamEmployees = ({
   firstName,
   lastName,
   picture,
@@ -42,4 +42,4 @@ const Employee = ({
   );
 };
 
-export default Employee;
+export default SingleTeamEmployees;

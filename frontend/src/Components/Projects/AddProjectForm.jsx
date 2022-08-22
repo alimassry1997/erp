@@ -1,16 +1,35 @@
 import { useEffect, useState } from "react";
 import { AiOutlineProject } from "react-icons/ai";
 import axios from "axios";
+import MultiSelect from "../Layout/MultiSelect";
 
-const AddProjectForm = ({ token, setReloadProjects, reloadProjects }) => {
+const AddProjectForm = ({
+  token,
+  teams,
+  loadingTeams,
+  fetchTeams,
+  setReloadProjects,
+  reloadProjects,
+}) => {
   const [formData, setFormData] = useState({
     name: "",
   });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [optionSelected, setOptionSelected] = useState([]);
   let canSubmit = false;
   const { name } = formData;
+  const teamsList = [];
+
+  if (!loadingTeams) {
+    for (let i = 0; i < teams.length; i++) {
+      teamsList.push({
+        value: teams[i].id,
+        label: teams[i].name,
+      });
+    }
+  }
 
   // On Change for controlled fields
   const onChange = (e) => {
@@ -44,6 +63,7 @@ const AddProjectForm = ({ token, setReloadProjects, reloadProjects }) => {
       try {
         const data = new FormData();
         data.append("name", name);
+        data.append("teams", JSON.stringify(optionSelected));
         const message = await AddNewProject(data);
         setSuccess(message.message);
         setReloadProjects(!reloadProjects);
@@ -73,6 +93,7 @@ const AddProjectForm = ({ token, setReloadProjects, reloadProjects }) => {
 
   // Reset Messages after 5 seconds
   useEffect(() => {
+    fetchTeams();
     if (errorMessage) {
       setTimeout(() => {
         setErrorMessage("");
@@ -100,18 +121,26 @@ const AddProjectForm = ({ token, setReloadProjects, reloadProjects }) => {
         <form onSubmit={onSubmit}>
           <div className="form-group">
             <label htmlFor="name" className="form-label">
-              Project Name
+              Name
             </label>
             <input
               type="text"
               className={errors.name ? "error" : "form-valid"}
               name="name"
               id="name"
-              placeholder="Enter your team name"
+              placeholder="Enter your project name"
               onChange={onChange}
             />
             <p>{errors.name}</p>
           </div>
+          <label htmlFor="unassigned-select" className="form-label">
+            Assign teams
+          </label>
+          <MultiSelect
+            options={teamsList}
+            loading={loadingTeams}
+            setSelectedOptions={setOptionSelected}
+          />
           <div className="form-group">
             <input
               type="submit"

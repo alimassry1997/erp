@@ -18,20 +18,12 @@ class RoleController extends Controller
      */
     public function index(): JsonResponse
     {
-        $roles = Role::latest()->get();
+        $roles = Role::latest()
+            ->whereNotIn("id", [1])
+            ->get();
         return response()->json([
             "roles" => $roles,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -51,28 +43,6 @@ class RoleController extends Controller
         return response()->json([
             "message" => "Role Added Successfully",
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Role $role
-     * @return Response
-     */
-    public function show(Role $role)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Role $role
-     * @return Response
-     */
-    public function edit(Role $role)
-    {
-        //
     }
 
     /**

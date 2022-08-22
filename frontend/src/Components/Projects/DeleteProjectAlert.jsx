@@ -3,22 +3,22 @@ import { AiFillDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const DeleteTeamAlert = ({
+const DeleteProjectAlert = ({
   token,
-  reloadTeams,
-  setReloadTeams,
-  deleteTeam,
+  reloadProjects,
+  setReloadProjects,
+  deleteProject,
 }) => {
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { name, slug } = deleteTeam;
+  const { name, slug } = deleteProject;
   const navigate = useNavigate();
 
   // Submission Function
-  const DeleteTeam = async () => {
+  const DeleteProject = async () => {
     try {
       const response = await axios.post(
-        `/api/teams/${slug}`,
+        `/api/projects/${slug}`,
         { _method: "delete" },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -29,7 +29,8 @@ const DeleteTeamAlert = ({
         return message;
       }
     } catch (err) {
-      setErrorMessage(err.response.data);
+      console.log(err.response);
+      setErrorMessage(err.response.data.message);
       throw new Error();
     }
   };
@@ -38,11 +39,11 @@ const DeleteTeamAlert = ({
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const message = await DeleteTeam();
+      const message = await DeleteProject();
       setSuccess(message.message);
-      setReloadTeams(!reloadTeams);
+      setReloadProjects(!reloadProjects);
     } catch (err) {
-      setErrorMessage(err.response.data);
+      setErrorMessage(err.response.data.message);
       throw new Error();
     }
   };
@@ -57,16 +58,16 @@ const DeleteTeamAlert = ({
     if (success) {
       setTimeout(() => {
         setSuccess("");
-        navigate("/teams");
+        navigate("/projects");
       }, 5000);
     }
   }, [errorMessage]);
 
   return (
-    <div className="form-section category-form delete-category-form">
+    <div className="form-section category-form delete-category-form add-team-form">
       <section className="heading">
         <h2>
-          <AiFillDelete /> Delete Team
+          <AiFillDelete /> Delete Project
         </h2>
         <p>Are you sure you want to delete {name}?</p>
         {success && <p className="succeed-msg">{success}</p>}
@@ -78,7 +79,7 @@ const DeleteTeamAlert = ({
             <input
               type="submit"
               className="btn btn-block"
-              value="Delete Team"
+              value="Delete Project"
             />
           </div>
         </form>
@@ -87,4 +88,4 @@ const DeleteTeamAlert = ({
   );
 };
 
-export default DeleteTeamAlert;
+export default DeleteProjectAlert;

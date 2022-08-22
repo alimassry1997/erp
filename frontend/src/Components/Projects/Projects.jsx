@@ -16,12 +16,14 @@ function Projects({ projects, loadingProjects, showAddProjectFormPopup }) {
             <AiOutlineProject />
             Projects Management
           </h2>
-          <button
-            className="btn dark-btn"
-            onClick={() => showAddProjectFormPopup()}
-          >
-            <FaPlusSquare />
-          </button>
+          <div>
+            <button
+              className="btn dark-btn"
+              onClick={() => showAddProjectFormPopup()}
+            >
+              <FaPlusSquare />
+            </button>
+          </div>
         </div>
         <div className="projects-container">
           {projects.map((project) => (
@@ -32,6 +34,7 @@ function Projects({ projects, loadingProjects, showAddProjectFormPopup }) {
               status={project.status}
               finished_at={project.finished_at}
               created_at={project.created_at}
+              teams_count={project.teams_count}
             />
           ))}
         </div>

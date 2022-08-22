@@ -8,6 +8,9 @@ const ProjectsDashboard = ({
   loadingProjects,
   fetchProjects,
   token,
+  fetchTeams,
+  teams,
+  loadingTeams,
 }) => {
   /**
    * Add Project Form State Popup
@@ -71,6 +74,9 @@ const ProjectsDashboard = ({
               token={token}
               reloadProjects={reloadProjects}
               setReloadProjects={setReloadProjects}
+              loadingTeams={loadingTeams}
+              teams={teams}
+              fetchTeams={fetchTeams}
             />
           }
         />

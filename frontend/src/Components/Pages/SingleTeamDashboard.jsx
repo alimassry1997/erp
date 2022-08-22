@@ -12,6 +12,7 @@ const SingleTeamDashboard = ({
   getTeam,
   token,
   relatedEmployeesTeam,
+  relatedProjectsTeam,
 }) => {
   const { slug } = useParams();
   /**
@@ -83,6 +84,7 @@ const SingleTeamDashboard = ({
         showEditTeamPopup={showEditTeamPopup}
         showDeleteTeamPopup={showDeleteTeamPopup}
         relatedEmployeesTeam={relatedEmployeesTeam}
+        relatedProjectsTeam={relatedProjectsTeam}
       />
       {/* Teams Edit Form Popup */}
       {showEditTeamForm && (

@@ -43,6 +43,7 @@ const App = () => {
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState([]);
   const [relatedEmployeesTeam, setRelatedEmployeesTeam] = useState([]);
+  const [relatedProjectsTeam, setRelatedProjectsTeam] = useState([]);
 
   /**
    * Single Project States
@@ -154,7 +155,7 @@ const App = () => {
   };
 
   /**
-   * Get All skills
+   * Get All roles
    * @returns {Promise<void>}
    */
   const fetchRoles = async () => {
@@ -225,10 +226,11 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { team, employees },
+        data: { team, employees, projects },
       } = response;
       setTeam(team);
       setRelatedEmployeesTeam(employees);
+      setRelatedProjectsTeam(projects);
       document.title = `${capitalizeFirstLetter(team.name)} Team | ERP Teams`;
     } catch (error) {
       console.log(error.message);
@@ -322,6 +324,9 @@ const App = () => {
                   loadingProjects={loadingProjects}
                   fetchProjects={fetchProjects}
                   token={token}
+                  teams={teams}
+                  loadingTeams={loadingTeams}
+                  fetchTeams={fetchTeams}
                 />
               }
             />
@@ -352,6 +357,7 @@ const App = () => {
                 <SingleTeamDashboard
                   team={team}
                   relatedEmployeesTeam={relatedEmployeesTeam}
+                  relatedProjectsTeam={relatedProjectsTeam}
                   loadingTeam={loadingTeam}
                   getTeam={getTeam}
                   token={token}
@@ -371,6 +377,12 @@ const App = () => {
                   loadingProject={loadingProject}
                   getProject={getProject}
                   token={token}
+                  getTeam={getTeam}
+                  loadingTeam={loadingTeam}
+                  roles={roles}
+                  loadingRoles={loadingRoles}
+                  fetchRoles={fetchRoles}
+                  relatedEmployeesTeam={relatedEmployeesTeam}
                 />
               }
             />

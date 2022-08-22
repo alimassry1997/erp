@@ -1,13 +1,22 @@
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Spinner from "../Layout/Spinner";
 import "./SingleProject.css";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import "react-tabs/style/react-tabs.css";
 import ProjectStatus from "./ProjectStatus";
 import { IoMdDoneAll } from "react-icons/io";
+import { AiOutlineTeam } from "react-icons/ai";
+import RelatedTeamsProject from "./RelatedTeamsProject";
 
-const SingleProject = ({ project, loadingProject, getProject }) => {
+const SingleProject = ({
+  project,
+  loadingProject,
+  getProject,
+  showAssignProjectFormPopup,
+  showStatusProjectFormPopup,
+  showDeleteProjectPopup,
+}) => {
   const { slug } = useParams();
   useEffect(() => {
     getProject(slug);
@@ -16,7 +25,8 @@ const SingleProject = ({ project, loadingProject, getProject }) => {
   if (loadingProject) {
     return <Spinner />;
   } else {
-    const { name, status, finished_at } = project;
+    const { name, status, finished_at, teams, slug: project_slug } = project;
+    const size = teams.length;
     return (
       <div className="single-project-container">
         <header>
@@ -31,19 +41,45 @@ const SingleProject = ({ project, loadingProject, getProject }) => {
               <FaEdit />
             </button>
             <button
-              className="btn delete-btn"
-              // onClick={() => showDeleteProjectPopup({ name, slug })}
+              disabled={size > 0}
+              className={`btn ${size > 0 ? "disabled-btn" : "delete-btn"}`}
+              onClick={() => showDeleteProjectPopup({ name, slug })}
             >
               <FaTrashAlt />
             </button>
           </div>
         </header>
         <div className="status-project">
-          <ProjectStatus status={status} />
+          <ProjectStatus
+            status={status}
+            showStatusProjectFormPopup={showStatusProjectFormPopup}
+            name={name}
+            project_slug={project_slug}
+          />
           <div>
             {finished_at && <IoMdDoneAll />} {finished_at && finished_at}
           </div>
         </div>
+        {size > 0 ? (
+          <div className="single-project-teams-container">
+            <h2>
+              <AiOutlineTeam /> Teams
+            </h2>
+            <div className="teams">
+              {teams.map((team) => (
+                <RelatedTeamsProject
+                  key={team.id}
+                  slug={team.slug}
+                  name={team.name}
+                  project_slug={project_slug}
+                  showAssignProjectFormPopup={showAssignProjectFormPopup}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="no-data">No Teams Assigned</div>
+        )}
       </div>
     );
   }
