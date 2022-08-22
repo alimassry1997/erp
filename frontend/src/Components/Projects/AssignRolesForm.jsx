@@ -13,6 +13,8 @@ const AssignRolesForm = ({
   getTeam,
   relatedEmployeesTeam,
   loadingTeam,
+  reloadProject,
+  setReloadProject,
 }) => {
   const { name: teamName, slug, project_slug } = assignTeam;
   const [success, setSuccess] = useState("");
@@ -59,6 +61,7 @@ const AssignRolesForm = ({
       );
       if (response.data) {
         const { data: message } = response;
+        setReloadProject(!reloadProject);
         return message;
       }
     } catch (err) {

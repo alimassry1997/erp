@@ -18,16 +18,11 @@ class RoleSeeder extends Seeder
         /**
          * Create KPI
          */
-        $placeholder_role = "unassigned";
         $first_role = "developer";
         $second_role = "graphic design";
         $third_role = "data entry";
         $fourth_role = "project manager";
         $teams_fixed = [
-            [
-                "name" => $placeholder_role,
-                "slug" => Str::slug($placeholder_role, "-"),
-            ],
             [
                 "name" => $first_role,
                 "slug" => Str::slug($first_role, "-"),

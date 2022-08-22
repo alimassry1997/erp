@@ -24,10 +24,12 @@ const AddProjectForm = ({
 
   if (!loadingTeams) {
     for (let i = 0; i < teams.length; i++) {
-      teamsList.push({
-        value: teams[i].id,
-        label: teams[i].name,
-      });
+      if (teams[i].users_count !== 0) {
+        teamsList.push({
+          value: teams[i].id,
+          label: teams[i].name,
+        });
+      }
     }
   }
 

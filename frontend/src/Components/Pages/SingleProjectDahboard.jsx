@@ -20,6 +20,8 @@ const SingleProjectDashboard = ({
   relatedEmployeesTeam,
   loadingRoles,
   relatedUnassignedTeams,
+  relatedAssignedEmployees,
+  relatedEmployeesRoles,
 }) => {
   const { slug } = useParams();
 
@@ -88,8 +90,8 @@ const SingleProjectDashboard = ({
         showStatusProjectFormPopup={showStatusProjectFormPopup}
         // showEditProjectPopup={showEditProjectPopup}
         showDeleteProjectPopup={showDeleteProjectPopup}
-        setReloadProject={setReloadProject}
-        reloadProject={reloadProject}
+        relatedEmployeesRoles={relatedEmployeesRoles}
+        relatedAssignedEmployees={relatedAssignedEmployees}
       />
       {/* Projects Edit Form Popup */}
       {showAssignProjectForm && (
@@ -105,6 +107,8 @@ const SingleProjectDashboard = ({
               getTeam={getTeam}
               relatedEmployeesTeam={relatedEmployeesTeam}
               loadingTeam={loadingTeam}
+              reloadProject={reloadProject}
+              setReloadProject={setReloadProject}
             />
           }
         />

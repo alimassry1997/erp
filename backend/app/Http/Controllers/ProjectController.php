@@ -66,19 +66,34 @@ class ProjectController extends Controller
      */
     public function show(Project $project): JsonResponse
     {
+        $roles = [];
+        $assigned_employees = $project->users;
+        foreach ($assigned_employees as $employee) {
+            foreach ($employee->roles as $role) {
+                if ($role->pivot->project_id === $project->id) {
+                    $roles[] = $role->name;
+                }
+            }
+        }
         $related_teams = [];
         foreach ($project->teams as $team) {
-            foreach ($team->users as $user) {
-                if (!$user->projects()->exists()) {
-                    $related_teams[] = $team;
-                    break;
+            if ($team->users()->exists()) {
+                foreach ($team->users as $user) {
+                    if ($user->status === 1) {
+                        foreach ($user->projects as $proj) {
+                            if ($proj->pivot->project_id !== $project->id) {
+                                $related_teams[] = $team;
+                            }
+                        }
+                    }
                 }
-                break;
             }
         }
         return response()->json([
             "project" => $project,
             "related_teams" => $related_teams,
+            "assigned_employees" => $assigned_employees,
+            "roles" => $roles,
         ]);
     }
 
