@@ -101,6 +101,26 @@ class ProjectController extends Controller
     }
 
     /**
+     * Get A specific teams according to their project
+     * @param Project $project
+     * @return JsonResponse
+     */
+    public function filterByProject(Project $project): JsonResponse
+    {
+        return response()->json([
+            "teams" => Team::whereNotIn(
+                "teams.id",
+                $project
+                    ->teams()
+                    ->pluck("teams.id")
+                    ->toArray()
+            )
+                ->whereNotIn("teams.id", [1, 2])
+                ->get(),
+        ]);
+    }
+
+    /**
      * Change Status of the project
      * @param Project $project
      * @return JsonResponse
@@ -177,8 +197,23 @@ class ProjectController extends Controller
         $inputs["name"] = $request["name"];
         $inputs["slug"] = Str::slug($request["name"], "-");
         $project->update($inputs);
+        if ($request["teams"]) {
+            $teams = json_decode(
+                $request["teams"],
+                false,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+            $id_teams = [];
+            foreach ($teams as $team) {
+                $id_teams[] = $team->value;
+            }
+            $teams_database = Team::findOrFail($id_teams);
+            $project->teams()->attach($teams_database);
+        }
         return response()->json([
             "message" => "Project Successfully Updated",
+            "slug" => $inputs["slug"],
         ]);
     }
 

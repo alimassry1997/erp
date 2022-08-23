@@ -162,6 +162,10 @@
 }
 
 @media (max-width: 700px) {
+  .status-project {
+    justify-content: center;
+  }
+
   .single-project-container header {
     font-size: 1rem;
     padding-left: 1rem;

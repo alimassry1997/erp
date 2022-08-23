@@ -59,6 +59,10 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
         ProjectController::class,
         "update_status",
     ]);
+    Route::get("/projects/filter/{project}", [
+        ProjectController::class,
+        "filterByProject",
+    ]);
     Route::get("/projects/{project}", [ProjectController::class, "show"]);
     Route::put("/projects/{project}", [ProjectController::class, "update"]);
     Route::delete("/projects/{project}", [ProjectController::class, "destroy"]);

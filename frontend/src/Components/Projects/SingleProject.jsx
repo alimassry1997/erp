@@ -17,6 +17,7 @@ const SingleProject = ({
   showAssignProjectFormPopup,
   showStatusProjectFormPopup,
   showDeleteProjectPopup,
+  showEditProjectPopup,
   relatedUnassignedTeams,
   relatedAssignedEmployees,
   relatedEmployeesRoles,
@@ -44,7 +45,7 @@ const SingleProject = ({
           <div className="single-project-manage">
             <button
               className="btn edit-btn"
-              // onClick={() => showEditProjectPopup({ name, size, slug })}
+              onClick={() => showEditProjectPopup({ name, slug })}
             >
               <FaEdit />
             </button>

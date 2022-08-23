@@ -7,6 +7,8 @@ import Popup from "../Layout/Popup";
 import AssignRolesForm from "../Projects/AssignRolesForm";
 import ChangeProjectStatus from "../Projects/ChangeProjectStatus";
 import DeleteProjectAlert from "../Projects/DeleteProjectAlert";
+import EditProjectForm from "../Projects/EditProjectForm";
+import axios from "axios";
 
 const SingleProjectDashboard = ({
   project,
@@ -40,9 +42,9 @@ const SingleProjectDashboard = ({
   /**
    * Edit Project Form State Popup
    */
-  // const [showEditProjectForm, setShowEditProjectForm] = useState(false);
-  // const [editProject, setEditProject] = useState("");
-  //
+  const [showEditProjectForm, setShowEditProjectForm] = useState(false);
+  const [editProject, setEditProject] = useState("");
+
   /**
    * Delete Project Alert State Popup
    */
@@ -55,6 +57,32 @@ const SingleProjectDashboard = ({
   const [reloadProject, setReloadProject] = useState(false);
 
   /**
+   * Unassigned Teams State
+   */
+  const [teamsList, setTeamsList] = useState([]);
+  const [loadingTeams, setLoadingTeams] = useState(true);
+
+  /**
+   * Get All unassigned teams
+   * @returns {Promise<void>}
+   */
+  const getTeams = async (project, loading, list) => {
+    try {
+      loading(true);
+      const response = await axios.get(`/api/projects/filter/${project}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { teams },
+      } = response;
+      list(teams);
+      loading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  /**
    * Popup Functions
    */
   const showAssignProjectFormPopup = (team) => {
@@ -65,10 +93,10 @@ const SingleProjectDashboard = ({
     setStatusProject(project);
     setShowStatusProjectForm(true);
   };
-  // const showEditProjectPopup = (project) => {
-  //   setEditProject(project);
-  //   setShowEditProjectForm(true);
-  // };
+  const showEditProjectPopup = (project) => {
+    setEditProject(project);
+    setShowEditProjectForm(true);
+  };
   const showDeleteProjectPopup = (project) => {
     setDeleteProject(project);
     setShowDeleteProjectAlert(true);
@@ -88,7 +116,7 @@ const SingleProjectDashboard = ({
         relatedUnassignedTeams={relatedUnassignedTeams}
         showAssignProjectFormPopup={showAssignProjectFormPopup}
         showStatusProjectFormPopup={showStatusProjectFormPopup}
-        // showEditProjectPopup={showEditProjectPopup}
+        showEditProjectPopup={showEditProjectPopup}
         showDeleteProjectPopup={showDeleteProjectPopup}
         relatedEmployeesRoles={relatedEmployeesRoles}
         relatedAssignedEmployees={relatedAssignedEmployees}
@@ -129,25 +157,25 @@ const SingleProjectDashboard = ({
         />
       )}
       {/* Projects Edit Form Popup */}
-      {/*{showEditProjectForm && (*/}
-      {/*    <Popup*/}
-      {/*        show={showEditProjectForm}*/}
-      {/*        setShow={setShowEditProjectForm}*/}
-      {/*        component={*/}
-      {/*            <EditProjectForm*/}
-      {/*                token={token}*/}
-      {/*                reloadProjects={reloadProject}*/}
-      {/*                setReloadProjects={setReloadProject}*/}
-      {/*                getEmployees={getEmployees}*/}
-      {/*                loadingEmployees={loadingEmployees}*/}
-      {/*                setLoadingEmployees={setLoadingEmployees}*/}
-      {/*                employeesList={employeesList}*/}
-      {/*                setEmployeesList={setEmployeesList}*/}
-      {/*                editProject={editProject}*/}
-      {/*            />*/}
-      {/*        }*/}
-      {/*    />*/}
-      {/*)}*/}
+      {showEditProjectForm && (
+        <Popup
+          show={showEditProjectForm}
+          setShow={setShowEditProjectForm}
+          component={
+            <EditProjectForm
+              token={token}
+              reloadProject={reloadProject}
+              setReloadProject={setReloadProject}
+              getTeams={getTeams}
+              loadingTeams={loadingTeams}
+              setLoadingTeams={setLoadingTeams}
+              teamsList={teamsList}
+              setTeamsList={setTeamsList}
+              editProject={editProject}
+            />
+          }
+        />
+      )}
       {/* Projects Delete Form Popup */}
       {showDeleteProjectAlert && (
         <Popup
