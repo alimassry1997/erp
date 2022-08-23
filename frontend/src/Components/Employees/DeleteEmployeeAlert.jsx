@@ -62,10 +62,10 @@ const DeleteEmployeeAlert = ({
       <section className="heading">
         <h2>
           <AiFillDelete />{" "}
-          {status ? "Activate Employee" : "Deactivate Employee"}
+          {status ? "Activate Employee" : "De/Activate Employee"}
         </h2>
         <p>
-          Are you sure you want to {status ? "activate" : "deactivate"}{" "}
+          Are you sure you want to {status ? "activate" : "de/activate"}{" "}
           {first_name} {last_name}
         </p>
         {success && <p className="succeed-msg">{success}</p>}
@@ -77,7 +77,7 @@ const DeleteEmployeeAlert = ({
             <input
               type="submit"
               className="btn btn-block"
-              value={status ? "Activate Employee" : "Deactivate Employee"}
+              value={status ? "Activate Employee" : "De/Activate Employee"}
             />
           </div>
         </form>
