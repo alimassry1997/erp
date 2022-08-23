@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
                 "email_verified_at" => now(),
                 "remember_token" => Str::random(10),
                 "phone_number" => "70513964",
-                "picture" => "https://via.placeholder.com/150",
+                "picture" => fake()->imageUrl(150, 150, "profile", true),
             ],
             [
                 "system_role_id" => 3,
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
                 "email_verified_at" => now(),
                 "remember_token" => Str::random(10),
                 "phone_number" => "71861634",
-                "picture" => "https://via.placeholder.com/150",
+                "picture" => fake()->imageUrl(150, 150, "profile", true),
             ],
             [
                 "system_role_id" => 3,
@@ -54,7 +54,7 @@ class UserSeeder extends Seeder
                 "email_verified_at" => now(),
                 "remember_token" => Str::random(10),
                 "phone_number" => "76877530",
-                "picture" => "https://via.placeholder.com/150",
+                "picture" => fake()->imageUrl(150, 150, "profile", true),
             ],
         ];
         foreach ($super_admins as $super_admin) {
