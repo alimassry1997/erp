@@ -48,6 +48,7 @@ const SingleEmployee = ({
             >
               {status === 1 ? "Deactivate" : "Activate"}
             </button>
+            <button className="btn eval-btn"><FaEdit />Evaluate</button>
           </div>
         </div>
         <div className="prof">

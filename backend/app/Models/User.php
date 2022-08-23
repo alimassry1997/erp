@@ -120,9 +120,9 @@ class User extends Authenticatable
      */
     public function skills(): BelongsToMany
     {
-        return $this->belongsToMany(Skill::class)
+        return $this->belongsToMany(Skill::class, 'skill_user')
             ->as("kpi")
-            ->withPivot("score", "feedback")
+            ->withPivot("score")
             ->withTimestamps();
     }
 

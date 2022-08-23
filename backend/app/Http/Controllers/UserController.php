@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skill;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -222,6 +224,40 @@ class UserController extends Controller
         $admin->save();
         return response()->json([
             "message" => "Admin Updated Successfully",
+        ]);
+    }
+
+    public function store_skills(Request $request): JsonResponse 
+    {
+        $request->validate([
+            "name" => "required|unique:skills",
+        ]);
+        $inputs["name"] = $request["name"];
+        $inputs["slug"] = Str::slug($request["name"], "-");
+        $skill = Skill::create($inputs);
+        if ($request["user"]) {
+            $users = json_decode(
+                $request["user"],
+                false,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+            $id_user = [];
+            foreach ($users as $user) {
+                $id_user[] = $user->value;
+            }
+            $employees_database = User::findOrFail($id_user);
+            $skill->user()->attach($employees_database);
+        }
+        return response()->json([
+            "message" => "Skill was successfully Created",
+        ]);
+    }
+
+    public function read_skills(User $user,Request $request): JsonResponse 
+    {
+        return response()->json([
+            "message" => "Skill are read",
         ]);
     }
 }

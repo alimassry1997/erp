@@ -227,6 +227,10 @@ Forms Design
   background-color: var(--edit-color);
 }
 
+.eval-btn{
+  background-color: var(--link-color);
+}
+
 .disabled-btn {
   background-color: lightgray;
 }
