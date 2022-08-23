@@ -227,37 +227,37 @@ class UserController extends Controller
         ]);
     }
 
-    public function store_skills(Request $request): JsonResponse 
-    {
-        $request->validate([
-            "name" => "required|unique:skills",
-        ]);
-        $inputs["name"] = $request["name"];
-        $inputs["slug"] = Str::slug($request["name"], "-");
-        $skill = Skill::create($inputs);
-        if ($request["user"]) {
-            $users = json_decode(
-                $request["user"],
-                false,
-                512,
-                JSON_THROW_ON_ERROR
-            );
-            $id_user = [];
-            foreach ($users as $user) {
-                $id_user[] = $user->value;
-            }
-            $employees_database = User::findOrFail($id_user);
-            $skill->user()->attach($employees_database);
-        }
-        return response()->json([
-            "message" => "Skill was successfully Created",
-        ]);
-    }
+    // public function store_skills(Request $request): JsonResponse 
+    // {
+    //     $request->validate([
+    //         "name" => "required|unique:skills",
+    //     ]);
+    //     $inputs["name"] = $request["name"];
+    //     $inputs["slug"] = Str::slug($request["name"], "-");
+    //     $skill = Skill::create($inputs);
+    //     if ($request["user"]) {
+    //         $users = json_decode(
+    //             $request["user"],
+    //             false,
+    //             512,
+    //             JSON_THROW_ON_ERROR
+    //         );
+    //         $id_user = [];
+    //         foreach ($users as $user) {
+    //             $id_user[] = $user->value;
+    //         }
+    //         $employees_database = User::findOrFail($id_user);
+    //         $skill->user()->attach($employees_database);
+    //     }
+    //     return response()->json([
+    //         "message" => "Skill was successfully Created",
+    //     ]);
+    // }
 
-    public function read_skills(User $user,Request $request): JsonResponse 
-    {
-        return response()->json([
-            "message" => "Skill are read",
-        ]);
-    }
+    // public function read_skills(User $user,Request $request): JsonResponse 
+    // {
+    //     return response()->json([
+    //         "message" => "Skill are read",
+    //     ]);
+    // }
 }
