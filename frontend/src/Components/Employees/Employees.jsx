@@ -26,15 +26,19 @@ const Employees = ({
             Employees Management
           </h2>
           <form className="search-bar">
-                    <input type="search" name="search" pattern=".\S."
-                           onChange={(e) => {
-                               setSearchTerm((e.target.value))
-                           }}
-                           required/>
-                    <button className="search-btn" type="submit">
-                        <span>Search</span>
-                    </button>
-                </form>
+            <input
+              type="search"
+              name="search"
+              pattern=".\S."
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
+              required
+            />
+            <button className="search-btn" type="submit">
+              <span>Search</span>
+            </button>
+          </form>
           <button
             className="btn add-btn"
             onClick={() => showAddEmployeeFormPopup()}
@@ -42,37 +46,23 @@ const Employees = ({
             <FaPlusSquare />
           </button>
         </div>
-        <div className="table-responsive">
-          <table className="table table-employees">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Status</th>
-                <th>Manage</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employees.map((employee) => (
-                <Employee
-                  key={employee.id}
-                  token={token}
-                  image={employee.picture}
-                  firstName={employee.first_name}
-                  lastName={employee.last_name}
-                  email={employee.email}
-                  phoneNumber={employee.phone_number}
-                  status={employee.status}
-                  showEditEmployeePopup={showEditEmployeePopup}
-                  showDeleteEmployeePopup={showDeleteEmployeePopup}
-                  employee={employee}
-                />
-              ))}
-            </tbody>
-          </table>
+        <div className="users-container">
+          {employees.map((employee) => (
+            <Employee
+              key={employee.id}
+              token={token}
+              image={employee.picture}
+              firstName={employee.first_name}
+              lastName={employee.last_name}
+              email={employee.email}
+              phoneNumber={employee.phone_number}
+              status={employee.status}
+              showEditEmployeePopup={showEditEmployeePopup}
+              showDeleteEmployeePopup={showDeleteEmployeePopup}
+              employee={employee}
+              teamName={employee.team.name}
+            />
+          ))}
         </div>
       </div>
     );

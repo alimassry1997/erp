@@ -1,17 +1,23 @@
+import { AiFillLock, AiFillUnlock } from "react-icons/ai";
+
 const IsActiveButton = ({ status, showDeleteEmployeePopup, employee }) => {
   if (status === 1) {
     return (
       <button
-        className="btn add-btn status"
+        className="btn add-btn"
         onClick={() => showDeleteEmployeePopup(employee, false)}
-      ></button>
+      >
+        <AiFillLock />
+      </button>
     );
   }
   return (
     <button
-      className="btn delete-btn status"
+      className="btn delete-btn"
       onClick={() => showDeleteEmployeePopup(employee, true)}
-    ></button>
+    >
+      <AiFillUnlock />
+    </button>
   );
 };
 export default IsActiveButton;

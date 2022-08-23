@@ -13,13 +13,15 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    /** 
+    /**
      * Get all Employees
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $employees = User::orderBy("status", "desc")->latest()
+        $employees = User::with("team")
+            ->orderBy("status", "desc")
+            ->latest()
             ->whereNotIn("team_id", [1])
             ->get();
         return response()->json([
@@ -64,7 +66,6 @@ class UserController extends Controller
         return response()->json([
             "team" => $user->team->users->count(),
             "user" => $user,
-            
         ]);
     }
 
@@ -88,7 +89,6 @@ class UserController extends Controller
     public function update(Request $request, User $user): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-
             "email" => "required|email",
             "password_confirmation" => "required|same:password",
         ]);
@@ -176,7 +176,8 @@ class UserController extends Controller
      */
     public function indexAdmin(): JsonResponse
     {
-        $admins = User::orderBy("status", "desc")->latest()
+        $admins = User::orderBy("status", "desc")
+            ->latest()
             ->whereIn("system_role_id", [1])
 
             ->get();
@@ -189,7 +190,6 @@ class UserController extends Controller
     public function storeAdmin(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-
             "email" => "required|email",
             "password_confirmation" => "required|same:password",
         ]);
@@ -227,7 +227,7 @@ class UserController extends Controller
         ]);
     }
 
-    // public function store_skills(Request $request): JsonResponse 
+    // public function store_skills(Request $request): JsonResponse
     // {
     //     $request->validate([
     //         "name" => "required|unique:skills",
@@ -254,7 +254,7 @@ class UserController extends Controller
     //     ]);
     // }
 
-    // public function read_skills(User $user,Request $request): JsonResponse 
+    // public function read_skills(User $user,Request $request): JsonResponse
     // {
     //     return response()->json([
     //         "message" => "Skill are read",
