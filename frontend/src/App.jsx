@@ -312,6 +312,7 @@ const App = () => {
               index
               element={
                 <AdminsDashboard
+                  auth={auth}
                   fetchAdmins={fetchAdmins}
                   admins={admins}
                   loadingAdmins={loadingAdmins}
