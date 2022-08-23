@@ -69,7 +69,6 @@ class TeamController extends Controller
         $employees = $team
             ->users()
             ->orderBy("status", "DESC")
-            ->whereNotIn("status", [0])
             ->get();
         $projects = $team->projects;
         return response()->json([

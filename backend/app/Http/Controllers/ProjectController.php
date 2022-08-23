@@ -6,6 +6,7 @@ use App\Models\Assignment;
 use App\Models\Project;
 use App\Models\Team;
 use App\Models\User;
+use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -75,20 +76,22 @@ class ProjectController extends Controller
                 }
             }
         }
-        $related_teams = [];
-        foreach ($project->teams as $team) {
-            if ($team->users()->exists()) {
-                foreach ($team->users as $user) {
-                    if ($user->status === 1) {
-                        foreach ($user->projects as $proj) {
-                            if ($proj->pivot->project_id !== $project->id) {
-                                $related_teams[] = $team;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        $fetched_teams = DB::table("users")
+            ->select("users.team_id")
+            ->join("teams", "users.team_id", "=", "teams.id")
+            ->join("project_team", "teams.id", "=", "project_team.team_id")
+            ->where("project_team.project_id", $project->id)
+            ->whereNotIn(
+                "users.id",
+                DB::table("assignments")
+                    ->select("user_id")
+                    ->where("assignments.project_id", $project->id)
+                    ->where("assignments.end_date", null)
+                    ->pluck("user_id")
+            )
+            ->distinct()
+            ->pluck("users.team_id");
+        $related_teams = Team::findOrFail($fetched_teams);
         return response()->json([
             "project" => $project,
             "related_teams" => $related_teams,
