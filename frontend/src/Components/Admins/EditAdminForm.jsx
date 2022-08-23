@@ -5,13 +5,21 @@ import axios from "axios";
 const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
   const [formData, setFormData] = useState(editAdmin);
   const [errors, setErrors] = useState({});
+  const [role, setRole] = useState("");
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [pic, setPic] = useState([]);
   const [uniqueEmail, setUniqueEmail] = useState("");
-
+  const { system_role_id } = editAdmin;
   let canSubmit = false;
-  const { first_name, last_name, email, phone_number, password,  password_confirmation} = formData;
+  const {
+    first_name,
+    last_name,
+    email,
+    phone_number,
+    password,
+    password_confirmation,
+  } = formData;
   const handleImage = (e) => {
     setPic({ image: e.target.files[0] });
   };
@@ -98,33 +106,46 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
     } else {
       errorMessages.phone_number = "";
     }
-    if (values.password === "") {
-      errorMessages.password = "Password is required";
-    } else if (values.password.length < 8) {
-      errorMessages.password = "Password must contain at least 8 characters";
+    if (role !== 2) {
+      if (values.password === "") {
+        errorMessages.password = "Password is required";
+      } else if (values.password.length < 8) {
+        errorMessages.password = "Password must contain at least 8 characters";
+      } else {
+        errorMessages.password = "";
+      }
+      if (values.password_confirmation !== values.password) {
+        errorMessages.password_confirmation = "You Must Confirm your password";
+      } else {
+        errorMessages.password_confirmation = "";
+      }
+      if (
+        errorMessages.first_name === "" &&
+        errorMessages.last_name === "" &&
+        errorMessages.email === "" &&
+        errorMessages.phone_number === "" &&
+        errorMessages.password === "" &&
+        errorMessages.password_confirmation === ""
+      ) {
+        canSubmit = true;
+      }
     } else {
-      errorMessages.password = "";
+      if (
+        errorMessages.first_name === "" &&
+        errorMessages.last_name === "" &&
+        errorMessages.email === "" &&
+        errorMessages.phone_number === ""
+      ) {
+        canSubmit = true;
+      }
     }
-    if (values.password_confirmation !== values.password) {
-      errorMessages.password_confirmation = "You Must Confirm your password";
-    } else {
-      errorMessages.password_confirmation = "";
-    }
-    if (
-      errorMessages.first_name === "" &&
-      errorMessages.last_name === "" &&
-      errorMessages.email === "" &&
-      errorMessages.phone_number === "" &&
-      errorMessages.password === "" && 
-      errorMessages.password_confirmation === ""
-    ) {
-      canSubmit = true;
-    }
+
     return errorMessages;
   };
 
   // Reset Messages after 5 seconds
   useEffect(() => {
+    setRole(system_role_id);
     setUniqueEmail(email);
     if (errorMessage) {
       setTimeout(() => {
@@ -210,34 +231,43 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
             />
             <p>{errors.phone_number}</p>
           </div>
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              className={errors.password ? "error" : "form-valid"}
-              name="password"
-              id="password"
-              placeholder="Enter your Password"
-              onChange={onChange}
-            />
-            <p>{errors.password}</p>
-          </div>
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              className={errors.password_confirmation ? "error" : "form-valid"}
-              name="password_confirmation"
-              id="password_confirmation"
-              onChange={onChange}
-              placeholder="Confirm your Password"
-            />
-            <p>{errors.password_confirmation}</p>
-          </div>
+          {system_role_id !== 2 ? (
+            <>
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className={errors.password ? "error" : "form-valid"}
+                  name="password"
+                  id="password"
+                  placeholder="Enter your Password"
+                  onChange={onChange}
+                />
+                <p>{errors.password}</p>
+              </div>
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  className={
+                    errors.password_confirmation ? "error" : "form-valid"
+                  }
+                  name="password_confirmation"
+                  id="password_confirmation"
+                  onChange={onChange}
+                  placeholder="Confirm your Password"
+                />
+                <p>{errors.password_confirmation}</p>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
+
           <input
             type="file"
             name="picture"

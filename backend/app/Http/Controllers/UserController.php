@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skill;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    /**
+    /** 
      * Get all Employees
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $employees = User::latest()
+        $employees = User::orderBy("status", "desc")->latest()
             ->whereNotIn("team_id", [1])
-            ->orderBy("status", "desc")
             ->get();
         return response()->json([
             "employees" => $employees,
@@ -35,6 +36,7 @@ class UserController extends Controller
         $employee->email = $request->input("email");
         $employee->phone_number = $request->input("phone_number");
 
+        // 'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         if ($request->hasFile("image")) {
             $file = $request->file("image");
             $extension = $file->getClientOriginalExtension();
@@ -60,7 +62,9 @@ class UserController extends Controller
     public function show(User $user): JsonResponse
     {
         return response()->json([
+            "team" => $user->team->users->count(),
             "user" => $user,
+            
         ]);
     }
 
@@ -84,6 +88,7 @@ class UserController extends Controller
     public function update(Request $request, User $user): JsonResponse
     {
         $validator = Validator::make($request->all(), [
+
             "email" => "required|email",
             "password_confirmation" => "required|same:password",
         ]);
@@ -171,9 +176,9 @@ class UserController extends Controller
      */
     public function indexAdmin(): JsonResponse
     {
-        $admins = User::latest()
+        $admins = User::orderBy("status", "desc")->latest()
             ->whereIn("system_role_id", [1])
-            ->orderBy("status", "desc")
+
             ->get();
         return response()->json([
             "message" => "Admins are here",
@@ -184,6 +189,7 @@ class UserController extends Controller
     public function storeAdmin(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
+
             "email" => "required|email",
             "password_confirmation" => "required|same:password",
         ]);
@@ -215,10 +221,43 @@ class UserController extends Controller
                 403
             );
         }
-
         $admin->save();
         return response()->json([
             "message" => "Admin Updated Successfully",
         ]);
     }
+
+    // public function store_skills(Request $request): JsonResponse 
+    // {
+    //     $request->validate([
+    //         "name" => "required|unique:skills",
+    //     ]);
+    //     $inputs["name"] = $request["name"];
+    //     $inputs["slug"] = Str::slug($request["name"], "-");
+    //     $skill = Skill::create($inputs);
+    //     if ($request["user"]) {
+    //         $users = json_decode(
+    //             $request["user"],
+    //             false,
+    //             512,
+    //             JSON_THROW_ON_ERROR
+    //         );
+    //         $id_user = [];
+    //         foreach ($users as $user) {
+    //             $id_user[] = $user->value;
+    //         }
+    //         $employees_database = User::findOrFail($id_user);
+    //         $skill->user()->attach($employees_database);
+    //     }
+    //     return response()->json([
+    //         "message" => "Skill was successfully Created",
+    //     ]);
+    // }
+
+    // public function read_skills(User $user,Request $request): JsonResponse 
+    // {
+    //     return response()->json([
+    //         "message" => "Skill are read",
+    //     ]);
+    // }
 }

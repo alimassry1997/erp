@@ -3,6 +3,7 @@ import Spinner from "../Layout/Spinner";
 import Employee from "./Employee";
 import { AiOutlineTeam } from "react-icons/ai";
 import { FaPlusSquare } from "react-icons/fa";
+import { useState } from "react";
 
 const Employees = ({
   employees,
@@ -12,6 +13,7 @@ const Employees = ({
   showAddEmployeeFormPopup,
   showDeleteEmployeePopup,
 }) => {
+  const [searchTerm, setSearchTerm] = useState([]);
   document.title = "Employees Dashboard | ERP";
   if (loadingEmployees) {
     return <Spinner />;
@@ -23,6 +25,16 @@ const Employees = ({
             <AiOutlineTeam />
             Employees Management
           </h2>
+          <form className="search-bar">
+                    <input type="search" name="search" pattern=".\S."
+                           onChange={(e) => {
+                               setSearchTerm((e.target.value))
+                           }}
+                           required/>
+                    <button className="search-btn" type="submit">
+                        <span>Search</span>
+                    </button>
+                </form>
           <button
             className="btn add-btn"
             onClick={() => showAddEmployeeFormPopup()}
