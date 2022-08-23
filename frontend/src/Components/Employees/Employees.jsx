@@ -1,9 +1,10 @@
 import "./Employees.css";
 import Spinner from "../Layout/Spinner";
 import Employee from "./Employee";
-import { AiOutlineTeam } from "react-icons/ai";
+import { AiOutlineTeam, AiOutlineSearch } from "react-icons/ai";
 import { FaPlusSquare } from "react-icons/fa";
 import { useState } from "react";
+
 
 const Employees = ({
   employees,
@@ -31,7 +32,7 @@ const Employees = ({
                                setSearchTerm((e.target.value))
                            }}
                            required/>
-                    <button className="search-btn" type="submit">
+                    <button className="btn" type="submit">
                         <span>Search</span>
                     </button>
                 </form>
@@ -56,7 +57,13 @@ const Employees = ({
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee) => (
+            {employees.filter((employee => {
+                        if (searchTerm === "") {
+                            return employee;
+                        } else if (employee.first_name.includes(searchTerm)) {
+                            return employee;
+                        }
+                    })).map((employee) => (
                 <Employee
                   key={employee.id}
                   token={token}
