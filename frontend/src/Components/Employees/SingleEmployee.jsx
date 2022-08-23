@@ -4,6 +4,8 @@ import Spinner from "../Layout/Spinner";
 import { FaEdit } from "react-icons/fa";
 import "./SingleEmployee.css";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
+import { GiSkills } from "react-icons/gi";
+import { AiFillLock, AiFillUnlock } from "react-icons/ai";
 
 const SingleEmployee = ({
   employee,
@@ -36,19 +38,22 @@ const SingleEmployee = ({
         <div className="profile-image">
           <img src={picture} alt="Single Profile" />
           <div className="btns">
+            <button className="btn">
+              <GiSkills />
+            </button>
             <button
               className="btn edit-btn"
               onClick={() => showEditEmployeePopup(employee)}
             >
               <FaEdit />
             </button>
+
             <button
               className={status === 1 ? "btn delete-btn" : "btn add-btn"}
               onClick={() => showDeleteEmployeePopup(employee)}
             >
-              {status === 1 ? "Deactivate" : "Activate"}
+              {status === 1 ? <AiFillLock/> : <AiFillUnlock/>}
             </button>
-            <button className="btn eval-btn"><FaEdit />Evaluate</button>
           </div>
         </div>
         <div className="prof">

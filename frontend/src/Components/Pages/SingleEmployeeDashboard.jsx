@@ -5,12 +5,14 @@ import SingleEmployee from "../Employees/SingleEmployee";
 import EditEmployeeForm from "../Employees/EditEmployeeForm";
 import DeleteEmployeeAlert from "../Employees/DeleteEmployeeAlert";
 import EditAdminForm from "../Admins/EditAdminForm";
+import AssignSkillsForm from "../Employees/AssignSkillForm";
 
 const SingleEmployeeDashboard = ({
   employee,
   loadingEmployee,
   getEmployee,
   empTeam,
+  skills,
   token,
 }) => {
   const { email } = useParams();
@@ -88,7 +90,17 @@ const SingleEmployeeDashboard = ({
               }
           />
       )}
+      <Popup
+        // show={ showDeleteEmployeeForm}
+        // setShow={setShowDeleteEmployeeForm }
+        component={ 
+          <AssignSkillsForm
+          token={token}
+              skills={skills}
+            />
+         } />
     </>
+    
   );
 };
 

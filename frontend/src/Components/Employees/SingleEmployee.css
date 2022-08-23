@@ -11,7 +11,7 @@
     flex-direction: column;   
 
 }
-.profile-image img{
+.whole-single-container .profile-image img{
     width: 100%;
 }
 .btns button{
@@ -47,39 +47,10 @@
     }
     .profile-image img{
         width: auto;
-        border-radius: 50%;
     }
     .prof h2{
         margin-top: 20px;
     }
   }
   
-  @media (max-width: 950px) {
-    .whole-single-container{
-        grid-template-columns: auto;
-    }
-    .profile-image img{
-        width: auto;
-    }
-    .prof h2{
-        margin-top: 20px;
-    }
-  }
-  
-  @media (max-width: 700px) {
-    .whole-single-container{
-        grid-template-columns: auto;
-    }
-    .profile-image img{
-        width: auto;
-    }
-  }
-  
-  @media (max-width: 450px) {
-    .whole-single-container{
-        grid-template-columns: auto;
-    }
-    .profile-image img{
-        width: auto;
-    }
-    }
+ 
