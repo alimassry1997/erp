@@ -8,6 +8,39 @@
   height: 10px;
   border-radius: 50% !important;
 }
+.pseudo-search {
+  display: inline;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  padding: 10px 15px;
+  transition: background-color 0.5 ease-in-out;
+}
+.tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.tools .form-group, .tools .form-group div, .tools .form-group input{
+  margin-bottom: 0;
+}
+
+.search-bar input {
+  border: 1px solid #e6e6e6;
+  background-color: transparent;
+  margin-bottom: 0 !important;
+}
+/* .search-bar .form-group .form-input-div .form-valid{
+    border: 1px solid #e6e6e6;
+  } */
+
+
+@media(max-width: 900px) {
+  .employees-dashboard .header {
+    display: block;
+  }
+}
 
 @media (max-width: 1100px) {
   /* Force table to not be like tables anymore */
