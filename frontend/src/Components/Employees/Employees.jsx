@@ -69,38 +69,39 @@ const Employees = ({
           </div>
         </div>
         <div className="users-container">
-          {employees.filter((employee) => {
+          {employees
+            .filter((employee) => {
               if (searchTerm === "") {
-                  return employee;
+                return employee;
               } else if (employee.first_name.includes(searchTerm)) {
-                  return employee;
+                return employee;
               }
-          })
-              .filter((employee) => {
-                  if (statusTerm == 0) {
-                      return employee.status == 0;
-                  } else if (statusTerm == 1) {
-                      return employee.status == 1;
-                  } else {
-                      return employee;
-                  }
-              })
-              ..map((employee) => (
-            <Employee
-              key={employee.id}
-              token={token}
-              image={employee.picture}
-              firstName={employee.first_name}
-              lastName={employee.last_name}
-              email={employee.email}
-              phoneNumber={employee.phone_number}
-              status={employee.status}
-              showEditEmployeePopup={showEditEmployeePopup}
-              showDeleteEmployeePopup={showDeleteEmployeePopup}
-              employee={employee}
-              teamName={employee.team.name}
-            />
-          ))}
+            })
+            .filter((employee) => {
+              if (statusTerm === 0) {
+                return employee.status === 0;
+              } else if (statusTerm === 1) {
+                return employee.status === 1;
+              } else {
+                return employee;
+              }
+            })
+            .map((employee) => (
+              <Employee
+                key={employee.id}
+                token={token}
+                image={employee.picture}
+                firstName={employee.first_name}
+                lastName={employee.last_name}
+                email={employee.email}
+                phoneNumber={employee.phone_number}
+                status={employee.status}
+                showEditEmployeePopup={showEditEmployeePopup}
+                showDeleteEmployeePopup={showDeleteEmployeePopup}
+                employee={employee}
+                teamName={employee.team.name}
+              />
+            ))}
         </div>
       </div>
     );
