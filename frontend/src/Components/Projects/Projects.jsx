@@ -52,7 +52,7 @@ function Projects({ projects, loadingProjects, showAddProjectFormPopup }) {
             </div>
           <div>
             <button
-              className="btn dark-btn"
+              className="btn add-btn"
               onClick={() => showAddProjectFormPopup()}
             >
               <FaPlusSquare />
