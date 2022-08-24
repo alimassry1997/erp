@@ -214,8 +214,7 @@ const EditEmployeeForm = ({
               type="submit"
               className="btn btn-block"
               value="Edit Employee"
-            />
-            
+            />            
           </div>
         </form>
       </section>

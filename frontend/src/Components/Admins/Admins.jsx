@@ -30,6 +30,7 @@ const Admins = ({
     return <Spinner />;
   } else {
     return (
+      
       <div className="dashboard employees-dashboard">
         <div className="header">
           <h2>

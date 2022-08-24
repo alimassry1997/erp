@@ -6,6 +6,7 @@ import Project from "./Project";
 import { useState } from "react";
 import Select from "react-select";
 
+
 function Projects({ projects, loadingProjects, showAddProjectFormPopup }) {
   const [searchTerm, setSearchTerm] = useState([]);
   const [statusTerm, setStatusTerm] = useState(0);
