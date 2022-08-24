@@ -428,6 +428,9 @@ const App = () => {
                   loadingEmployee={loadingEmployee}
                   token={token}
                   empTeam={empTeam}
+                  skills={skills}
+                  loadingSkills={loadingSkills}
+                  fetchSkills={fetchSkills}
                 />
               }
             />

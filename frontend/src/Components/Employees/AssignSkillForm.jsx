@@ -1,146 +1,139 @@
 import { useEffect, useState } from "react";
-import { FaUsersCog } from "react-icons/fa";
 import axios from "axios";
-import Select from "react-select";
+import "./AssignSkillForm.css";
 import makeAnimated from "react-select/animated";
+import { GiSkills } from "react-icons/gi";
+import Select from "react-select";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
+import DiscreteSlider from "../Layout/DiscreteSlider";
 
-const AssignSkillsForm = ({
-  
+const AssignSkillForm = ({
+  token,
+  skills,
+  loadingSkills,
+  reloadEmployee,
+  setReloadEmployee,
+  fetchSkills,
+  assignEmployee,
 }) => {
-  // const { name: teamName, slug, project_slug } = assignTeam;
-  // const [success, setSuccess] = useState("");
-  // const [errorMessage, setErrorMessage] = useState("");
-  // const [selectErrors, setSelectErrors] = useState("");
-  // const [optionSelected, setOptionSelected] = useState([]);
-  // let canSubmit = false;
-  // const animatedComponents = makeAnimated();
-  // const rolesList = [];
+  const { first_name, last_name, email } = assignEmployee;
+  const [success, setSuccess] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [selectErrors, setSelectErrors] = useState("");
+  const [optionSelected, setOptionSelected] = useState("");
+  const [show, setShow] = useState(false);
+  const [score, setScore] = useState(1);
+  let canSubmit = false;
+  const animatedComponents = makeAnimated();
+  const skillsList = [];
+  const onChange = (item) => {
+    setOptionSelected(item);
+    setShow(true);
+  };
 
-  // const onChange = (index, item, user_id) => {
-  //   const { value } = item;
-  //   const values = [...optionSelected];
-  //   const isFound = values.some((assign) => {
-  //     return assign.id === index;
-  //   });
-  //   if (isFound) {
-  //     values[index].user_id = user_id;
-  //     values[index].role = value;
-  //   } else {
-  //     values.push({ id: index, user_id, role: value });
-  //   }
-  //   setOptionSelected(values);
-  // };
+  if (!loadingSkills) {
+    for (let i = 0; i < skills.length; i++) {
+      skillsList.push({
+        value: skills[i].id,
+        label: capitalizeFirstLetter(skills[i].name),
+      });
+    }
+  }
 
-  // if (!loadingRoles) {
-  //   for (let i = 0; i < roles.length; i++) {
-  //     rolesList.push({
-  //       value: roles[i].id,
-  //       label: capitalizeFirstLetter(roles[i].name),
-  //     });
-  //   }
-  // }
+  // Submission Function
+  const evaluate = async (userData) => {
+    try {
+      const response = await axios.post(
+        `/api/users/evaluation/${email}`,
+        userData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (response.data) {
+        const { data: message } = response;
+        setReloadEmployee(!reloadEmployee);
+        return message;
+      }
+    } catch (err) {
+      setErrorMessage(err.response.data);
+      throw new Error();
+    }
+  };
 
-  // // Submission Function
-  // const AssignEmployees = async (userData) => {
-  //   try {
-  //     const response = await axios.post(
-  //       `/api/projects/assignments/${project_slug}`,
-  //       userData,
-  //       {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       }
-  //     );
-  //     if (response.data) {
-  //       const { data: message } = response;
-  //       return message;
-  //     }
-  //   } catch (err) {
-  //     setErrorMessage(err.response.data);
-  //     throw new Error();
-  //   }
-  // };
-
-  // // On Submit Action
-  // const onSubmit = async (a) => {
-  //   canSubmit = true;
-  //   setSelectErrors("");
-  //   a.preventDefault();
-  //   if (optionSelected.length !== relatedEmployeesTeam.length) {
-  //     canSubmit = false;
-  //     setSelectErrors("Please Assign Employees");
-  //   }
-  //   if (canSubmit) {
-  //     try {
-  //       const data = new FormData();
-  //       data.append("assignments", JSON.stringify(optionSelected));
-  //       const message = await AssignEmployees(data);
-  //       setSuccess(message.message);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   }
-  // };
+  // On Submit Action
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (optionSelected === "") {
+      canSubmit = false;
+      setSelectErrors("Select a skill");
+    } else {
+      canSubmit = true;
+      setSelectErrors("");
+      if (canSubmit) {
+        try {
+          const data = new FormData();
+          data.append("score", score.toString());
+          data.append("skill", optionSelected.value.toString());
+          const message = await evaluate(data);
+          setSuccess(message.message);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  };
 
   // Reset Messages after 5 seconds
-  // useEffect(() => {
-  //   getTeam(slug);
-  //   if (errorMessage) {
-  //     setTimeout(() => {
-  //       setErrorMessage("");
-  //     }, 5000);
-  //   }
-  //   if (success) {
-  //     setTimeout(() => {
-  //       setSuccess("");
-  //     }, 5000);
-  //   }
-  // }, [errorMessage, success]);
+  useEffect(() => {
+    fetchSkills();
+    if (errorMessage || selectErrors) {
+      setTimeout(() => {
+        setErrorMessage("");
+        setSelectErrors("");
+      }, 5000);
+    }
+    if (success) {
+      setTimeout(() => {
+        setSuccess("");
+      }, 5000);
+    }
+  }, [errorMessage, success, selectErrors]);
 
   return (
-      <div className="form-section add-team-form">
-          <h1>HIII</h1>
-      {/* <section className="heading">
+    <div className="form-section add-team-form">
+      <section className="heading">
         <h2>
-          <FaUsersCog /> {teamName}
+          <GiSkills /> {first_name} {last_name}
         </h2>
-        <p>Assign Roles to this team's employees</p>
+        <p>Assign Skills to this employee</p>
         {success && <p className="succeed-msg">{success}</p>}
         {errorMessage && <p className="error-msg">{errorMessage}</p>}
         {selectErrors && <p className="error-msg">{selectErrors}</p>}
       </section>
-
       <section className="form">
+        <Select
+          id={`select-skills`}
+          components={animatedComponents}
+          onChange={(item) => onChange(item)}
+          options={skillsList}
+          isSearchable
+          isLoading={loadingSkills}
+          closeMenuOnSelect={true}
+        />
+        {show && (
+          <div className="rating">
+            <DiscreteSlider score={score} setScore={setScore} />
+          </div>
+        )}
         <form onSubmit={onSubmit}>
-          {!loadingTeam &&
-            relatedEmployeesTeam.map((employee, index) => (
-              <div key={employee.id} className="form-group">
-                <label htmlFor={`select-${index + 1}`} className="form-label">
-                  {employee.first_name} {employee.last_name}:
-                </label>
-                <Select
-                  id={`select-${index + 1}`}
-                  components={animatedComponents}
-                  onChange={(item) => onChange(index, item, employee.id)}
-                  options={rolesList}
-                  isSearchable
-                  isLoading={loadingRoles}
-                  closeMenuOnSelect={true}
-                />
-              </div>
-            ))}
-
           <div className="form-group">
-            <input
-              type="submit"
-              className="btn btn-block"
-              value="Assign Roles"
-            />
+            <input type="submit" className="btn btn-block" value="Evaluate" />
           </div>
         </form>
-      </section> */}
+      </section>
     </div>
   );
 };
 
-export default AssignSkillsForm;
+export default AssignSkillForm;

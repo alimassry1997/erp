@@ -13,6 +13,7 @@ const SingleEmployee = ({
   getEmployee,
   empTeam,
   showEditEmployeePopup,
+  showAssignEmployeePopup,
   showDeleteEmployeePopup,
 }) => {
   const { email } = useParams();
@@ -38,7 +39,10 @@ const SingleEmployee = ({
         <div className="profile-image">
           <img src={picture} alt="Single Profile" />
           <div className="btns">
-            <button className="btn">
+            <button
+              className="btn"
+              onClick={() => showAssignEmployeePopup(employee)}
+            >
               <GiSkills />
             </button>
             <button
@@ -52,7 +56,7 @@ const SingleEmployee = ({
               className={status === 1 ? "btn delete-btn" : "btn add-btn"}
               onClick={() => showDeleteEmployeePopup(employee)}
             >
-              {status === 1 ? <AiFillLock/> : <AiFillUnlock/>}
+              {status === 1 ? <AiFillLock /> : <AiFillUnlock />}
             </button>
           </div>
         </div>
