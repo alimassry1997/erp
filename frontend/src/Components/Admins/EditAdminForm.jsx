@@ -25,6 +25,8 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
     setPic({ image: e.target.files[0] });
   };
 
+
+  
   // On Change for controlled fields
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -48,6 +50,8 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
       throw new Error();
     }
   };
+
+  const string = "placeholder";
 
   // On Submit Action
   const onSubmit = async (a) => {
@@ -276,7 +280,7 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
             placeholder="Upload your Image"
           ></input>
           <div className="form-group">
-          <img className="popup-picture" src={picture.includes()
+          <img className="popup-picture" src={picture.includes(string)
                 ? picture
                 : `${process.env.REACT_APP_BACKEND_URL}${picture}`} width="80px" alt="User Image"/>
             <input type="submit" className="btn btn-block" value="Edit Admin" />

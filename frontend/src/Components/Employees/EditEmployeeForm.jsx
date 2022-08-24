@@ -23,6 +23,8 @@ const EditEmployeeForm = ({
     setPic({ image: e.target.files[0] });
   };
 
+  const string = "placeholder";
+
   // On Change for controlled fields
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -207,7 +209,7 @@ const EditEmployeeForm = ({
           ></input>
           
           <div className="form-group">
-          <img className="popup-picture" src={picture.includes()
+          <img className="popup-picture" src={picture.includes(string)
                 ? picture
                 : `${process.env.REACT_APP_BACKEND_URL}${picture}`} width="80px" alt="User Image"/>
             <input
