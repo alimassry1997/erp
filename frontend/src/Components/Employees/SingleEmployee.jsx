@@ -19,6 +19,7 @@ const SingleEmployee = ({
   useEffect(() => {
     getEmployee(email);
   }, [email]);
+  const string = "placeholder";
 
   if (loadingEmployee) {
     return <Spinner />;
@@ -36,7 +37,7 @@ const SingleEmployee = ({
     return (
       <div className="whole-single-container">
         <div className="profile-image">
-          <img src={picture.includes()
+          <img src={picture.includes(string)
                 ? picture
                 : `${process.env.REACT_APP_BACKEND_URL}${picture}`} alt="Single Profile" />
           <div className="btns">
