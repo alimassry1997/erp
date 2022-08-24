@@ -15,6 +15,7 @@ const SingleEmployeeDashboard = ({
   fetchSkills,
   loadingSkills,
   token,
+  employeeSkills,
 }) => {
   const { email } = useParams();
 
@@ -70,6 +71,7 @@ const SingleEmployeeDashboard = ({
         loadingEmployee={loadingEmployee}
         getEmployee={getEmployee}
         empTeam={empTeam}
+        employeeSkills={employeeSkills}
         showEditEmployeePopup={showEditEmployeePopup}
         showDeleteEmployeePopup={showDeleteEmployeePopup}
         showAssignEmployeePopup={showAssignEmployeePopup}

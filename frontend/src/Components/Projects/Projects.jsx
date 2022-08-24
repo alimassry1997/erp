@@ -6,7 +6,6 @@ import Project from "./Project";
 import { useState } from "react";
 import Select from "react-select";
 
-
 function Projects({ projects, loadingProjects, showAddProjectFormPopup }) {
   const [searchTerm, setSearchTerm] = useState([]);
   const [statusTerm, setStatusTerm] = useState(0);
@@ -49,48 +48,52 @@ function Projects({ projects, loadingProjects, showAddProjectFormPopup }) {
               </div>
             </div>
             <div className="search-bar">
-              <Select onChange={(item) => onChange(item)} options={options} />
+              <Select
+                onChange={(item) => onChange(item)}
+                options={options}
+                defaultValue={{ value: 1, label: "Active" }}
+              />
             </div>
-          <div>
-            <button
-              className="btn add-btn"
-              onClick={() => showAddProjectFormPopup()}
-            >
-              <FaPlusSquare />
+            <div>
+              <button
+                className="btn add-btn"
+                onClick={() => showAddProjectFormPopup()}
+              >
+                <FaPlusSquare />
               </button>
-              </div>
+            </div>
           </div>
         </div>
         <div className="projects-container">
-          {projects.filter((project) => {
-                  if (searchTerm === "") {
-                    return project;
-                  } else if (project.name.includes(searchTerm)) {
-                    return project;
-                  }
-                })
-                .filter((project) => {
-                  if (statusTerm == 0) {
-                    return project.status == 0;
-                  } else if (statusTerm == 1) {
-                    return project.status == 1;
-                  } else {
-                    return project;
-                  }
-                })
-            
-            
+          {projects
+            .filter((project) => {
+              if (searchTerm === "") {
+                return project;
+              } else if (project.name.includes(searchTerm)) {
+                return project;
+              }
+            })
+            .filter((project) => {
+              if (statusTerm === 0) {
+                return project.status === 0;
+              } else if (statusTerm === 1) {
+                return project.status === 1;
+              } else {
+                return project;
+              }
+            })
+
             .map((project) => (
-            <Project
-              key={project.id}
-              name={project.name}
-              slug={project.slug}
-              status={project.status}
-              finished_at={project.finished_at}
-              created_at={project.created_at}
-              teams_count={project.teams_count}
-            />
-          ))}
+              <Project
+                key={project.id}
+                name={project.name}
+                slug={project.slug}
+                status={project.status}
+                finished_at={project.finished_at}
+                created_at={project.created_at}
+                teams_count={project.teams_count}
+              />
+            ))}
         </div>
       </div>
     );

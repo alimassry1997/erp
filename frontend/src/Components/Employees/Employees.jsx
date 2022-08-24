@@ -57,7 +57,11 @@ const Employees = ({
               </div>
             </div>
             <div className="search-bar">
-              <Select onChange={(item) => onChange(item)} options={options} />
+              <Select
+                defaultValue={{ value: 1, label: "Active" }}
+                onChange={(item) => onChange(item)}
+                options={options}
+              />
             </div>
 
             <button

@@ -64,9 +64,15 @@ class UserController extends Controller
      */
     public function show(User $user): JsonResponse
     {
+        $last_skills = [];
+        foreach ($user->skills as $skill) {
+            $last_skills[] = $skill->kpi->latest()->first();
+        }
+        $unique_skills = array_unique($last_skills);
         return response()->json([
             "team" => $user->team->users->count(),
             "user" => $user,
+            "skills" => $unique_skills,
         ]);
     }
 

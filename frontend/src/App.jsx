@@ -62,6 +62,7 @@ const App = () => {
   const [loadingEmployee, setLoadingEmployee] = useState(true);
   const [employee, setEmployee] = useState([]);
   const [empTeam, setEmpTeam] = useState([]);
+  const [employeeSkills, setEmployeeSkills] = useState([]);
 
   /**
    * Employees States
@@ -281,9 +282,10 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { user, team },
+        data: { user, team, skills },
       } = response;
       setEmployee(user);
+      setEmployeeSkills(skills);
       setEmpTeam(team);
       document.title = `${capitalizeFirstLetter(
         user.first_name
@@ -428,6 +430,7 @@ const App = () => {
                   loadingEmployee={loadingEmployee}
                   token={token}
                   empTeam={empTeam}
+                  employeeSkills={employeeSkills}
                   skills={skills}
                   loadingSkills={loadingSkills}
                   fetchSkills={fetchSkills}
