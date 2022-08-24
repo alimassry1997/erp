@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Skill;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -227,32 +228,47 @@ class UserController extends Controller
         ]);
     }
 
-    // public function store_skills(Request $request): JsonResponse
-    // {
-    //     $request->validate([
-    //         "name" => "required|unique:skills",
-    //     ]);
-    //     $inputs["name"] = $request["name"];
-    //     $inputs["slug"] = Str::slug($request["name"], "-");
-    //     $skill = Skill::create($inputs);
-    //     if ($request["user"]) {
-    //         $users = json_decode(
-    //             $request["user"],
-    //             false,
-    //             512,
-    //             JSON_THROW_ON_ERROR
-    //         );
-    //         $id_user = [];
-    //         foreach ($users as $user) {
-    //             $id_user[] = $user->value;
-    //         }
-    //         $employees_database = User::findOrFail($id_user);
-    //         $skill->user()->attach($employees_database);
-    //     }
-    //     return response()->json([
-    //         "message" => "Skill was successfully Created",
-    //     ]);
-    // }
+    public function evaluate(User $user, Request $request): JsonResponse
+    {
+        $request->validate([
+            "score" => "required",
+            "skill" => "required",
+        ]);
+        $inputs["score"] = $request["score"];
+        $inputs["skill"] = $request["skill"];
+        $skill_created_date = "";
+        if ($user->skills()->exists()) {
+            foreach ($user->skills as $skill) {
+                $skill_created_date = $skill->kpi
+                    ->where("skill_user.skill_id", $inputs["skill"])
+                    ->latest()
+                    ->first();
+            }
+            $check_month = new Carbon($skill_created_date->created_at);
+            if ($check_month->diffInMonths() < 1) {
+                return response()->json(
+                    [
+                        "message" => "User has been evaluated for this month.",
+                    ],
+                    400
+                );
+            }
+
+            $user
+                ->skills()
+                ->attach($inputs["skill"], ["score" => $inputs["score"]]);
+            return response()->json([
+                "message" => "User was Evaluated",
+            ]);
+        }
+        $user
+            ->skills()
+            ->attach($inputs["skill"], ["score" => $inputs["score"]]);
+
+        return response()->json([
+            "message" => "User was Evaluated",
+        ]);
+    }
 
     // public function read_skills(User $user,Request $request): JsonResponse
     // {

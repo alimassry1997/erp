@@ -116,6 +116,8 @@ const SingleEmployeeDashboard = ({
               loadingSkills={loadingSkills}
               fetchSkills={fetchSkills}
               assignEmployee={assignEmployee}
+              reloadEmployee={reloadEmployee}
+              setReloadEmployee={setReloadEmployee}
             />
           }
         />

@@ -44,7 +44,7 @@ const AssignSkillForm = ({
   const evaluate = async (userData) => {
     try {
       const response = await axios.post(
-        `/api/users/evaluation/${email}`,
+        `/api/employees/evaluation/${email}`,
         userData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -56,7 +56,7 @@ const AssignSkillForm = ({
         return message;
       }
     } catch (err) {
-      setErrorMessage(err.response.data);
+      setErrorMessage(err.response.data.message);
       throw new Error();
     }
   };

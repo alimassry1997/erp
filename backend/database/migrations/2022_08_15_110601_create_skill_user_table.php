@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->id();
             $table->foreignId("skill_id")->constrained();
             $table->foreignId("user_id")->constrained();
-            // $table->string("feedback");
             $table->integer("score");
             $table->timestamps();
         });

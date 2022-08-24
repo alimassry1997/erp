@@ -82,11 +82,11 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
      */
     Route::get("/employees", [UserController::class, "index"]);
     Route::post("/employees", [UserController::class, "store"]);
-    Route::post("/employees/skills/{employee}", [
+    Route::post("/employees/evaluation/{user}", [
         UserController::class,
-        "store_skills",
+        "evaluate",
     ]);
-    Route::get("/employees/skills/{employee}", [
+    Route::get("/employees/skills/{user}", [
         UserController::class,
         "read_skills",
     ]);

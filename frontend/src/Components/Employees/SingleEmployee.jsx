@@ -36,12 +36,17 @@ const SingleEmployee = ({
       system_role_id,
     } = employee;
     return (
-      <div className="whole-single-container">
+      <div className="profile-container">
         <div className="profile-image">
-          <img src={picture.includes(string)
+          <img
+            src={
+              picture.includes(string)
                 ? picture
-                : `${process.env.REACT_APP_BACKEND_URL}${picture}`} alt="Single Profile" />
-          <div className="btns">
+                : `${process.env.REACT_APP_BACKEND_URL}${picture}`
+            }
+            alt="Single Profile"
+          />
+          <div className="profile-buttons">
             <button
               className="btn"
               onClick={() => showAssignEmployeePopup(employee)}
@@ -63,7 +68,7 @@ const SingleEmployee = ({
             </button>
           </div>
         </div>
-        <div className="prof">
+        <div className="profile-content">
           <div className="block">
             <h2>Personal Information:</h2>
             <div className="the-form">
@@ -79,23 +84,22 @@ const SingleEmployee = ({
               {phone_number}
             </div>{" "}
           </div>
-          <div>
-            <div className="block-2">
-              <h2>Work Description:</h2>
-              <div className="the-form">
-                <span> Team Name: </span>
-                {capitalizeFirstLetter(name)}
-              </div>
-              <div className="the-form">
-                <span> Post: </span>
-                {system_role_id === 2 ? "Employee" : "Admin"}
-              </div>
-              <div className="the-form">
-                <span> Team Size: </span>
-                {empTeam}
-              </div>
+          <div className="block-2">
+            <h2>Work Description:</h2>
+            <div className="the-form">
+              <span> Team Name: </span>
+              {capitalizeFirstLetter(name)}
+            </div>
+            <div className="the-form">
+              <span> Post: </span>
+              {system_role_id === 2 ? "Employee" : "Admin"}
+            </div>
+            <div className="the-form">
+              <span> Team Size: </span>
+              {empTeam}
             </div>
           </div>
+          <div className="block-3"></div>
         </div>
       </div>
     );
