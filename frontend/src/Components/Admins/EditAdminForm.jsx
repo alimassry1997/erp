@@ -19,6 +19,7 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
     phone_number,
     password,
     password_confirmation,
+    picture,
   } = formData;
   const handleImage = (e) => {
     setPic({ image: e.target.files[0] });
@@ -275,6 +276,9 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
             placeholder="Upload your Image"
           ></input>
           <div className="form-group">
+          <img className="popup-picture" src={picture.includes()
+                ? picture
+                : `${process.env.REACT_APP_BACKEND_URL}${picture}`} width="80px" alt="User Image"/>
             <input type="submit" className="btn btn-block" value="Edit Admin" />
           </div>
         </form>

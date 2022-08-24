@@ -37,7 +37,9 @@ const SingleEmployee = ({
     return (
       <div className="whole-single-container">
         <div className="profile-image">
-          <img src={picture} alt="Single Profile" />
+          <img src={picture.includes()
+                ? picture
+                : `${process.env.REACT_APP_BACKEND_URL}${picture}`} alt="Single Profile" />
           <div className="btns">
             <button
               className="btn"

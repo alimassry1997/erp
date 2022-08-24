@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineTeam } from "react-icons/ai";
 import axios from "axios";
 
+
 const EditEmployeeForm = ({
   token,
   setReloadEmployees,
@@ -16,7 +17,7 @@ const EditEmployeeForm = ({
   const [uniqueEmail, setUniqueEmail] = useState("");
 
   let canSubmit = false;
-  const { first_name, last_name, email, phone_number } = formData;
+  const { first_name, last_name, email, phone_number, picture } = formData;
 
   const handleImage = (e) => {
     setPic({ image: e.target.files[0] });
@@ -204,12 +205,16 @@ const EditEmployeeForm = ({
             onChange={handleImage}
             placeholder="Upload your Image"
           ></input>
+          
           <div className="form-group">
+          <img className="popup-picture" src={picture.includes()
+                ? picture
+                : `${process.env.REACT_APP_BACKEND_URL}${picture}`} width="80px" alt="User Image"/>
             <input
               type="submit"
               className="btn btn-block"
               value="Edit Employee"
-            />
+            />            
           </div>
         </form>
       </section>

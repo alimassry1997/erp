@@ -7,7 +7,7 @@ const ProjectStatus = ({
   if (status === 0) {
     return (
       <button
-        className="btn add-btn"
+        className="btn dark-btn"
         onClick={() =>
           showStatusProjectFormPopup({ status, name, project_slug })
         }

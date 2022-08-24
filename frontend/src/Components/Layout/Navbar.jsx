@@ -14,7 +14,9 @@ const Navbar = ({ auth: { user }, setAuth }) => {
     <nav>
       <div>
         <Link to={`/employees/${email}`}>
-          <img src={picture} alt="profile image" />
+          <img src={picture.includes()
+                ? picture
+                : `${process.env.REACT_APP_BACKEND_URL}${picture}`} alt="profile image" />
           <p>{first_name}</p>
         </Link>
       </div>
