@@ -6,6 +6,8 @@ import { FaPlusSquare } from "react-icons/fa";
 import { useState } from "react";
 import Select from "react-select";
 
+
+
 const Employees = ({
   employees,
   token,
@@ -44,7 +46,7 @@ const Employees = ({
                 <div>
                   <AiOutlineSearch />
                 </div>
-                <input
+                {/* <input
                   type="search"
                   name="search"
                   placeholder="Search..."
@@ -53,9 +55,11 @@ const Employees = ({
                   }}
                   required
                   className="form-valid"
-                />
+                /> */}
+                
               </div>
             </div>
+            
             <div className="search-bar">
               <Select onChange={(item) => onChange(item)} options={options} />
             </div>

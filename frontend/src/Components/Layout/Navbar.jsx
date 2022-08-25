@@ -4,7 +4,7 @@ import "./Navbar.css";
 
 const Navbar = ({ auth: { user }, setAuth }) => {
   const navigate = useNavigate();
-  const string = "placeholder";
+  const string = "placeholder"; 
   const { first_name, email, picture } = user;
   const onLogout = () => {
     localStorage.removeItem("user");
