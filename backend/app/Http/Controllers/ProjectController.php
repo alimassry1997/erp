@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
 use App\Models\Project;
 use App\Models\Team;
 use App\Models\User;
+use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -65,9 +67,56 @@ class ProjectController extends Controller
      */
     public function show(Project $project): JsonResponse
     {
+        $roles = [];
+        $assigned_employees = $project->users;
+        foreach ($assigned_employees as $employee) {
+            foreach ($employee->roles as $role) {
+                if ($role->pivot->project_id === $project->id) {
+                    $roles[] = $role->name;
+                }
+            }
+        }
+        $fetched_teams = DB::table("users")
+            ->select("users.team_id")
+            ->join("teams", "users.team_id", "=", "teams.id")
+            ->join("project_team", "teams.id", "=", "project_team.team_id")
+            ->where("project_team.project_id", $project->id)
+            ->whereNotIn(
+                "users.id",
+                DB::table("assignments")
+                    ->select("user_id")
+                    ->where("assignments.project_id", $project->id)
+                    ->where("assignments.end_date", null)
+                    ->pluck("user_id")
+            )
+            ->distinct()
+            ->pluck("users.team_id");
+        $related_teams = Team::findOrFail($fetched_teams);
         return response()->json([
             "project" => $project,
-            "related_teams" => $project->teams,
+            "related_teams" => $related_teams,
+            "assigned_employees" => $assigned_employees,
+            "roles" => $roles,
+        ]);
+    }
+
+    /**
+     * Get A specific teams according to their project
+     * @param Project $project
+     * @return JsonResponse
+     */
+    public function filterByProject(Project $project): JsonResponse
+    {
+        return response()->json([
+            "teams" => Team::whereNotIn(
+                "teams.id",
+                $project
+                    ->teams()
+                    ->pluck("teams.id")
+                    ->toArray()
+            )
+                ->whereNotIn("teams.id", [1, 2])
+                ->get(),
         ]);
     }
 
@@ -104,7 +153,7 @@ class ProjectController extends Controller
         $request->validate([
             "assignments" => ["required", "string"],
         ]);
-        
+        $count = 0;
         $assignments = json_decode(
             $request["assignments"],
             false,
@@ -120,13 +169,11 @@ class ProjectController extends Controller
             $employees[] = $assignment->user_id;
         }
         $employees_database = User::findOrFail($employees);
-        $project->users()->attach($employees_database, ["role_id" => 1]);
         foreach ($employees_database as $employee) {
-            $count = 0;
-            foreach ($employee->projects as $proj) {
-                $proj->pivot->update(["role_id" => $roles[$count]]);
-                $count++;
-            }
+            $project
+                ->users()
+                ->attach($employee->id, ["role_id" => $roles[$count]]);
+            $count++;
         }
         return response()->json([
             "message" => "Assignment was successful",
@@ -150,8 +197,23 @@ class ProjectController extends Controller
         $inputs["name"] = $request["name"];
         $inputs["slug"] = Str::slug($request["name"], "-");
         $project->update($inputs);
+        if ($request["teams"]) {
+            $teams = json_decode(
+                $request["teams"],
+                false,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+            $id_teams = [];
+            foreach ($teams as $team) {
+                $id_teams[] = $team->value;
+            }
+            $teams_database = Team::findOrFail($id_teams);
+            $project->teams()->attach($teams_database);
+        }
         return response()->json([
             "message" => "Project Successfully Updated",
+            "slug" => $inputs["slug"],
         ]);
     }
 

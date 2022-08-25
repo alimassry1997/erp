@@ -1,35 +1,39 @@
 import { useEffect, useState } from "react";
 import { AiOutlineProject } from "react-icons/ai";
 import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 import MultiSelect from "../Layout/MultiSelect";
 
-const AddProjectForm = ({
+const EditProjectForm = ({
   token,
-  teams,
+  setReloadProject,
+  reloadProject,
+  editProject,
   loadingTeams,
-  fetchTeams,
-  setReloadProjects,
-  reloadProjects,
+  setTeamsList,
+  teamsList,
+  setLoadingTeams,
+  getTeams,
 }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-  });
+  const [formData, setFormData] = useState(editProject);
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [optionSelected, setOptionSelected] = useState([]);
+  const [newSlug, setNewSlug] = useState("");
+
   let canSubmit = false;
-  const { name } = formData;
-  const teamsList = [];
+  let teams = [];
+  const { name, slug } = formData;
+  const navigate = useNavigate();
+  const location = useLocation();
 
   if (!loadingTeams) {
-    for (let i = 0; i < teams.length; i++) {
-      if (teams[i].users_count !== 0) {
-        teamsList.push({
-          value: teams[i].id,
-          label: teams[i].name,
-        });
-      }
+    for (let i = 0; i < teamsList.length; i++) {
+      teams.push({
+        value: teamsList[i].id,
+        label: teamsList[i].name,
+      });
     }
   }
 
@@ -42,9 +46,9 @@ const AddProjectForm = ({
   };
 
   // Submission Function
-  const AddNewProject = async (userData) => {
+  const EditTeam = async (userData) => {
     try {
-      const response = await axios.post("/api/projects/", userData, {
+      const response = await axios.post(`/api/projects/${slug}`, userData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data) {
@@ -66,12 +70,11 @@ const AddProjectForm = ({
         const data = new FormData();
         data.append("name", name);
         data.append("teams", JSON.stringify(optionSelected));
-        const message = await AddNewProject(data);
+        data.append("_method", "PUT");
+        const message = await EditTeam(data);
         setSuccess(message.message);
-        setReloadProjects(!reloadProjects);
-        setFormData({
-          name: "",
-        });
+        setNewSlug(message.slug);
+        setReloadProject(!reloadProject);
       } catch (err) {
         console.log(err);
       }
@@ -95,16 +98,17 @@ const AddProjectForm = ({
 
   // Reset Messages after 5 seconds
   useEffect(() => {
-    fetchTeams();
+    getTeams(slug, setLoadingTeams, setTeamsList);
     if (errorMessage) {
       setTimeout(() => {
         setErrorMessage("");
       }, 5000);
     }
     if (success) {
-      setTimeout(() => {
-        setSuccess("");
-      }, 5000);
+      setSuccess("");
+      if (location.pathname === `/projects/${slug}`) {
+        navigate(`/projects/${newSlug}`);
+      }
     }
   }, [errorMessage, success]);
 
@@ -112,13 +116,12 @@ const AddProjectForm = ({
     <div className="form-section add-team-form">
       <section className="heading">
         <h2>
-          <AiOutlineProject /> Add New Project
+          <AiOutlineProject /> Edit Project
         </h2>
         <p>Enter your information below</p>
         {success && <p className="succeed-msg">{success}</p>}
         {errorMessage && <p className="error-msg">{errorMessage}</p>}
       </section>
-
       <section className="form">
         <form onSubmit={onSubmit}>
           <div className="form-group">
@@ -130,16 +133,18 @@ const AddProjectForm = ({
               className={errors.name ? "error" : "form-valid"}
               name="name"
               id="name"
-              placeholder="Enter your project name"
+              placeholder="Enter your team name"
+              value={name}
               onChange={onChange}
             />
             <p>{errors.name}</p>
           </div>
           <label htmlFor="unassigned-select" className="form-label">
-            Assign teams
+            Assign a Team
           </label>
           <MultiSelect
-            options={teamsList}
+            id="unassigned-select"
+            options={teams}
             loading={loadingTeams}
             setSelectedOptions={setOptionSelected}
           />
@@ -147,7 +152,7 @@ const AddProjectForm = ({
             <input
               type="submit"
               className="btn btn-block"
-              value="Add New Project"
+              value="Edit Project"
             />
           </div>
         </form>
@@ -156,4 +161,4 @@ const AddProjectForm = ({
   );
 };
 
-export default AddProjectForm;
+export default EditProjectForm;

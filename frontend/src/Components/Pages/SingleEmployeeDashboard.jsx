@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Popup from "../Layout/Popup";
 import { useParams } from "react-router-dom";
 import SingleEmployee from "../Employees/SingleEmployee";
-import EditEmployeeForm from "../Employees/EditEmployeeForm";
 import DeleteEmployeeAlert from "../Employees/DeleteEmployeeAlert";
 import EditAdminForm from "../Admins/EditAdminForm";
 import AssignSkillsForm from "../Employees/AssignSkillForm";
@@ -13,21 +12,31 @@ const SingleEmployeeDashboard = ({
   getEmployee,
   empTeam,
   skills,
+  fetchSkills,
+  loadingSkills,
   token,
+  employeeSkills,
 }) => {
   const { email } = useParams();
+
+  /**
+   * Assign Employee Form State Popup
+   */
+  const [showAssignEmployeeForm, setShowAssignEmployeeForm] = useState(false);
+  const [assignEmployee, setAssignEmployee] = useState("");
+
   /**
    * Edit Employee Form State Popup
    */
   const [showEditEmployeeForm, setShowEditEmployeeForm] = useState(false);
   const [editAdmin, setEditAdmin] = useState("");
 
-  // /**
-  //  * Delete Employee Alert State Popup
-  //  */
+  /**
+   * Delete Employee Alert State Popup
+   */
   const [showDeleteEmployeeForm, setShowDeleteEmployeeForm] = useState(false);
   const [deleteEmployee, setDeleteEmployee] = useState("");
-  //
+
   /**
    * Refresh Employees Table after each add, edit and delete request
    */
@@ -36,13 +45,18 @@ const SingleEmployeeDashboard = ({
   /**
    * Popup Functions
    */
-  const showEditEmployeePopup = (project) => {
-    setEditAdmin(project);
+  const showEditEmployeePopup = (user) => {
+    setEditAdmin(user);
     setShowEditEmployeeForm(true);
   };
-  //
-  const showDeleteEmployeePopup = (project) => {
-    setDeleteEmployee(project);
+
+  const showAssignEmployeePopup = (user) => {
+    setAssignEmployee(user);
+    setShowAssignEmployeeForm(true);
+  };
+
+  const showDeleteEmployeePopup = (user) => {
+    setDeleteEmployee(user);
     setShowDeleteEmployeeForm(true);
   };
 
@@ -57,8 +71,10 @@ const SingleEmployeeDashboard = ({
         loadingEmployee={loadingEmployee}
         getEmployee={getEmployee}
         empTeam={empTeam}
+        employeeSkills={employeeSkills}
         showEditEmployeePopup={showEditEmployeePopup}
         showDeleteEmployeePopup={showDeleteEmployeePopup}
+        showAssignEmployeePopup={showAssignEmployeePopup}
       />
       {/* Employees Edit Form Popup */}
       {showEditEmployeeForm && (
@@ -75,32 +91,40 @@ const SingleEmployeeDashboard = ({
           }
         />
       )}
-      {/*/!* Employees Delete Form Popup *!/*/}
+      {/* Employees Delete Form Popup */}
       {showDeleteEmployeeForm && (
-          <Popup
-              show={showDeleteEmployeeForm}
-              setShow={setShowDeleteEmployeeForm}
-              component={
-                  <DeleteEmployeeAlert
-                      token={token}
-                      reloadEmployees={reloadEmployee}
-                      setReloadEmployees={setReloadEmployee}
-                      deleteEmployee={deleteEmployee}
-                  />
-              }
-          />
-      )}
-      <Popup
-        // show={ showDeleteEmployeeForm}
-        // setShow={setShowDeleteEmployeeForm }
-        component={ 
-          <AssignSkillsForm
-          token={token}
-              skills={skills}
+        <Popup
+          show={showDeleteEmployeeForm}
+          setShow={setShowDeleteEmployeeForm}
+          component={
+            <DeleteEmployeeAlert
+              token={token}
+              reloadEmployees={reloadEmployee}
+              setReloadEmployees={setReloadEmployee}
+              deleteEmployee={deleteEmployee}
             />
-         } />
+          }
+        />
+      )}
+      {/* Employees Assign Form Popup */}
+      {showAssignEmployeeForm && (
+        <Popup
+          show={showAssignEmployeeForm}
+          setShow={setShowAssignEmployeeForm}
+          component={
+            <AssignSkillsForm
+              token={token}
+              skills={skills}
+              loadingSkills={loadingSkills}
+              fetchSkills={fetchSkills}
+              assignEmployee={assignEmployee}
+              reloadEmployee={reloadEmployee}
+              setReloadEmployee={setReloadEmployee}
+            />
+          }
+        />
+      )}
     </>
-    
   );
 };
 

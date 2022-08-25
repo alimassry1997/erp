@@ -142,7 +142,7 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, "assignments")
-            ->withPivot("end_date")
+            ->withPivot("project_id", "end_date")
             ->withTimestamps();
     }
 }

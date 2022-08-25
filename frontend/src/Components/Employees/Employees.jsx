@@ -61,7 +61,11 @@ const Employees = ({
             </div>
             
             <div className="search-bar">
-              <Select onChange={(item) => onChange(item)} options={options} />
+              <Select
+                defaultValue={{ value: 1, label: "Active" }}
+                onChange={(item) => onChange(item)}
+                options={options}
+              />
             </div>
 
             <button
@@ -72,54 +76,40 @@ const Employees = ({
             </button>
           </div>
         </div>
-        <div className="table-responsive">
-          <table className="table table-employees">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Status</th>
-                <th>Manage</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employees
-                .filter((employee) => {
-                  if (searchTerm === "") {
-                    return employee;
-                  } else if (employee.first_name.includes(searchTerm)) {
-                    return employee;
-                  }
-                })
-                .filter((employee) => {
-                  if (statusTerm == 0) {
-                    return employee.status == 0;
-                  } else if (statusTerm == 1) {
-                    return employee.status == 1;
-                  } else {
-                    return employee;
-                  }
-                })
-                .map((employee) => (
-                  <Employee
-                    key={employee.id}
-                    token={token}
-                    image={employee.picture}
-                    firstName={employee.first_name}
-                    lastName={employee.last_name}
-                    email={employee.email}
-                    phoneNumber={employee.phone_number}
-                    status={employee.status}
-                    showEditEmployeePopup={showEditEmployeePopup}
-                    showDeleteEmployeePopup={showDeleteEmployeePopup}
-                    employee={employee}
-                  />
-                ))}
-            </tbody>
-          </table>
+        <div className="users-container">
+          {employees
+            .filter((employee) => {
+              if (searchTerm === "") {
+                return employee;
+              } else if (employee.first_name.includes(searchTerm)) {
+                return employee;
+              }
+            })
+            .filter((employee) => {
+              if (statusTerm === 0) {
+                return employee.status === 0;
+              } else if (statusTerm === 1) {
+                return employee.status === 1;
+              } else {
+                return employee;
+              }
+            })
+            .map((employee) => (
+              <Employee
+                key={employee.id}
+                token={token}
+                image={employee.picture}
+                firstName={employee.first_name}
+                lastName={employee.last_name}
+                email={employee.email}
+                phoneNumber={employee.phone_number}
+                status={employee.status}
+                showEditEmployeePopup={showEditEmployeePopup}
+                showDeleteEmployeePopup={showDeleteEmployeePopup}
+                employee={employee}
+                teamName={employee.team.name}
+              />
+            ))}
         </div>
       </div>
     );

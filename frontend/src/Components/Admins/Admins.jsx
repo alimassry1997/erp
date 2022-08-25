@@ -1,6 +1,6 @@
-import './Admins.css';
+import "./Admins.css";
 import Spinner from "../Layout/Spinner";
- import Admin from "./Admin";
+import Admin from "./Admin";
 import { AiOutlineTeam, AiOutlineSearch } from "react-icons/ai";
 import { FaPlusSquare } from "react-icons/fa";
 import { useState } from "react";
@@ -30,7 +30,6 @@ const Admins = ({
     return <Spinner />;
   } else {
     return (
-      
       <div className="dashboard employees-dashboard">
         <div className="header">
           <h2>
@@ -56,15 +55,19 @@ const Admins = ({
               </div>
             </div>
             <div className="search-bar">
-              <Select onChange={(item) => onChange(item)} options={options} />
+              <Select
+                onChange={(item) => onChange(item)}
+                options={options}
+                defaultValue={{ value: 1, label: "Active" }}
+              />
             </div>
-          <button
-            className="btn add-btn"
-            onClick={() => showAddAdminFormPopup()}
-          >
-            <FaPlusSquare />
+            <button
+              className="btn add-btn"
+              onClick={() => showAddAdminFormPopup()}
+            >
+              <FaPlusSquare />
             </button>
-            </div>
+          </div>
         </div>
         <div className="table-responsive">
           <table className="table table-employees">
@@ -80,7 +83,8 @@ const Admins = ({
               </tr>
             </thead>
             <tbody>
-              {admins.filter((admin) => {
+              {admins
+                .filter((admin) => {
                   if (searchTerm === "") {
                     return admin;
                   } else if (admin.first_name.includes(searchTerm)) {
@@ -88,29 +92,29 @@ const Admins = ({
                   }
                 })
                 .filter((admin) => {
-                  if (statusTerm == 0) {
-                    return admin.status == 0;
-                  } else if (statusTerm == 1) {
-                    return admin.status == 1;
+                  if (statusTerm === 0) {
+                    return admin.status === 0;
+                  } else if (statusTerm === 1) {
+                    return admin.status === 1;
                   } else {
                     return admin;
                   }
                 })
                 .map((admin) => (
-                <Admin
-                  key={admin.id}
-                  token={token}
-                  image={admin.picture}
-                  firstName={admin.first_name}
-                  lastName={admin.last_name}
-                  email={admin.email}
-                  phoneNumber={admin.phone_number}
-                  status={admin.status}
-                  showEditAdminPopup={showEditAdminPopup}
-                  showDeleteAdminPopup={showDeleteAdminPopup}
-                  admin={admin}
-                />
-              ))}
+                  <Admin
+                    key={admin.id}
+                    token={token}
+                    image={admin.picture}
+                    firstName={admin.first_name}
+                    lastName={admin.last_name}
+                    email={admin.email}
+                    phoneNumber={admin.phone_number}
+                    status={admin.status}
+                    showEditAdminPopup={showEditAdminPopup}
+                    showDeleteAdminPopup={showDeleteAdminPopup}
+                    admin={admin}
+                  />
+                ))}
             </tbody>
           </table>
         </div>

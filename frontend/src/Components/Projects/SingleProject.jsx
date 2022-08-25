@@ -6,8 +6,9 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import "react-tabs/style/react-tabs.css";
 import ProjectStatus from "./ProjectStatus";
 import { IoMdDoneAll } from "react-icons/io";
-import { AiOutlineTeam } from "react-icons/ai";
+import { AiOutlineTeam, AiOutlineUser } from "react-icons/ai";
 import RelatedTeamsProject from "./RelatedTeamsProject";
+import RelatedEmployeesProject from "./RelatedEmployeesProject";
 
 const SingleProject = ({
   project,
@@ -16,6 +17,10 @@ const SingleProject = ({
   showAssignProjectFormPopup,
   showStatusProjectFormPopup,
   showDeleteProjectPopup,
+  showEditProjectPopup,
+  relatedUnassignedTeams,
+  relatedAssignedEmployees,
+  relatedEmployeesRoles,
 }) => {
   const { slug } = useParams();
   useEffect(() => {
@@ -25,8 +30,12 @@ const SingleProject = ({
   if (loadingProject) {
     return <Spinner />;
   } else {
-    const { name, status, finished_at, teams, slug: project_slug } = project;
-    const size = teams.length;
+    for (let i = 0; i < relatedAssignedEmployees.length; i++) {
+      relatedAssignedEmployees[i].phone_number = relatedEmployeesRoles[i];
+    }
+    const { name, status, finished_at, slug: project_slug } = project;
+    const size = relatedUnassignedTeams.length;
+    const assignedEmployeesSize = relatedAssignedEmployees.length;
     return (
       <div className="single-project-container">
         <header>
@@ -36,13 +45,17 @@ const SingleProject = ({
           <div className="single-project-manage">
             <button
               className="btn edit-btn"
-              // onClick={() => showEditProjectPopup({ name, size, slug })}
+              onClick={() => showEditProjectPopup({ name, slug })}
             >
               <FaEdit />
             </button>
             <button
-              disabled={size > 0}
-              className={`btn ${size > 0 ? "disabled-btn" : "delete-btn"}`}
+              disabled={size > 0 || assignedEmployeesSize > 0}
+              className={`btn ${
+                size > 0 || assignedEmployeesSize > 0
+                  ? "disabled-btn"
+                  : "delete-btn"
+              }`}
               onClick={() => showDeleteProjectPopup({ name, slug })}
             >
               <FaTrashAlt />
@@ -66,7 +79,7 @@ const SingleProject = ({
               <AiOutlineTeam /> Teams
             </h2>
             <div className="teams">
-              {teams.map((team) => (
+              {relatedUnassignedTeams.map((team) => (
                 <RelatedTeamsProject
                   key={team.id}
                   slug={team.slug}
@@ -78,7 +91,30 @@ const SingleProject = ({
             </div>
           </div>
         ) : (
-          <div className="no-data">No Teams Assigned</div>
+          <div className="no-data">
+            Either No Teams Assigned or All Employees are Assigned
+          </div>
+        )}
+        {assignedEmployeesSize > 0 ? (
+          <div className="single-project-teams-container">
+            <h2>
+              <AiOutlineUser /> Assigned Employees with Roles
+            </h2>
+            <div className="employees-project">
+              {relatedAssignedEmployees.map((employee) => (
+                <RelatedEmployeesProject
+                  key={employee.id}
+                  first_name={employee.first_name}
+                  last_name={employee.last_name}
+                  picture={employee.picture}
+                  role_name={employee.phone_number}
+                  email={employee.email}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="no-data">No Assigned Employees</div>
         )}
       </div>
     );

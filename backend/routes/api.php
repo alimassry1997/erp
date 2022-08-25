@@ -59,6 +59,10 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
         ProjectController::class,
         "update_status",
     ]);
+    Route::get("/projects/filter/{project}", [
+        ProjectController::class,
+        "filterByProject",
+    ]);
     Route::get("/projects/{project}", [ProjectController::class, "show"]);
     Route::put("/projects/{project}", [ProjectController::class, "update"]);
     Route::delete("/projects/{project}", [ProjectController::class, "destroy"]);
@@ -78,16 +82,13 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
      */
     Route::get("/employees", [UserController::class, "index"]);
     Route::post("/employees", [UserController::class, "store"]);
-    Route::post("/employees/skills/{employee}", [
+    Route::post("/employees/evaluation/{user}", [
         UserController::class,
-        "store_skills",
-    ]);
-    Route::get("/employees/skills/{employee}", [
-        UserController::class,
-        "read_skills",
+        "evaluate",
     ]);
     Route::get("/employees/{user}", [UserController::class, "show"]);
     Route::get("edit-employee/{id}", [UserController::class, "edit"]);
+    Route::get("/reports/{user}", [UserController::class, "reports"]);
     Route::put("/user/{user}", [UserController::class, "update"]);
     Route::put("/user/{user}/status", [UserController::class, "update_status"]);
 

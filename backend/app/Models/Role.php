@@ -17,7 +17,7 @@ class Role extends Model
     public function users(): BelongsToMany
     {
         return $this->BelongsToMany(User::class, "assignments")
-            ->withPivot("end_date")
+            ->withPivot("project_id", "end_date")
             ->withTimestamps();
     }
 
