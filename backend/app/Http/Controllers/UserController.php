@@ -68,6 +68,7 @@ class UserController extends Controller
         foreach ($user->skills as $skill) {
             $last_skills[] = $skill->kpi
                 ->where("skill_user.skill_id", $skill->id)
+                ->where("skill_user.user_id", $user->id)
                 ->latest()
                 ->first();
         }
@@ -256,6 +257,7 @@ class UserController extends Controller
             foreach ($user->skills as $skill) {
                 $skill_created_date = $skill->kpi
                     ->where("skill_user.skill_id", $inputs["skill"])
+                    ->where("skill_user.user_id", $user->id)
                     ->latest()
                     ->first();
             }
