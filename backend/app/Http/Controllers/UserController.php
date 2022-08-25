@@ -66,13 +66,22 @@ class UserController extends Controller
     {
         $last_skills = [];
         foreach ($user->skills as $skill) {
-            $last_skills[] = $skill->kpi->latest()->first();
+            $last_skills[] = $skill->kpi
+                ->where("skill_user.skill_id", $skill->id)
+                ->latest()
+                ->first();
         }
-        $unique_skills = array_unique($last_skills);
+        $change_to_array = [];
+        foreach ($last_skills as $last_skill) {
+            $change_to_array[] = $last_skill->toArray();
+        }
+        $output = array_map(static function ($element) {
+            return (object) $element;
+        }, $change_to_array);
         return response()->json([
             "team" => $user->team->users->count(),
             "user" => $user,
-            "skills" => $unique_skills,
+            "skills" => $output,
         ]);
     }
 
@@ -250,14 +259,23 @@ class UserController extends Controller
                     ->latest()
                     ->first();
             }
-            $check_month = new Carbon($skill_created_date->created_at);
-            if ($check_month->diffInMonths() < 1) {
-                return response()->json(
-                    [
-                        "message" => "User has been evaluated for this month.",
-                    ],
-                    400
-                );
+            if ($skill_created_date !== null) {
+                $check_month = new Carbon($skill_created_date->created_at);
+                if ($check_month->diffInMonths() < 1) {
+                    return response()->json(
+                        [
+                            "message" =>
+                                "User has been evaluated for this month.",
+                        ],
+                        400
+                    );
+                }
+                $user
+                    ->skills()
+                    ->attach($inputs["skill"], ["score" => $inputs["score"]]);
+                return response()->json([
+                    "message" => "User was Evaluated",
+                ]);
             }
 
             $user

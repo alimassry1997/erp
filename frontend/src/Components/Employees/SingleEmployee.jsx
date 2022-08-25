@@ -54,6 +54,16 @@ const SingleEmployee = ({
         level: employeeSkills[i].score * 10,
       });
     }
+
+    const uniqueIds = [];
+    const unique = progressSkills.filter((element) => {
+      const isDuplicate = uniqueIds.includes(element.type);
+      if (!isDuplicate) {
+        uniqueIds.push(element.type);
+        return true;
+      }
+      return false;
+    });
     return (
       <div className="profile-container">
         <div className="profile-image">
@@ -126,7 +136,7 @@ const SingleEmployee = ({
                 <h2>
                   <GiSkills /> Skills
                 </h2>
-                <SkillBar skills={progressSkills} colors={colors} />
+                <SkillBar skills={unique} colors={colors} />
               </div>
             ) : (
               <div className="no-data">No Skills to display</div>
