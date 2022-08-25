@@ -1,52 +1,52 @@
-.head h1 {
+.reports h1 {
   text-align: center;
   padding-top: 2rem;
 }
 
-.grid-container {
+.reports .grid-container {
   display: flex;
   flex-direction: row;
   padding-top: 2rem;
 }
 
-.grid-item1 {
+.reports .grid-item1 {
   flex: 2;
   margin-right: -30px;
 }
 
-.grid-item2 {
+.reports .grid-item2 {
   flex: 3;
   margin-right: -60px;
 }
 
-.pro-name {
+.reports .pro-name {
   font-size: 40px;
   margin-top: 50px;
   font-weight: bold;
 }
 
-.profiles-details {
+.reports .profiles-details {
   display: grid;
   grid-template-columns: auto auto auto;
   padding: 10px;
   margin-top: 2rem;
 }
 
-.container {
+.reports .container {
   width: 350px;
   height: 90px;
   padding: 2px 16px;
   margin-bottom: 50px;
 }
 
-.container__profile {
+.reports .container__profile {
   background-color: var(--white-color);
   display: flex;
   align-items: center;
   padding: 20px;
 }
 
-img {
+.reports img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -55,26 +55,26 @@ img {
   margin-right: 10px;
 }
 
-.container__profile__text h2 {
+.reports .container__profile__text h2 {
   color: #334454;
   font-size: 1.2rem;
 }
 
-p {
+.reports p {
   color: #475055;
   font-size: 0.8rem;
 }
 
-p b {
+.reports p b {
   font-style: italic;
 }
 
 @media (max-width: 750px) {
-  .head h1 {
+  .reports h1 {
     text-align: center;
     padding-top: 2rem;
   }
-  .grid-container {
+  .reports .grid-container {
     width: 10px;
     display: flex;
     flex-direction: column;
@@ -83,23 +83,23 @@ p b {
     margin-left: 190px;
   }
 
-  .grid-item1 {
+  .reports .grid-item1 {
     flex: 2;
     margin-left: -90px;
     padding-bottom: 50px;
   }
 
-  .grid-item2 {
+  .reports .grid-item2 {
     flex: 3;
     margin-left: -110px;
   }
 
-  .pro-name {
+  .reports .pro-name {
     font-size: 30px;
     padding-top: 50px;
   }
 
-  .profiles-details {
+  .reports .profiles-details {
     width: 60vw;
     display: flex;
     flex-direction: column;
@@ -108,7 +108,7 @@ p b {
     margin-left: 30px;
   }
 
-  .container {
+  .reports .container {
     width: 350px;
     height: 90px;
     padding: 2px 16px;
@@ -117,11 +117,12 @@ p b {
 }
 
 @media (max-width: 1200px) {
-  .head h1 {
+  .reports h1 {
     text-align: center;
     padding-top: 2rem;
   }
-  .grid-container {
+
+  .reports .grid-container {
     width: 10px;
     display: flex;
     flex-direction: column;
@@ -130,23 +131,23 @@ p b {
     margin-left: 190px;
   }
 
-  .grid-item1 {
+  .reports .grid-item1 {
     flex: 2;
     margin-left: -90px;
     padding-bottom: 50px;
   }
 
-  .grid-item2 {
+  .reports .grid-item2 {
     flex: 3;
     margin-left: -110px;
   }
 
-  .pro-name {
+  .reports .pro-name {
     font-size: 30px;
     padding-top: 50px;
   }
 
-  .profiles-details {
+  .reports .profiles-details {
     width: 60vw;
     display: flex;
     flex-direction: column;
@@ -155,7 +156,7 @@ p b {
     margin-left: 30px;
   }
 
-  .container {
+  .reports .container {
     width: 350px;
     height: 90px;
     padding: 2px 16px;
