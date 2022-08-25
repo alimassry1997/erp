@@ -14,6 +14,31 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function reports(User $user): JsonResponse
+    {
+        $last_skills = [];
+        foreach ($user->skills as $skill) {
+            $last_skills[] = $skill->kpi
+                ->where("skill_user.skill_id", $skill->id)
+                ->where("skill_user.user_id", $user->id)
+                ->latest()
+                ->first();
+        }
+        $change_to_array = [];
+        foreach ($last_skills as $last_skill) {
+            $change_to_array[] = $last_skill->toArray();
+        }
+        $output = array_map(static function ($element) {
+            return (object) $element;
+        }, $change_to_array);
+
+        return response()->json([
+            "user" => $user,
+            "skills" => $output,
+            "projects" => $user->projects,
+        ]);
+    }
+
     /**
      * Get all Employees
      * @return JsonResponse

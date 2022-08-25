@@ -100,6 +100,13 @@ const App = () => {
   const [projects, setProjects] = useState([]);
 
   /**
+   * Projects States
+   * Loading & Projects
+   */
+  const [loadingReport, setLoadingReport] = useState(true);
+  const [reportEmployeeSkills, setReportEmployeeSkills] = useState([]);
+
+  /**
    * Get All teams with their corresponding employees
    * @returns {Promise<void>}
    */
@@ -296,6 +303,27 @@ const App = () => {
     setLoadingEmployee(false);
   };
 
+  /**
+   * Get a single Report by SLug
+   * @param email
+   * @returns {Promise<void>}
+   */
+  const getReport = async (email) => {
+    setLoadingReport(true);
+    try {
+      const response = await axios.get(`/api/reports/${email}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { skills },
+      } = response;
+      setReportEmployeeSkills(skills);
+    } catch (error) {
+      console.log(error.message);
+    }
+    setLoadingReport(false);
+  };
+
   return (
     <Router>
       <>
@@ -304,7 +332,19 @@ const App = () => {
             path="/"
             element={<DashboardLayout auth={auth} setAuth={setAuth} />}
           >
-            <Route index element={<Reports />} />
+            <Route
+              index
+              element={
+                <Reports
+                  fetchEmployees={fetchEmployees}
+                  employees={employees}
+                  loadingEmployees={loadingEmployees}
+                  getReport={getReport}
+                  loadingReport={loadingReport}
+                  reportEmployeeSkills={reportEmployeeSkills}
+                />
+              }
+            />
           </Route>
           <Route
             path="/admins"

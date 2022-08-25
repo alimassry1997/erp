@@ -86,12 +86,9 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
         UserController::class,
         "evaluate",
     ]);
-    Route::get("/employees/skills/{user}", [
-        UserController::class,
-        "read_skills",
-    ]);
     Route::get("/employees/{user}", [UserController::class, "show"]);
     Route::get("edit-employee/{id}", [UserController::class, "edit"]);
+    Route::get("/reports/{user}", [UserController::class, "reports"]);
     Route::put("/user/{user}", [UserController::class, "update"]);
     Route::put("/user/{user}/status", [UserController::class, "update_status"]);
 
