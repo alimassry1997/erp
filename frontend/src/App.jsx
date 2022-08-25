@@ -100,11 +100,12 @@ const App = () => {
   const [projects, setProjects] = useState([]);
 
   /**
-   * Projects States
-   * Loading & Projects
+   * Reports States
+   * Loading & Reports
    */
   const [loadingReport, setLoadingReport] = useState(true);
   const [reportEmployeeSkills, setReportEmployeeSkills] = useState([]);
+  const [reportEmployee, setReportEmployee] = useState([]);
 
   /**
    * Get All teams with their corresponding employees
@@ -315,8 +316,9 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { skills },
+        data: { skills, user },
       } = response;
+      setReportEmployee(user);
       setReportEmployeeSkills(skills);
     } catch (error) {
       console.log(error.message);
@@ -342,6 +344,7 @@ const App = () => {
                   getReport={getReport}
                   loadingReport={loadingReport}
                   reportEmployeeSkills={reportEmployeeSkills}
+                  reportEmployee={reportEmployee}
                 />
               }
             />
