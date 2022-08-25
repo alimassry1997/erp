@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import LiveSearch from "../Layout/LiveSearch";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
+import { TbReportSearch } from "react-icons/tb";
 
 const Reports = ({
   fetchEmployees,
@@ -26,12 +27,22 @@ const Reports = ({
 }) => {
   document.title = "Reports Dashboard | ERP";
   const { skills } = reportEmployee;
-  const data = [
-    { name: "Developer", score: 8 },
-    { name: "Conflict", score: 5 },
-    { name: "Collaboration", score: 3 },
-    { name: "Communication", score: 7 },
-  ];
+  const [lineChartData, setLineChartData] = useState([]);
+
+  console.log(lineChartData);
+
+  const showSkill = (single) => {
+    const temp = [];
+    for (let i = 0; i < skills.length; i++) {
+      if (skills[i].name === single.name.toLowerCase()) {
+        temp.push({
+          value: skills[i].kpi.score,
+          time: skills[i].kpi.created_at.split("T")[0],
+        });
+      }
+    }
+    setLineChartData(temp);
+  };
 
   const progressSkills = [];
   for (let i = 0; i < reportEmployeeSkills.length; i++) {
@@ -45,7 +56,7 @@ const Reports = ({
   }
 
   const uniqueIds = [];
-  const unique = progressSkills.filter((element) => {
+  const allSkills = progressSkills.filter((element) => {
     const isDuplicate = uniqueIds.includes(element.name);
     if (!isDuplicate) {
       uniqueIds.push(element.name);
@@ -54,31 +65,52 @@ const Reports = ({
     return false;
   });
 
-  console.log(unique);
-
   useEffect(() => {
     fetchEmployees();
   }, []);
 
   return (
     <div className="reports">
-      <h1>Reports</h1>
-      {!loadingEmployees && (
-        <LiveSearch employees={employees} getReport={getReport} />
-      )}
+      <div className="reports-head">
+        <h1>
+          <TbReportSearch />
+          Reports
+        </h1>
+        {!loadingEmployees && (
+          <LiveSearch employees={employees} getReport={getReport} />
+        )}
+      </div>
+
       {loadingReport ? (
         <div className="no-data">Select an Employee to generate reports</div>
       ) : (
         <>
-          <div className="reports-container"></div>
-          <BarChart width={730} height={250} data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="uv" fill="#82ca9d" />
-          </BarChart>
+          <div className="reports-container">
+            <ResponsiveContainer width={"99%"} height={300}>
+              <BarChart width="100%" height="auto" data={allSkills}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar
+                  dataKey="score"
+                  fill="#0097a4"
+                  barSize={30}
+                  onClick={(value) => showSkill(value)}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+            <ResponsiveContainer width={"99%"} height={300}>
+              <LineChart data={lineChartData}>
+                <XAxis dataKey="time" />
+                <YAxis dataKey="value" />
+                <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
+                <Line type="monotone" dataKey="value" stroke="#133f4c" />
+                <Legend />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
           {/*<div className="">*/}
           {/*  <div className="pro-name">Projects</div>*/}
           {/*  <div className="profiles-details">*/}

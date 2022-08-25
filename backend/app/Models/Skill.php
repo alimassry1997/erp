@@ -42,7 +42,8 @@ class Skill extends Model
      */
     public function skills(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'skill_user')
+        return $this->belongsToMany(User::class, "skill_user")
+            ->using(SkillUser::class)
             ->as("kpi")
             ->withPivot("score")
             ->withTimestamps();
