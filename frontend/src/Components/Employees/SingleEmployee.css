@@ -19,10 +19,12 @@
 }
 
 .profile-buttons {
+  border: 2px solid var(--white-color);
+  border-top: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 0;
+  padding: 1rem;
   column-gap: 0.2rem;
 }
 
@@ -80,6 +82,7 @@
   }
 
   .profile-buttons {
+    border: none;
     flex-direction: column;
     justify-content: flex-end;
     padding: 0;
