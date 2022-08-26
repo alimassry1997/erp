@@ -1,7 +1,12 @@
+import { FaTeamspeak } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { AiOutlineTeam } from "react-icons/ai";
+import { FaUsersCog } from "react-icons/fa";
+import "./RelatedEmployeesProject.css";
 
 const RelatedEmployeesProject = ({
   first_name,
+  team_name,
   last_name,
   picture,
   role_name,
@@ -15,10 +20,11 @@ const RelatedEmployeesProject = ({
       <div className="employees-project-content">
         <h3>
           <Link to={`/employees/${email}`}>
-            {first_name} {last_name}
+            {first_name} {last_name} 
           </Link>
         </h3>
-        <p>@{role_name}</p>
+        <p><AiOutlineTeam className="icons"/> {team_name}</p>
+        <p><FaUsersCog className="icons"/> {role_name}</p>
       </div>
     </div>
   );

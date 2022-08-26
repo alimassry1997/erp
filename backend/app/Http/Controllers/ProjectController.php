@@ -70,6 +70,7 @@ class ProjectController extends Controller
         $roles = [];
         $assigned_employees = $project->users;
         foreach ($assigned_employees as $employee) {
+            $employee->team;
             foreach ($employee->roles as $role) {
                 if ($role->pivot->project_id === $project->id) {
                     $roles[] = $role->name;

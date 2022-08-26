@@ -32,8 +32,6 @@ const Roles = ({
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Created At</th>
-                <th>Updated At</th>
                 <th>Manage</th>
               </tr>
             </thead>
@@ -43,8 +41,6 @@ const Roles = ({
                   key={role.id}
                   name={role.name}
                   slug={role.slug}
-                  created_at={role.created_at}
-                  updated_at={role.updated_at}
                   showEditRolePopup={showEditRolePopup}
                   showDeleteRolePopup={showDeleteRolePopup}
                 />

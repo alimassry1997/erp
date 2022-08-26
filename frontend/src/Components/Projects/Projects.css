@@ -17,6 +17,18 @@
   .projects-container {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .dashboard .header .tools{
+    /* display: flex;
+    flex-direction: column; */
+    flex-wrap: wrap;
+    row-gap: 0.3rem;
+  }
+ .dashboard .header{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+  }
 }
 
 @media (max-width: 950px) {

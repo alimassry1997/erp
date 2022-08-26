@@ -6,6 +6,8 @@ import { FaPlusSquare } from "react-icons/fa";
 import { useState } from "react";
 import Select from "react-select";
 
+
+
 const Employees = ({
   employees,
   token,
@@ -54,8 +56,10 @@ const Employees = ({
                   required
                   className="form-valid"
                 />
+                
               </div>
             </div>
+            
             <div className="search-bar">
               <Select
                 defaultValue={{ value: 1, label: "Active" }}
