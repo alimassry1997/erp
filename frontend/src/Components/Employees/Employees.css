@@ -97,7 +97,15 @@
 
 @media (max-width: 900px) {
   .employees-dashboard .header {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+  }
+  .employees-dashboard .header .tools{
+    /* display: flex;
+    flex-direction: column; */
+    flex-wrap: wrap;
+    row-gap: 0.3rem;
   }
 }
 

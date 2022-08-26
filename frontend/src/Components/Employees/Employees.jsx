@@ -46,7 +46,7 @@ const Employees = ({
                 <div>
                   <AiOutlineSearch />
                 </div>
-                {/* <input
+                <input
                   type="search"
                   name="search"
                   placeholder="Search..."
@@ -55,7 +55,7 @@ const Employees = ({
                   }}
                   required
                   className="form-valid"
-                /> */}
+                />
                 
               </div>
             </div>
