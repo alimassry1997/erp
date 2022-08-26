@@ -106,6 +106,7 @@ const App = () => {
   const [loadingReport, setLoadingReport] = useState(true);
   const [reportEmployeeSkills, setReportEmployeeSkills] = useState([]);
   const [reportEmployee, setReportEmployee] = useState([]);
+  const [reportEmployeeRoles, setReportEmployeeRoles] = useState([]);
 
   /**
    * Get All teams with their corresponding employees
@@ -316,8 +317,9 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { skills, user },
+        data: { skills, user, roles },
       } = response;
+      setReportEmployeeRoles(roles);
       setReportEmployee(user);
       setReportEmployeeSkills(skills);
     } catch (error) {
@@ -345,6 +347,7 @@ const App = () => {
                   loadingReport={loadingReport}
                   reportEmployeeSkills={reportEmployeeSkills}
                   reportEmployee={reportEmployee}
+                  reportEmployeeRoles={reportEmployeeRoles}
                 />
               }
             />

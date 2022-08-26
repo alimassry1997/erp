@@ -36,6 +36,7 @@ class UserController extends Controller
             "user" => $user,
             "skills" => $output,
             "projects" => $user->projects,
+            "roles" => $user->roles,
         ]);
     }
 
