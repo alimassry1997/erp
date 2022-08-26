@@ -91,9 +91,7 @@ const SingleProject = ({
             </div>
           </div>
         ) : (
-          <div className="no-data">
-            Either No Teams Assigned or All Employees are Assigned
-          </div>
+          ""
         )}
         {assignedEmployeesSize > 0 ? (
           <div className="single-project-teams-container">
@@ -103,12 +101,14 @@ const SingleProject = ({
             <div className="employees-project">
               {relatedAssignedEmployees.map((employee) => (
                 <RelatedEmployeesProject
+                
                   key={employee.id}
                   first_name={employee.first_name}
                   last_name={employee.last_name}
                   picture={employee.picture}
                   role_name={employee.phone_number}
                   email={employee.email}
+                  team_name={employee.team.name}
                 />
               ))}
             </div>

@@ -5,16 +5,13 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 const Skill = ({
   name,
   slug,
-  created_at,
-  updated_at,
   showDeleteSkillPopup,
   showEditSkillPopup,
 }) => {
   return (
     <tr>
       <td>{CapitalizeFirstLetter(name)}</td>
-      <td>{formatDate(created_at)}</td>
-      <td>{formatDate(updated_at)}</td>
+      
       <td>
         <div className="flex-btn">
           <button

@@ -5,16 +5,12 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 const Role = ({
   name,
   slug,
-  created_at,
-  updated_at,
   showDeleteRolePopup,
   showEditRolePopup,
 }) => {
   return (
     <tr>
       <td>{CapitalizeFirstLetter(name)}</td>
-      <td>{formatDate(created_at)}</td>
-      <td>{formatDate(updated_at)}</td>
       <td>
         <div className="flex-btn">
           <button

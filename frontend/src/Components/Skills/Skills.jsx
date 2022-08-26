@@ -34,8 +34,6 @@ const Skills = ({
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Created At</th>
-                <th>Updated At</th>
                 <th>Manage</th>
               </tr>
             </thead>
@@ -45,8 +43,6 @@ const Skills = ({
                   key={skill.id}
                   name={skill.name}
                   slug={skill.slug}
-                  created_at={skill.created_at}
-                  updated_at={skill.updated_at}
                   showEditSkillPopup={showEditSkillPopup}
                   showDeleteSkillPopup={showDeleteSkillPopup}
                 />
