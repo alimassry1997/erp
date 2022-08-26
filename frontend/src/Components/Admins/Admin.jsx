@@ -14,7 +14,7 @@ const Admin = ({
   showDeleteAdminPopup,
   admin,
 }) => {
-  const string = "placeholder";
+  const string = "avataaars";
   return (
     <tr>
       <td>

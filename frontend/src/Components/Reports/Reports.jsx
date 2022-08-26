@@ -38,7 +38,7 @@ const Reports = ({
       if (skills[i].name === single.name.toLowerCase()) {
         temp.push({
           value: skills[i].kpi.score,
-          time: skills[i].kpi.created_at.split("T")[0],
+          time: skills[i].kpi.created_at.split("T")[0].slice(0, 7),
         });
       }
     }
@@ -86,33 +86,37 @@ const Reports = ({
         <div className="no-data">Select an Employee to generate reports</div>
       ) : (
         <>
-          <div className="reports-container">
-            <ResponsiveContainer width={"99%"} height={300}>
-              <BarChart width="100%" height="auto" data={allSkills}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar
-                  dataKey="score"
-                  fill="#0097a4"
-                  barSize={30}
-                  onClick={(value) => showSkill(value)}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-            <ResponsiveContainer width={"99%"} height={300}>
-              <LineChart data={lineChartData}>
-                <Tooltip />
-                <XAxis dataKey="time" />
-                <YAxis dataKey="value" />
-                <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-                <Line type="monotone" dataKey="value" stroke="#0097a4" />
-                <Legend />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          {allSkills.length > 0 ? (
+            <div className="reports-container">
+              <ResponsiveContainer width={"99%"} height={300}>
+                <BarChart width="100%" height="auto" data={allSkills}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar
+                    dataKey="score"
+                    fill="#0097a4"
+                    barSize={30}
+                    onClick={(value) => showSkill(value)}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+              <ResponsiveContainer width={"99%"} height={300}>
+                <LineChart data={lineChartData}>
+                  <Tooltip />
+                  <XAxis dataKey="time" />
+                  <YAxis dataKey="value" />
+                  <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
+                  <Line type="monotone" dataKey="value" stroke="#0097a4" />
+                  <Legend />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="no-data"> No Data to Show</div>
+          )}
           {projects.length > 0 ? (
             <div className="reports-projects">
               <h2>
@@ -130,7 +134,7 @@ const Reports = ({
               </div>
             </div>
           ) : (
-            <div className="no-data">Not Assigned to any projects</div>
+            ""
           )}
         </>
       )}

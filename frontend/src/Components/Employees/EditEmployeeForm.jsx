@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineTeam } from "react-icons/ai";
 import axios from "axios";
 
-
 const EditEmployeeForm = ({
   token,
   setReloadEmployees,
@@ -23,7 +22,7 @@ const EditEmployeeForm = ({
     setPic({ image: e.target.files[0] });
   };
 
-  const string = "placeholder";
+  const string = "avataaars";
 
   // On Change for controlled fields
   const onChange = (e) => {
@@ -207,16 +206,23 @@ const EditEmployeeForm = ({
             onChange={handleImage}
             placeholder="Upload your Image"
           ></input>
-          
+
           <div className="form-group">
-          <img className="popup-picture" src={picture.includes(string)
-                ? picture
-                : `${process.env.REACT_APP_BACKEND_URL}${picture}`} width="80px" alt="User Image"/>
+            <img
+              className="popup-picture"
+              src={
+                picture.includes(string)
+                  ? picture
+                  : `${process.env.REACT_APP_BACKEND_URL}${picture}`
+              }
+              width="80px"
+              alt="User Image"
+            />
             <input
               type="submit"
               className="btn btn-block"
               value="Edit Employee"
-            />            
+            />
           </div>
         </form>
       </section>

@@ -17,7 +17,7 @@ const Employee = ({
   employee,
   teamName,
 }) => {
-  const string = "placeholder";
+  const string = "avataaars";
   return (
     <div className="users-card">
       <div className="users-card-main">

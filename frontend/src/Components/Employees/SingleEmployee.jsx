@@ -29,7 +29,7 @@ const SingleEmployee = ({
   useEffect(() => {
     getEmployee(email);
   }, [email]);
-  const string = "placeholder";
+  const string = "avataaars";
 
   if (loadingEmployee) {
     return <Spinner />;

@@ -28,7 +28,7 @@ class UserFactory extends Factory
             "email_verified_at" => now(),
             "phone_number" => fake()->randomNumber(8),
             "status" => fake()->boolean(),
-            "picture" => fake()->imageUrl(150, 150, "profile", true),
+            "picture" => $this->faker->avataaar,
             "remember_token" => Str::random(10),
         ];
     }
