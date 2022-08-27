@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineTeam } from "react-icons/ai";
 import axios from "axios";
+import { BiImageAdd } from "react-icons/bi";
+import "./EditEmployeeForm.css";
 
 const EditEmployeeForm = ({
   token,
@@ -150,6 +152,31 @@ const EditEmployeeForm = ({
       </section>
       <section className="form">
         <form onSubmit={onSubmit}>
+          <div className="edit-image-form">
+            {imageError && <p className="error-msg">{imageError}</p>}
+            <img
+              src={
+                image.preview
+                  ? image.preview
+                  : image.includes("avataaars")
+                  ? image
+                  : `${process.env.REACT_APP_BACKEND_URL}${image}`
+              }
+              alt="User Image"
+            />
+            <div>
+              <label htmlFor="picture" className="form-control">
+                <BiImageAdd /> Upload Image
+                <input
+                  type="file"
+                  onChange={onImageChange}
+                  className="form-control"
+                  name="picture"
+                  id="picture"
+                />
+              </label>
+            </div>
+          </div>
           <div className="form-group">
             <label htmlFor="first_name" className="form-label">
               First Name
@@ -210,27 +237,7 @@ const EditEmployeeForm = ({
             />
             <p>{errors.phone_number}</p>
           </div>
-          <input
-            type="file"
-            name="picture"
-            onChange={onImageChange}
-            placeholder="Upload your Image"
-          />
-          {imageError && <p className="error-msg">{imageError}</p>}
-
           <div className="form-group">
-            <img
-              className="popup-picture"
-              src={
-                image.preview
-                  ? image.preview
-                  : image.includes("avataaars")
-                  ? image
-                  : `${process.env.REACT_APP_BACKEND_URL}${image}`
-              }
-              width="80px"
-              alt="User Image"
-            />
             <input
               type="submit"
               className="btn btn-block"
