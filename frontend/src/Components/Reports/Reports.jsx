@@ -127,7 +127,7 @@ const Reports = ({
               <div className="reports-container-projects">
                 {reportEmployeeProjects.map((project, index) => (
                   <ReportProjects
-                    key={project.id}
+                    key={index}
                     role={reportEmployeeRoles[index].name}
                     name={project.name}
                     slug={project.slug}

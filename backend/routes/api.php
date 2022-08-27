@@ -95,6 +95,10 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
         UserController::class,
         "projects",
     ]);
+    Route::put("/employees/{user}/projects/role", [
+        UserController::class,
+        "change_role",
+    ]);
 
     /**
      * Admins Routes

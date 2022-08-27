@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./AssignSkillForm.css";
 import makeAnimated from "react-select/animated";
-import { GiSkills } from "react-icons/gi";
 import Select from "react-select";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
-import DiscreteSlider from "../Layout/DiscreteSlider";
 import { FaUsersCog } from "react-icons/fa";
 
 const ChangeRoleForm = ({
@@ -15,37 +13,57 @@ const ChangeRoleForm = ({
   loadingEmployeeProjects,
   employeeProjects,
   getProjectsEmployee,
+  employeeProjectsRoles,
   changeRole,
+  roles,
+  fetchRoles,
+  loadingRoles,
 }) => {
   const { first_name, last_name, email } = changeRole;
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [selectErrors, setSelectErrors] = useState("");
   const [optionSelected, setOptionSelected] = useState("");
+  const [rolesSelected, setRolesSelected] = useState("");
+  const [role, setRole] = useState("");
   const [show, setShow] = useState(false);
-  const [score, setScore] = useState(1);
   let canSubmit = false;
   const animatedComponents = makeAnimated();
-  const skillsList = [];
+  const projectsList = [];
+  const rolesList = [];
+
   const onChange = (item) => {
     setOptionSelected(item);
+    setRolesSelected(employeeProjectsRoles[item.value.split(" ")[0]].name);
     setShow(true);
+  };
+
+  const onChangeRole = (item) => {
+    setRole(item);
   };
 
   if (!loadingEmployeeProjects) {
     for (let i = 0; i < employeeProjects.length; i++) {
-      skillsList.push({
-        value: employeeProjects[i].id,
+      projectsList.push({
+        value: `${i} ${employeeProjects[i].id}`,
         label: capitalizeFirstLetter(employeeProjects[i].name),
+      });
+    }
+  }
+  if (!loadingRoles) {
+    for (let i = 0; i < roles.length; i++) {
+      rolesList.push({
+        value: roles[i].id,
+        label: capitalizeFirstLetter(roles[i].name),
       });
     }
   }
 
   // Submission Function
-  const evaluate = async (userData) => {
+  const changeAssignment = async (userData) => {
     try {
       const response = await axios.post(
-        `/api/employees/evaluation/${email}`,
+        `/api/employees/${email}/projects/role`,
         userData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -65,18 +83,19 @@ const ChangeRoleForm = ({
   // On Submit Action
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (optionSelected === "") {
+    if (optionSelected === "" || role === "") {
       canSubmit = false;
-      setSelectErrors("Select a skill");
+      setSelectErrors("Please Select all fields");
     } else {
       canSubmit = true;
       setSelectErrors("");
       if (canSubmit) {
         try {
           const data = new FormData();
-          data.append("score", score.toString());
-          data.append("skill", optionSelected.value.toString());
-          const message = await evaluate(data);
+          data.append("_method", "PUT");
+          data.append("project", optionSelected.value.split(" ")[1]);
+          data.append("role", role.value.toString());
+          const message = await changeAssignment(data);
           setSuccess(message.message);
         } catch (err) {
           console.log(err);
@@ -88,6 +107,7 @@ const ChangeRoleForm = ({
   // Reset Messages after 5 seconds
   useEffect(() => {
     getProjectsEmployee(email);
+    fetchRoles();
     if (errorMessage || selectErrors) {
       setTimeout(() => {
         setErrorMessage("");
@@ -113,23 +133,41 @@ const ChangeRoleForm = ({
         {selectErrors && <p className="error-msg">{selectErrors}</p>}
       </section>
       <section className="form">
-        <Select
-          id={`select-skills`}
-          components={animatedComponents}
-          onChange={(item) => onChange(item)}
-          options={skillsList}
-          isSearchable
-          isLoading={loadingEmployeeProjects}
-          closeMenuOnSelect={true}
-        />
+        <div className="form-group">
+          <Select
+            id={`select-skills`}
+            components={animatedComponents}
+            onChange={(item) => onChange(item)}
+            options={projectsList}
+            isSearchable
+            isLoading={loadingEmployeeProjects}
+            closeMenuOnSelect={true}
+          />
+        </div>
+
         {show && (
-          <div className="rating">
-            <DiscreteSlider score={score} setScore={setScore} />
+          <div className="form-group">
+            <label htmlFor="select-roles">
+              Current Role: {capitalizeFirstLetter(rolesSelected)}
+            </label>
+            <Select
+              id={`select-roles`}
+              components={animatedComponents}
+              onChange={(item) => onChangeRole(item)}
+              options={rolesList}
+              isSearchable
+              isLoading={loadingRoles}
+              closeMenuOnSelect={true}
+            />
           </div>
         )}
         <form onSubmit={onSubmit}>
           <div className="form-group">
-            <input type="submit" className="btn btn-block" value="Evaluate" />
+            <input
+              type="submit"
+              className="btn btn-block"
+              value="Change Role"
+            />
           </div>
         </form>
       </section>

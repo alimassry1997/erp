@@ -20,6 +20,10 @@ const SingleEmployeeDashboard = ({
   employeeProjects,
   loadingEmployeeProjects,
   getProjectsEmployee,
+  employeeProjectsRoles,
+  roles,
+  fetchRoles,
+  loadingRoles,
 }) => {
   const { email } = useParams();
 
@@ -153,7 +157,11 @@ const SingleEmployeeDashboard = ({
               getProjectsEmployee={getProjectsEmployee}
               changeRole={changeRole}
               reloadEmployee={reloadEmployee}
+              employeeProjectsRoles={employeeProjectsRoles}
               setReloadEmployee={setReloadEmployee}
+              roles={roles}
+              fetchRoles={fetchRoles}
+              loadingRoles={loadingRoles}
             />
           }
         />

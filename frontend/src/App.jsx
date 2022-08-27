@@ -21,7 +21,9 @@ const App = () => {
    * Get the user state from local storage
    * @type {object}
    */
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : "";
   const token = user ? user.access_token : "";
 
   /**
@@ -105,6 +107,7 @@ const App = () => {
    */
   const [loadingEmployeeProjects, setLoadingEmployeeProjects] = useState(true);
   const [employeeProjects, setEmployeeProjects] = useState([]);
+  const [employeeProjectsRoles, setEmployeeProjectsRoles] = useState([]);
 
   /**
    * Reports States
@@ -349,9 +352,10 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { projects },
+        data: { projects, roles },
       } = response;
       setEmployeeProjects(projects);
+      setEmployeeProjectsRoles(roles);
     } catch (error) {
       console.log(error.message);
     }
@@ -514,6 +518,10 @@ const App = () => {
                   loadingEmployeeProjects={loadingEmployeeProjects}
                   employeeProjects={employeeProjects}
                   getProjectsEmployee={getProjectsEmployee}
+                  employeeProjectsRoles={employeeProjectsRoles}
+                  fetchRoles={fetchRoles}
+                  roles={roles}
+                  loadingRoles={loadingRoles}
                 />
               }
             />
