@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @mixin \Eloquent
  * @property string $slug
  * @method static \Illuminate\Database\Eloquent\Builder|Team whereSlug($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @property-read int|null $projects_count
  */
 class Team extends Model
 {

@@ -14,14 +14,13 @@ const Admin = ({
   showDeleteAdminPopup,
   admin,
 }) => {
-  const string = "avataaars";
   return (
     <tr>
       <td>
         <div>
           <img
             src={
-              image.includes(string)
+              image.includes("avataaars")
                 ? image
                 : `${process.env.REACT_APP_BACKEND_URL}${image}`
             }

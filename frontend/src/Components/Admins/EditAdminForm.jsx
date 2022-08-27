@@ -3,15 +3,9 @@ import { AiOutlineTeam } from "react-icons/ai";
 import axios from "axios";
 
 const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
+  editAdmin.password = "";
+  editAdmin.password_confirmation = "";
   const [formData, setFormData] = useState(editAdmin);
-  const [errors, setErrors] = useState({});
-  const [role, setRole] = useState("");
-  const [success, setSuccess] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [pic, setPic] = useState([]);
-  const [uniqueEmail, setUniqueEmail] = useState("");
-  const { system_role_id } = editAdmin;
-  let canSubmit = false;
   const {
     first_name,
     last_name,
@@ -21,12 +15,32 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
     password_confirmation,
     picture,
   } = formData;
-  const handleImage = (e) => {
-    setPic({ image: e.target.files[0] });
+  const [errors, setErrors] = useState({});
+  const [role, setRole] = useState(0);
+  const [success, setSuccess] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [uniqueEmail, setUniqueEmail] = useState("");
+  const [imageError, setImageError] = useState("");
+  const [image, setImage] = useState(picture);
+  const { system_role_id } = editAdmin;
+  let canSubmit = false;
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const image = event.target.files[0];
+      if (!image.name.match(/\.(jpg|jpeg|png)$/)) {
+        setImageError("Invalid Image Type");
+      } else {
+        setImageError("");
+        const img = {
+          preview: URL.createObjectURL(event.target.files[0]),
+          data: event.target.files[0],
+        };
+        setImage(img);
+      }
+    }
   };
 
-
-  
   // On Change for controlled fields
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -51,17 +65,15 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
     }
   };
 
-  const string = "placeholder";
-
   // On Submit Action
   const onSubmit = async (a) => {
     a.preventDefault();
     setErrors(validate(formData));
     if (canSubmit) {
       try {
-        const { image } = pic;
+        const imageFile = image.data;
         const data = new FormData();
-        data.append("image", image);
+        data.append("image", imageFile);
         data.append("first_name", first_name);
         data.append("last_name", last_name);
         data.append("email", email);
@@ -73,14 +85,6 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
         const message = await EditAdmin(data);
         setSuccess(message.message);
         setReloadAdmins(!reloadAdmins);
-        setFormData({
-          first_name: "",
-          last_name: "",
-          email: "",
-          phone_number: "",
-          password: "",
-          password_confirmation: "",
-        });
       } catch (err) {
         console.log(err);
       }
@@ -120,8 +124,10 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
         errorMessages.password = "";
       }
       if (values.password_confirmation !== values.password) {
-        errorMessages.password_confirmation = "You Must Confirm your password";
+        errorMessages.password = "Passwords didn't match";
+        errorMessages.password_confirmation = "Passwords didn't match";
       } else {
+        errorMessages.password = "";
         errorMessages.password_confirmation = "";
       }
       if (
@@ -253,7 +259,7 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
                 <p>{errors.password}</p>
               </div>
               <div className="form-group">
-                <label htmlFor="password" className="form-label">
+                <label htmlFor="password_confirmation" className="form-label">
                   Confirm Password
                 </label>
                 <input
@@ -272,17 +278,26 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
           ) : (
             ""
           )}
-
           <input
             type="file"
             name="picture"
-            onChange={handleImage}
+            onChange={onImageChange}
             placeholder="Upload your Image"
-          ></input>
+          />
+          {imageError && <p className="error-msg">{imageError}</p>}
           <div className="form-group">
-          <img className="popup-picture" src={picture.includes(string)
-                ? picture
-                : `${process.env.REACT_APP_BACKEND_URL}${picture}`} width="80px" alt="User Image"/>
+            <img
+              className="popup-picture"
+              src={
+                image.preview
+                  ? image.preview
+                  : image.includes("avataaars")
+                  ? image
+                  : `${process.env.REACT_APP_BACKEND_URL}${image}`
+              }
+              width="80px"
+              alt="User Image"
+            />
             <input type="submit" className="btn btn-block" value="Edit Admin" />
           </div>
         </form>
