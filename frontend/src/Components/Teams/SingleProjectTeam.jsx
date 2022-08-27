@@ -4,10 +4,9 @@ import { Link } from "react-router-dom";
 const SingleProjectTeam = ({ name, slug }) => {
   return (
     <div>
-      <h3>{name}</h3>
-      <Link to={`/projects/${slug}`} className="btn dark-btn">
-        View
-      </Link>
+      <h3>
+        <Link to={`/projects/${slug}`}>{name}</Link>
+      </h3>
     </div>
   );
 };

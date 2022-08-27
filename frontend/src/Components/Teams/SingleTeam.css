@@ -21,19 +21,21 @@
   justify-items: center;
   justify-content: center;
   padding: 2rem 0 2rem 1rem;
-  row-gap: 2rem;
-  column-gap: 2rem;
+  gap: 1rem;
 }
 
 .single-team-projects-container div {
-  border: 2px solid var(--primary-color);
-  padding: 2rem;
+  border: 2px solid var(--secondary-color);
+  padding: 0.5rem;
   border-radius: 5px;
+}
+
+.single-team-projects-container div h3 {
+  margin: 0;
 }
 
 .single-team-projects-container div a {
   border-radius: 5px;
-  color: var(--white-color);
 }
 
 .single-team-employees-container a {

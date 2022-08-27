@@ -68,14 +68,17 @@ class ProjectController extends Controller
     public function show(Project $project): JsonResponse
     {
         $roles = [];
-        $assigned_employees = $project->users;
-        foreach ($assigned_employees as $employee) {
-            $employee->team;
-            foreach ($employee->roles as $role) {
-                if ($role->pivot->project_id === $project->id) {
-                    $roles[] = $role->name;
-                }
-            }
+        $assigned_employees = $project
+            ->users()
+            ->wherePivot("end_date", null)
+            ->get();
+        foreach ($assigned_employees as $assigned_employee) {
+            $assigned_employee->team;
+            $roles[] = $assigned_employee
+                ->roles()
+                ->wherePivot("end_date", null)
+                ->wherePivot("project_id", $project->id)
+                ->first();
         }
         $fetched_teams = DB::table("users")
             ->select("users.team_id")

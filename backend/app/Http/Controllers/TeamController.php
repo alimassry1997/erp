@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -138,6 +139,17 @@ class TeamController extends Controller
             User::whereIn("email", $search_for_email_and_remove)->update([
                 "team_id" => 2,
             ]);
+            $end_date_employees = User::whereIn(
+                "email",
+                $search_for_email_and_remove
+            )->get();
+            foreach ($end_date_employees as $end_date_employee) {
+                foreach ($end_date_employee->projects as $project) {
+                    $project->pivot
+                        ->where("assignments.user_id", $end_date_employee->id)
+                        ->update(["end_date" => Carbon::now()]);
+                }
+            }
         }
 
         return response()->json([
