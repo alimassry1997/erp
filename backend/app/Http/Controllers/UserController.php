@@ -35,7 +35,10 @@ class UserController extends Controller
         return response()->json([
             "user" => $user,
             "skills" => $output,
-            "projects" => $user->projects,
+            "projects" => $user
+                ->projects()
+                ->orderBy("status", "ASC")
+                ->get(),
             "roles" => $user->roles,
         ]);
     }
