@@ -14,6 +14,25 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function projects(User $user): JsonResponse
+    {
+        $roles = [];
+        foreach ($user->projects as $project) {
+            $roles[] = $project
+                ->roles()
+                ->wherePivot("user_id", $user->id)
+                ->get();
+        }
+        return response()->json([
+            "projects" => $user->projects,
+            "roles" => $roles,
+        ]);
+    }
+
+    /**
+     * @param User $user
+     * @return JsonResponse
+     */
     public function reports(User $user): JsonResponse
     {
         $last_skills = [];

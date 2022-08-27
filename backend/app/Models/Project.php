@@ -63,6 +63,16 @@ class Project extends Model
     }
 
     /**
+     * Get the projects with roles.
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, "assignments")
+            ->withPivot("user_id", "end_date")
+            ->withTimestamps();
+    }
+
+    /**
      * Get the route key for the model.
      *
      * @return string

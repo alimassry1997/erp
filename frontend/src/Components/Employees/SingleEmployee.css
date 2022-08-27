@@ -125,8 +125,12 @@
     font-size: 0.8rem;
   }
 
+  .profile-buttons {
+    flex-wrap: wrap;
+  }
+
   .profile-buttons button {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
   }
 
   .profile-container {

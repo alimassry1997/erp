@@ -91,6 +91,10 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
     Route::get("/reports/{user}", [UserController::class, "reports"]);
     Route::put("/user/{user}", [UserController::class, "update"]);
     Route::put("/user/{user}/status", [UserController::class, "update_status"]);
+    Route::get("/employees/{user}/projects", [
+        UserController::class,
+        "projects",
+    ]);
 
     /**
      * Admins Routes

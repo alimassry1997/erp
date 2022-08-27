@@ -100,6 +100,13 @@ const App = () => {
   const [projects, setProjects] = useState([]);
 
   /**
+   * Employee Projects States
+   * Loading & Projects
+   */
+  const [loadingEmployeeProjects, setLoadingEmployeeProjects] = useState(true);
+  const [employeeProjects, setEmployeeProjects] = useState([]);
+
+  /**
    * Reports States
    * Loading & Reports
    */
@@ -330,6 +337,27 @@ const App = () => {
     setLoadingReport(false);
   };
 
+  /**
+   * Get all projects related to this employee
+   * @param email
+   * @returns {Promise<void>}
+   */
+  const getProjectsEmployee = async (email) => {
+    setLoadingEmployeeProjects(true);
+    try {
+      const response = await axios.get(`/api/employees/${email}/projects`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { projects },
+      } = response;
+      setEmployeeProjects(projects);
+    } catch (error) {
+      console.log(error.message);
+    }
+    setLoadingEmployeeProjects(false);
+  };
+
   return (
     <Router>
       <>
@@ -483,6 +511,9 @@ const App = () => {
                   skills={skills}
                   loadingSkills={loadingSkills}
                   fetchSkills={fetchSkills}
+                  loadingEmployeeProjects={loadingEmployeeProjects}
+                  employeeProjects={employeeProjects}
+                  getProjectsEmployee={getProjectsEmployee}
                 />
               }
             />

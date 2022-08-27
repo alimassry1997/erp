@@ -5,6 +5,7 @@ import SingleEmployee from "../Employees/SingleEmployee";
 import DeleteEmployeeAlert from "../Employees/DeleteEmployeeAlert";
 import EditAdminForm from "../Admins/EditAdminForm";
 import AssignSkillsForm from "../Employees/AssignSkillForm";
+import ChangeRoleForm from "../Employees/ChangeRoleForm";
 
 const SingleEmployeeDashboard = ({
   employee,
@@ -16,6 +17,9 @@ const SingleEmployeeDashboard = ({
   loadingSkills,
   token,
   employeeSkills,
+  employeeProjects,
+  loadingEmployeeProjects,
+  getProjectsEmployee,
 }) => {
   const { email } = useParams();
 
@@ -24,6 +28,12 @@ const SingleEmployeeDashboard = ({
    */
   const [showAssignEmployeeForm, setShowAssignEmployeeForm] = useState(false);
   const [assignEmployee, setAssignEmployee] = useState("");
+
+  /**
+   * Assign Employee Form State Popup
+   */
+  const [showChangeRoleForm, setShowChangeRoleForm] = useState(false);
+  const [changeRole, setChangeRole] = useState("");
 
   /**
    * Edit Employee Form State Popup
@@ -55,6 +65,11 @@ const SingleEmployeeDashboard = ({
     setShowAssignEmployeeForm(true);
   };
 
+  const showChangeRolePopup = (user) => {
+    setChangeRole(user);
+    setShowChangeRoleForm(true);
+  };
+
   const showDeleteEmployeePopup = (user) => {
     setDeleteEmployee(user);
     setShowDeleteEmployeeForm(true);
@@ -75,6 +90,7 @@ const SingleEmployeeDashboard = ({
         showEditEmployeePopup={showEditEmployeePopup}
         showDeleteEmployeePopup={showDeleteEmployeePopup}
         showAssignEmployeePopup={showAssignEmployeePopup}
+        showChangeRolePopup={showChangeRolePopup}
       />
       {/* Employees Edit Form Popup */}
       {showEditEmployeeForm && (
@@ -118,6 +134,24 @@ const SingleEmployeeDashboard = ({
               loadingSkills={loadingSkills}
               fetchSkills={fetchSkills}
               assignEmployee={assignEmployee}
+              reloadEmployee={reloadEmployee}
+              setReloadEmployee={setReloadEmployee}
+            />
+          }
+        />
+      )}
+      {/* Employees Roles Change Form Popup */}
+      {showChangeRoleForm && (
+        <Popup
+          show={showChangeRoleForm}
+          setShow={setShowChangeRoleForm}
+          component={
+            <ChangeRoleForm
+              token={token}
+              employeeProjects={employeeProjects}
+              loadingEmployeeProjects={loadingEmployeeProjects}
+              getProjectsEmployee={getProjectsEmployee}
+              changeRole={changeRole}
               reloadEmployee={reloadEmployee}
               setReloadEmployee={setReloadEmployee}
             />
