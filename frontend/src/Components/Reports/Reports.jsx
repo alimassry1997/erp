@@ -131,6 +131,8 @@ const Reports = ({
                     role={reportEmployeeRoles[index].name}
                     name={project.name}
                     slug={project.slug}
+                    created_at={project.pivot.created_at}
+                    end_date={project.pivot.end_date}
                   />
                 ))}
               </div>
