@@ -12,17 +12,27 @@ const EditEmployeeForm = ({
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [pic, setPic] = useState([]);
+  const [imageError, setImageError] = useState("");
   const [uniqueEmail, setUniqueEmail] = useState("");
-
   let canSubmit = false;
   const { first_name, last_name, email, phone_number, picture } = formData;
+  const [image, setImage] = useState(picture);
 
-  const handleImage = (e) => {
-    setPic({ image: e.target.files[0] });
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const image = event.target.files[0];
+      if (!image.name.match(/\.(jpg|jpeg|png)$/)) {
+        setImageError("Invalid Image Type");
+      } else {
+        setImageError("");
+        const img = {
+          preview: URL.createObjectURL(event.target.files[0]),
+          data: event.target.files[0],
+        };
+        setImage(img);
+      }
+    }
   };
-
-  const string = "avataaars";
 
   // On Change for controlled fields
   const onChange = (e) => {
@@ -54,9 +64,9 @@ const EditEmployeeForm = ({
     setErrors(validate(formData));
     if (canSubmit) {
       try {
-        const { image } = pic;
+        const imageFile = image.data;
         const data = new FormData();
-        data.append("image", image);
+        data.append("image", imageFile);
         data.append("first_name", first_name);
         data.append("last_name", last_name);
         data.append("email", email);
@@ -203,17 +213,20 @@ const EditEmployeeForm = ({
           <input
             type="file"
             name="picture"
-            onChange={handleImage}
+            onChange={onImageChange}
             placeholder="Upload your Image"
-          ></input>
+          />
+          {imageError && <p className="error-msg">{imageError}</p>}
 
           <div className="form-group">
             <img
               className="popup-picture"
               src={
-                picture.includes(string)
-                  ? picture
-                  : `${process.env.REACT_APP_BACKEND_URL}${picture}`
+                image.preview
+                  ? image.preview
+                  : image.includes("avataaars")
+                  ? image
+                  : `${process.env.REACT_APP_BACKEND_URL}${image}`
               }
               width="80px"
               alt="User Image"

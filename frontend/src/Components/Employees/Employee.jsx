@@ -17,14 +17,13 @@ const Employee = ({
   employee,
   teamName,
 }) => {
-  const string = "avataaars";
   return (
     <div className="users-card">
       <div className="users-card-main">
         <div className="users-card-image">
           <img
             src={
-              image.includes(string)
+              image.includes("avataaars")
                 ? image
                 : `${process.env.REACT_APP_BACKEND_URL}${image}`
             }

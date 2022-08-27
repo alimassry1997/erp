@@ -4,7 +4,6 @@ import "./Navbar.css";
 
 const Navbar = ({ auth: { user }, setAuth }) => {
   const navigate = useNavigate();
-  const string = "avataaars";
   const { first_name, email, picture } = user;
   const onLogout = () => {
     localStorage.removeItem("user");
@@ -17,7 +16,7 @@ const Navbar = ({ auth: { user }, setAuth }) => {
         <Link to={`/employees/${email}`}>
           <img
             src={
-              picture.includes(string)
+              picture.includes("avataaars")
                 ? picture
                 : `${process.env.REACT_APP_BACKEND_URL}${picture}`
             }
