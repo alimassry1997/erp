@@ -1,7 +1,9 @@
 import { FaEdit } from "react-icons/fa";
-import { BiShowAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import IsActiveButton from "./IsActiveButton";
+import { AiOutlineMail, AiOutlineTeam } from "react-icons/ai";
+import { BsPhone } from "react-icons/bs";
+import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 
 const Employee = ({
   firstName,
@@ -13,49 +15,53 @@ const Employee = ({
   showEditEmployeePopup,
   showDeleteEmployeePopup,
   employee,
+  teamName,
 }) => {
-  const string = "placeholder";
   return (
-    <tr>
-      <td>
-        <div>
+    <div className="users-card">
+      <div className="users-card-main">
+        <div className="users-card-image">
           <img
             src={
-              image.includes(string)
+              image.includes("avataaars")
                 ? image
                 : `${process.env.REACT_APP_BACKEND_URL}${image}`
             }
             alt="profile image"
           />
         </div>
-      </td>
-      <td>{firstName}</td>
-      <td>{lastName}</td>
-      <td>{email}</td>
-      <td>{phoneNumber}</td>
-      <td>
-        {
-          <IsActiveButton
-            status={status}
-            showDeleteEmployeePopup={showDeleteEmployeePopup}
-            employee={employee}
-          />
-        }
-      </td>
-      <td>
-        <div className="flex-btn">
-          <Link to={`/employees/${email}`} className="btn view-btn">
-            <BiShowAlt />
-          </Link>
-          <button
-            className="btn edit-btn"
-            onClick={() => showEditEmployeePopup(employee)}
-          >
-            <FaEdit />
-          </button>
+        <div className="users-card-content">
+          <h3>
+            <Link to={`/employees/${email}`}>
+              {firstName} {lastName}
+            </Link>
+          </h3>
+          <span>
+            <AiOutlineMail />
+            {email}
+          </span>
+          <h4>
+            <BsPhone /> {phoneNumber}
+          </h4>
+          <h4>
+            <AiOutlineTeam /> {capitalizeFirstLetter(teamName)} Team
+          </h4>
         </div>
-      </td>
-    </tr>
+      </div>
+      <div className="users-card-footer">
+        <IsActiveButton
+          status={status}
+          showDeleteEmployeePopup={showDeleteEmployeePopup}
+          employee={employee}
+        />
+        <button
+          className="btn edit-btn"
+          onClick={() => showEditEmployeePopup(employee)}
+        >
+          <FaEdit />
+        </button>
+      </div>
+    </div>
   );
 };
 

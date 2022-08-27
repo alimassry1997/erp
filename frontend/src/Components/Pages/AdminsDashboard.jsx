@@ -4,13 +4,21 @@ import Admins from "../Admins/Admins";
 import AddAdminForm from "../Admins/AddAdminForm";
 import EditAdminForm from "../Admins/EditAdminForm";
 import DeleteAdminAlert from "../Admins/DeleteAdminAlert";
+import { useNavigate } from "react-router-dom";
 
 const AdminsDashboard = ({
   admins,
   loadingAdmins,
   fetchAdmins,
   token,
+  auth: {
+    user: { system_role_id },
+  },
 }) => {
+  const navigate = useNavigate();
+  if (system_role_id !== 3) {
+    navigate("/");
+  }
   /**
    * Add Admin Form State Popup
    */

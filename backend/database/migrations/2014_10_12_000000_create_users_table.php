@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string("password")->nullable();
             $table->integer("phone_number");
             $table->boolean("status")->default(1);
-            $table->string("picture");
+            $table->text("picture");
             $table->rememberToken();
             $table->timestamps();
         });

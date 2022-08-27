@@ -43,6 +43,7 @@ const App = () => {
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState([]);
   const [relatedEmployeesTeam, setRelatedEmployeesTeam] = useState([]);
+  const [relatedProjectsTeam, setRelatedProjectsTeam] = useState([]);
 
   /**
    * Single Project States
@@ -50,6 +51,9 @@ const App = () => {
    */
   const [loadingProject, setLoadingProject] = useState(true);
   const [project, setProject] = useState([]);
+  const [relatedUnassignedTeams, setRelatedUnassignedTeams] = useState([]);
+  const [relatedAssignedEmployees, setRelatedAssignedEmployees] = useState([]);
+  const [relatedEmployeesRoles, setRelatedEmployeesRoles] = useState([]);
 
   /**
    * Single Employee States
@@ -57,6 +61,8 @@ const App = () => {
    */
   const [loadingEmployee, setLoadingEmployee] = useState(true);
   const [employee, setEmployee] = useState([]);
+  const [empTeam, setEmpTeam] = useState([]);
+  const [employeeSkills, setEmployeeSkills] = useState([]);
 
   /**
    * Employees States
@@ -92,6 +98,15 @@ const App = () => {
    */
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [projects, setProjects] = useState([]);
+
+  /**
+   * Reports States
+   * Loading & Reports
+   */
+  const [loadingReport, setLoadingReport] = useState(true);
+  const [reportEmployeeSkills, setReportEmployeeSkills] = useState([]);
+  const [reportEmployee, setReportEmployee] = useState([]);
+  const [reportEmployeeRoles, setReportEmployeeRoles] = useState([]);
 
   /**
    * Get All teams with their corresponding employees
@@ -154,7 +169,7 @@ const App = () => {
   };
 
   /**
-   * Get All skills
+   * Get All roles
    * @returns {Promise<void>}
    */
   const fetchRoles = async () => {
@@ -225,10 +240,11 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { team, employees },
+        data: { team, employees, projects },
       } = response;
       setTeam(team);
       setRelatedEmployeesTeam(employees);
+      setRelatedProjectsTeam(projects);
       document.title = `${capitalizeFirstLetter(team.name)} Team | ERP Teams`;
     } catch (error) {
       console.log(error.message);
@@ -248,8 +264,11 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { project },
+        data: { project, related_teams, roles, assigned_employees },
       } = response;
+      setRelatedUnassignedTeams(related_teams);
+      setRelatedAssignedEmployees(assigned_employees);
+      setRelatedEmployeesRoles(roles);
       setProject(project);
       document.title = `${capitalizeFirstLetter(
         project.name
@@ -272,9 +291,11 @@ const App = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const {
-        data: { user },
+        data: { user, team, skills },
       } = response;
       setEmployee(user);
+      setEmployeeSkills(skills);
+      setEmpTeam(team);
       document.title = `${capitalizeFirstLetter(
         user.first_name
       )} | ERP Employees`;
@@ -282,6 +303,29 @@ const App = () => {
       console.log(error.message);
     }
     setLoadingEmployee(false);
+  };
+
+  /**
+   * Get a single Report by SLug
+   * @param email
+   * @returns {Promise<void>}
+   */
+  const getReport = async (email) => {
+    setLoadingReport(true);
+    try {
+      const response = await axios.get(`/api/reports/${email}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const {
+        data: { skills, user, roles },
+      } = response;
+      setReportEmployeeRoles(roles);
+      setReportEmployee(user);
+      setReportEmployeeSkills(skills);
+    } catch (error) {
+      console.log(error.message);
+    }
+    setLoadingReport(false);
   };
 
   return (
@@ -292,7 +336,21 @@ const App = () => {
             path="/"
             element={<DashboardLayout auth={auth} setAuth={setAuth} />}
           >
-            <Route index element={<Reports />} />
+            <Route
+              index
+              element={
+                <Reports
+                  fetchEmployees={fetchEmployees}
+                  employees={employees}
+                  loadingEmployees={loadingEmployees}
+                  getReport={getReport}
+                  loadingReport={loadingReport}
+                  reportEmployeeSkills={reportEmployeeSkills}
+                  reportEmployee={reportEmployee}
+                  reportEmployeeRoles={reportEmployeeRoles}
+                />
+              }
+            />
           </Route>
           <Route
             path="/admins"
@@ -302,6 +360,7 @@ const App = () => {
               index
               element={
                 <AdminsDashboard
+                  auth={auth}
                   fetchAdmins={fetchAdmins}
                   admins={admins}
                   loadingAdmins={loadingAdmins}
@@ -322,6 +381,9 @@ const App = () => {
                   loadingProjects={loadingProjects}
                   fetchProjects={fetchProjects}
                   token={token}
+                  teams={teams}
+                  loadingTeams={loadingTeams}
+                  fetchTeams={fetchTeams}
                 />
               }
             />
@@ -352,6 +414,7 @@ const App = () => {
                 <SingleTeamDashboard
                   team={team}
                   relatedEmployeesTeam={relatedEmployeesTeam}
+                  relatedProjectsTeam={relatedProjectsTeam}
                   loadingTeam={loadingTeam}
                   getTeam={getTeam}
                   token={token}
@@ -371,6 +434,15 @@ const App = () => {
                   loadingProject={loadingProject}
                   getProject={getProject}
                   token={token}
+                  getTeam={getTeam}
+                  loadingTeam={loadingTeam}
+                  roles={roles}
+                  loadingRoles={loadingRoles}
+                  fetchRoles={fetchRoles}
+                  relatedEmployeesTeam={relatedEmployeesTeam}
+                  relatedUnassignedTeams={relatedUnassignedTeams}
+                  relatedAssignedEmployees={relatedAssignedEmployees}
+                  relatedEmployeesRoles={relatedEmployeesRoles}
                 />
               }
             />
@@ -403,6 +475,11 @@ const App = () => {
                   employee={employee}
                   loadingEmployee={loadingEmployee}
                   token={token}
+                  empTeam={empTeam}
+                  employeeSkills={employeeSkills}
+                  skills={skills}
+                  loadingSkills={loadingSkills}
+                  fetchSkills={fetchSkills}
                 />
               }
             />

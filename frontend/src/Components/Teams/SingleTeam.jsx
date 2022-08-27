@@ -8,6 +8,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import SingleTeamEmployees from "./SingleTeamEmployees";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
+import SingleProjectTeam from "./SingleProjectTeam";
 
 const SingleTeam = ({
   team,
@@ -16,6 +17,7 @@ const SingleTeam = ({
   showDeleteTeamPopup,
   showEditTeamPopup,
   relatedEmployeesTeam,
+  relatedProjectsTeam,
 }) => {
   const { slug } = useParams();
 
@@ -28,6 +30,7 @@ const SingleTeam = ({
   } else {
     const { name } = team;
     const size = relatedEmployeesTeam.length;
+    const projectsSize = relatedProjectsTeam.length;
     return (
       <div className="single-team-container">
         <header>
@@ -64,13 +67,23 @@ const SingleTeam = ({
             </Tab>
           </TabList>
           <TabPanel>
-            <div className="no-data">
-              <h2>Projects Here</h2>
-            </div>
+            {projectsSize > 0 ? (
+              <div className="single-team-projects-container">
+                {relatedProjectsTeam.map((project) => (
+                  <SingleProjectTeam
+                    key={project.id}
+                    name={project.name}
+                    slug={project.slug}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="no-data">No Projects Assigned</div>
+            )}
           </TabPanel>
           <TabPanel>
             {size > 0 ? (
-              <div className="single-team-employees-container">
+              <div className="single-team-employees-container ">
                 {relatedEmployeesTeam.map((employee) => (
                   <SingleTeamEmployees
                     key={employee.id}

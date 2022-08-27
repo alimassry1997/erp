@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineUser } from "react-icons/ai";
 import axios from "axios";
+import { BiImageAdd } from "react-icons/bi";
 
 const AddAdminForm = ({ token, setReloadAdmins, reloadAdmins }) => {
   const [formData, setFormData] = useState({
@@ -14,12 +15,32 @@ const AddAdminForm = ({ token, setReloadAdmins, reloadAdmins }) => {
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [pic, setPic] = useState([]);
+  const [imageError, setImageError] = useState("");
+  const [image, setImage] = useState({});
   let canSubmit = false;
-  const { first_name, last_name, email, phone_number, password, password_confirmation } = formData;
+  const {
+    first_name,
+    last_name,
+    email,
+    phone_number,
+    password,
+    password_confirmation,
+  } = formData;
 
-  const handleImage = (e) => {
-    setPic({ image: e.target.files[0] });
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const image = event.target.files[0];
+      if (!image.name.match(/\.(jpg|jpeg|png)$/)) {
+        setImageError("Invalid Image Type");
+      } else {
+        setImageError("");
+        const img = {
+          preview: URL.createObjectURL(event.target.files[0]),
+          data: event.target.files[0],
+        };
+        setImage(img);
+      }
+    }
   };
 
   // On Change for controlled fields
@@ -48,41 +69,38 @@ const AddAdminForm = ({ token, setReloadAdmins, reloadAdmins }) => {
 
   // On Submit Action
 
- 
-    const onSubmit = async (a) => {
-      a.preventDefault();
-      setErrors(validate(formData));
-      console.log("can", canSubmit);
-      if (canSubmit) {
-        try {
-          const { image } = pic;
-          const data = new FormData();
-          data.append("image", image);
-          data.append("first_name", first_name);
-          data.append("last_name", last_name);
-          data.append("email", email);
-          data.append("phone_number", phone_number);
-          data.append("password", password);
-          data.append("password_confirmation", password_confirmation);
-          data.append("system_role_id", "1");
+  const onSubmit = async (a) => {
+    a.preventDefault();
+    setErrors(validate(formData));
+    if (canSubmit) {
+      try {
+        const imageFile = image.data;
+        const data = new FormData();
+        data.append("image", imageFile);
+        data.append("first_name", first_name);
+        data.append("last_name", last_name);
+        data.append("email", email);
+        data.append("phone_number", phone_number);
+        data.append("password", password);
+        data.append("password_confirmation", password_confirmation);
+        data.append("system_role_id", "1");
 
-          const message = await AddNewAdmin(data);
-          setSuccess(message.message);
-          setReloadAdmins(!reloadAdmins);
-          setFormData({
-            first_name: "",
-            last_name: "",
-            email: "",
-            phone_number: "",
-            password: "",
-            password_confirmation: "",
-          });
-        } catch (err) {
-          console.log(err);
-        }
+        const message = await AddNewAdmin(data);
+        setSuccess(message.message);
+        setReloadAdmins(!reloadAdmins);
+        setFormData({
+          first_name: "",
+          last_name: "",
+          email: "",
+          phone_number: "",
+          password: "",
+          password_confirmation: "",
+        });
+      } catch (err) {
+        console.log(err);
       }
-    };
-  
+    }
+  };
 
   // Validation for Enroll Form
   const validate = (values) => {
@@ -112,14 +130,18 @@ const AddAdminForm = ({ token, setReloadAdmins, reloadAdmins }) => {
       errorMessages.password = "Password is required";
     } else if (values.password.length < 8) {
       errorMessages.password = "Password must contain at least 8 characters";
-    }
-    else {
+    } else {
       errorMessages.password = "";
     }
-     if (values.password_confirmation !== values.password) {
+    if (values.password_confirmation !== values.password) {
       errorMessages.password_confirmation = "You Must Confirm your password";
     } else {
       errorMessages.password_confirmation = "";
+    }
+    if (image.data === undefined) {
+      setImageError("Upload Image");
+    } else {
+      setImageError("");
     }
 
     if (
@@ -127,8 +149,9 @@ const AddAdminForm = ({ token, setReloadAdmins, reloadAdmins }) => {
       errorMessages.last_name === "" &&
       errorMessages.email === "" &&
       errorMessages.phone_number === "" &&
-      errorMessages.password === "" && 
-      errorMessages.password_confirmation === ""
+      errorMessages.password === "" &&
+      errorMessages.password_confirmation === "" &&
+      image.data !== undefined
     ) {
       console.log(true);
       canSubmit = true;
@@ -162,6 +185,22 @@ const AddAdminForm = ({ token, setReloadAdmins, reloadAdmins }) => {
       </section>
       <section className="form">
         <form onSubmit={onSubmit}>
+          <div className="edit-image-form">
+            {imageError && <p className="error-msg">{imageError}</p>}
+            {image.preview && <img src={image.preview} alt="User Image" />}
+            <div>
+              <label htmlFor="picture" className="form-control">
+                <BiImageAdd /> Upload Image
+                <input
+                  type="file"
+                  onChange={onImageChange}
+                  className="form-control"
+                  name="picture"
+                  id="picture"
+                />
+              </label>
+            </div>
+          </div>
           <div className="form-group">
             <label htmlFor="first_name" className="form-label">
               First Name
@@ -246,12 +285,6 @@ const AddAdminForm = ({ token, setReloadAdmins, reloadAdmins }) => {
             />
             <p>{errors.password_confirmation}</p>
           </div>
-          <input
-            type="file"
-            name="picture"
-            onChange={handleImage}
-            placeholder="Upload your Image"
-          ></input>
           <div className="form-group">
             <input
               type="submit"

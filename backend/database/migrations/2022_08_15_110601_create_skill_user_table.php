@@ -13,12 +13,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create("skill_user", static function (Blueprint $table) {
-            $table->id();
             $table->foreignId("skill_id")->constrained();
             $table->foreignId("user_id")->constrained();
-            $table->string("feedback");
             $table->integer("score");
             $table->timestamps();
+            $table->primary(["skill_id", "user_id", "created_at"]);
         });
     }
 

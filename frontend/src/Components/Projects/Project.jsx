@@ -5,7 +5,14 @@ import { MdDateRange } from "react-icons/md";
 import { IoMdDoneAll } from "react-icons/io";
 import { Link } from "react-router-dom";
 
-const Project = ({ name, slug, status, created_at, finished_at }) => {
+const Project = ({
+  name,
+  slug,
+  status,
+  created_at,
+  finished_at,
+  teams_count,
+}) => {
   return (
     <Link to={`/projects/${slug}`}>
       <div className="project">
@@ -14,8 +21,7 @@ const Project = ({ name, slug, status, created_at, finished_at }) => {
           <ProjectStatus status={status} finished_at={finished_at} />
         </div>
         <div className="project-body">
-          <p>Teams assigned: 3</p>
-          <p>Employees working: 10</p>
+          <p>Teams assigned: {teams_count}</p>
         </div>
         <div className="project-footer">
           <p>

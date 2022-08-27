@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineTeam } from "react-icons/ai";
 import axios from "axios";
+import { BiImageAdd } from "react-icons/bi";
+import "./EditEmployeeForm.css";
 
 const EditEmployeeForm = ({
   token,
@@ -12,14 +14,26 @@ const EditEmployeeForm = ({
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [pic, setPic] = useState([]);
+  const [imageError, setImageError] = useState("");
   const [uniqueEmail, setUniqueEmail] = useState("");
-
   let canSubmit = false;
-  const { first_name, last_name, email, phone_number } = formData;
+  const { first_name, last_name, email, phone_number, picture } = formData;
+  const [image, setImage] = useState(picture);
 
-  const handleImage = (e) => {
-    setPic({ image: e.target.files[0] });
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const image = event.target.files[0];
+      if (!image.name.match(/\.(jpg|jpeg|png)$/)) {
+        setImageError("Invalid Image Type");
+      } else {
+        setImageError("");
+        const img = {
+          preview: URL.createObjectURL(event.target.files[0]),
+          data: event.target.files[0],
+        };
+        setImage(img);
+      }
+    }
   };
 
   // On Change for controlled fields
@@ -52,9 +66,9 @@ const EditEmployeeForm = ({
     setErrors(validate(formData));
     if (canSubmit) {
       try {
-        const { image } = pic;
+        const imageFile = image.data;
         const data = new FormData();
-        data.append("image", image);
+        data.append("image", imageFile);
         data.append("first_name", first_name);
         data.append("last_name", last_name);
         data.append("email", email);
@@ -138,6 +152,31 @@ const EditEmployeeForm = ({
       </section>
       <section className="form">
         <form onSubmit={onSubmit}>
+          <div className="edit-image-form">
+            {imageError && <p className="error-msg">{imageError}</p>}
+            <img
+              src={
+                image.preview
+                  ? image.preview
+                  : image.includes("avataaars")
+                  ? image
+                  : `${process.env.REACT_APP_BACKEND_URL}${image}`
+              }
+              alt="User Image"
+            />
+            <div>
+              <label htmlFor="picture" className="form-control">
+                <BiImageAdd /> Upload Image
+                <input
+                  type="file"
+                  onChange={onImageChange}
+                  className="form-control"
+                  name="picture"
+                  id="picture"
+                />
+              </label>
+            </div>
+          </div>
           <div className="form-group">
             <label htmlFor="first_name" className="form-label">
               First Name
@@ -198,12 +237,6 @@ const EditEmployeeForm = ({
             />
             <p>{errors.phone_number}</p>
           </div>
-          <input
-            type="file"
-            name="picture"
-            onChange={handleImage}
-            placeholder="Upload your Image"
-          ></input>
           <div className="form-group">
             <input
               type="submit"

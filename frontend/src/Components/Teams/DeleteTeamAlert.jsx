@@ -54,10 +54,12 @@ const DeleteTeamAlert = ({
         setErrorMessage("");
       }, 5000);
     }
-    setTimeout(() => {
-      setSuccess("");
-      navigate("/teams");
-    }, 5000);
+    if (success) {
+      setTimeout(() => {
+        setSuccess("");
+        navigate("/teams");
+      }, 5000);
+    }
   }, [errorMessage]);
 
   return (

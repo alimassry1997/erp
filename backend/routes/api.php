@@ -51,6 +51,18 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
      */
     Route::get("/projects", [ProjectController::class, "index"]);
     Route::post("/projects", [ProjectController::class, "store"]);
+    Route::post("/projects/assignments/{project}", [
+        ProjectController::class,
+        "assign_employees",
+    ]);
+    Route::put("/projects/{project}/status", [
+        ProjectController::class,
+        "update_status",
+    ]);
+    Route::get("/projects/filter/{project}", [
+        ProjectController::class,
+        "filterByProject",
+    ]);
     Route::get("/projects/{project}", [ProjectController::class, "show"]);
     Route::put("/projects/{project}", [ProjectController::class, "update"]);
     Route::delete("/projects/{project}", [ProjectController::class, "destroy"]);
@@ -70,8 +82,13 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
      */
     Route::get("/employees", [UserController::class, "index"]);
     Route::post("/employees", [UserController::class, "store"]);
+    Route::post("/employees/evaluation/{user}", [
+        UserController::class,
+        "evaluate",
+    ]);
     Route::get("/employees/{user}", [UserController::class, "show"]);
     Route::get("edit-employee/{id}", [UserController::class, "edit"]);
+    Route::get("/reports/{user}", [UserController::class, "reports"]);
     Route::put("/user/{user}", [UserController::class, "update"]);
     Route::put("/user/{user}/status", [UserController::class, "update_status"]);
 
@@ -80,10 +97,4 @@ Route::group(["middleware" => ["auth:sanctum"]], static function () {
      */
     Route::get("/admins", [UserController::class, "indexAdmin"]);
     Route::post("/admins", [UserController::class, "storeAdmin"]);
-    // Route::get("edit-employee/{id}", [UserController::class, "edit"]);
-    // Route::put("/admins/{user}", [UserController::class, "update"]);
-    // Route::put("/admins/{user}/status", [
-    //     UserController::class,
-    //     "update_status",
-    // ]);
 });

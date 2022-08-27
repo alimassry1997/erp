@@ -1,28 +1,42 @@
 import { useState, useEffect } from "react";
-// import Popup from "../Layout/Popup";
-// import axios from "axios";
+import Popup from "../Layout/Popup";
 import { useParams } from "react-router-dom";
 import SingleEmployee from "../Employees/SingleEmployee";
+import DeleteEmployeeAlert from "../Employees/DeleteEmployeeAlert";
+import EditAdminForm from "../Admins/EditAdminForm";
+import AssignSkillsForm from "../Employees/AssignSkillForm";
 
 const SingleEmployeeDashboard = ({
   employee,
   loadingEmployee,
   getEmployee,
-  // token,
+  empTeam,
+  skills,
+  fetchSkills,
+  loadingSkills,
+  token,
+  employeeSkills,
 }) => {
   const { email } = useParams();
+
+  /**
+   * Assign Employee Form State Popup
+   */
+  const [showAssignEmployeeForm, setShowAssignEmployeeForm] = useState(false);
+  const [assignEmployee, setAssignEmployee] = useState("");
+
   /**
    * Edit Employee Form State Popup
    */
-  // const [showEditEmployeeForm, setShowEditEmployeeForm] = useState(false);
-  // const [editEmployee, setEditEmployee] = useState("");
-  //
-  // /**
-  //  * Delete Employee Alert State Popup
-  //  */
-  // const [showDeleteEmployeeForm, setShowDeleteEmployeeForm] = useState(false);
-  // const [deleteEmployee, setDeleteEmployee] = useState("");
-  //
+  const [showEditEmployeeForm, setShowEditEmployeeForm] = useState(false);
+  const [editAdmin, setEditAdmin] = useState("");
+
+  /**
+   * Delete Employee Alert State Popup
+   */
+  const [showDeleteEmployeeForm, setShowDeleteEmployeeForm] = useState(false);
+  const [deleteEmployee, setDeleteEmployee] = useState("");
+
   /**
    * Refresh Employees Table after each add, edit and delete request
    */
@@ -31,15 +45,20 @@ const SingleEmployeeDashboard = ({
   /**
    * Popup Functions
    */
-  // const showEditEmployeePopup = (project) => {
-  //   setEditEmployee(project);
-  //   setShowEditEmployeeForm(true);
-  // };
-  //
-  // const showDeleteEmployeePopup = (project) => {
-  //   setDeleteEmployee(project);
-  //   setShowDeleteEmployeeForm(true);
-  // };
+  const showEditEmployeePopup = (user) => {
+    setEditAdmin(user);
+    setShowEditEmployeeForm(true);
+  };
+
+  const showAssignEmployeePopup = (user) => {
+    setAssignEmployee(user);
+    setShowAssignEmployeeForm(true);
+  };
+
+  const showDeleteEmployeePopup = (user) => {
+    setDeleteEmployee(user);
+    setShowDeleteEmployeeForm(true);
+  };
 
   useEffect(() => {
     getEmployee(email);
@@ -51,44 +70,60 @@ const SingleEmployeeDashboard = ({
         employee={employee}
         loadingEmployee={loadingEmployee}
         getEmployee={getEmployee}
-        // showEditEmployeePopup={showEditEmployeePopup}
-        // showDeleteEmployeePopup={showDeleteEmployeePopup}
+        empTeam={empTeam}
+        employeeSkills={employeeSkills}
+        showEditEmployeePopup={showEditEmployeePopup}
+        showDeleteEmployeePopup={showDeleteEmployeePopup}
+        showAssignEmployeePopup={showAssignEmployeePopup}
       />
       {/* Employees Edit Form Popup */}
-      {/*{showEditEmployeeForm && (*/}
-      {/*    <Popup*/}
-      {/*        show={showEditEmployeeForm}*/}
-      {/*        setShow={setShowEditEmployeeForm}*/}
-      {/*        component={*/}
-      {/*            <EditEmployeeForm*/}
-      {/*                token={token}*/}
-      {/*                reloadEmployees={reloadEmployee}*/}
-      {/*                setReloadEmployees={setReloadEmployee}*/}
-      {/*                getEmployees={getEmployees}*/}
-      {/*                loadingEmployees={loadingEmployees}*/}
-      {/*                setLoadingEmployees={setLoadingEmployees}*/}
-      {/*                employeesList={employeesList}*/}
-      {/*                setEmployeesList={setEmployeesList}*/}
-      {/*                editEmployee={editEmployee}*/}
-      {/*            />*/}
-      {/*        }*/}
-      {/*    />*/}
-      {/*)}*/}
-      {/*/!* Employees Delete Form Popup *!/*/}
-      {/*{showDeleteEmployeeForm && (*/}
-      {/*    <Popup*/}
-      {/*        show={showDeleteEmployeeForm}*/}
-      {/*        setShow={setShowDeleteEmployeeForm}*/}
-      {/*        component={*/}
-      {/*            <DeleteEmployeeAlert*/}
-      {/*                token={token}*/}
-      {/*                reloadEmployees={reloadEmployee}*/}
-      {/*                setReloadEmployees={setReloadEmployee}*/}
-      {/*                deleteEmployee={deleteEmployee}*/}
-      {/*            />*/}
-      {/*        }*/}
-      {/*    />*/}
-      {/*)}*/}
+      {showEditEmployeeForm && (
+        <Popup
+          show={showEditEmployeeForm}
+          setShow={setShowEditEmployeeForm}
+          component={
+            <EditAdminForm
+              token={token}
+              reloadEmployees={reloadEmployee}
+              setReloadEmployees={setReloadEmployee}
+              editAdmin={editAdmin}
+            />
+          }
+        />
+      )}
+      {/* Employees Delete Form Popup */}
+      {showDeleteEmployeeForm && (
+        <Popup
+          show={showDeleteEmployeeForm}
+          setShow={setShowDeleteEmployeeForm}
+          component={
+            <DeleteEmployeeAlert
+              token={token}
+              reloadEmployees={reloadEmployee}
+              setReloadEmployees={setReloadEmployee}
+              deleteEmployee={deleteEmployee}
+            />
+          }
+        />
+      )}
+      {/* Employees Assign Form Popup */}
+      {showAssignEmployeeForm && (
+        <Popup
+          show={showAssignEmployeeForm}
+          setShow={setShowAssignEmployeeForm}
+          component={
+            <AssignSkillsForm
+              token={token}
+              skills={skills}
+              loadingSkills={loadingSkills}
+              fetchSkills={fetchSkills}
+              assignEmployee={assignEmployee}
+              reloadEmployee={reloadEmployee}
+              setReloadEmployee={setReloadEmployee}
+            />
+          }
+        />
+      )}
     </>
   );
 };

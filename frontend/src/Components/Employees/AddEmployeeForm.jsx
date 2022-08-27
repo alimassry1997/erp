@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineUser } from "react-icons/ai";
 import axios from "axios";
+import { BiImageAdd } from "react-icons/bi";
 
 const AddEmployeeForm = ({ token, setReloadEmployees, reloadEmployees }) => {
   const [formData, setFormData] = useState({
@@ -12,12 +13,25 @@ const AddEmployeeForm = ({ token, setReloadEmployees, reloadEmployees }) => {
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [pic, setPic] = useState([]);
+  const [imageError, setImageError] = useState("");
+  const [image, setImage] = useState({});
   let canSubmit = false;
   const { first_name, last_name, email, phone_number } = formData;
 
-  const handleImage = (e) => {
-    setPic({ image: e.target.files[0] });
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const image = event.target.files[0];
+      if (!image.name.match(/\.(jpg|jpeg|png)$/)) {
+        setImageError("Invalid Image Type");
+      } else {
+        setImageError("");
+        const img = {
+          preview: URL.createObjectURL(event.target.files[0]),
+          data: event.target.files[0],
+        };
+        setImage(img);
+      }
+    }
   };
 
   // On Change for controlled fields
@@ -50,9 +64,9 @@ const AddEmployeeForm = ({ token, setReloadEmployees, reloadEmployees }) => {
     setErrors(validate(formData));
     if (canSubmit) {
       try {
-        const { image } = pic;
+        const imageFile = image.data;
         const data = new FormData();
-        data.append("image", image);
+        data.append("image", imageFile);
         data.append("first_name", first_name);
         data.append("last_name", last_name);
         data.append("email", email);
@@ -97,11 +111,17 @@ const AddEmployeeForm = ({ token, setReloadEmployees, reloadEmployees }) => {
     } else {
       errorMessages.phone_number = "";
     }
+    if (image.data === undefined) {
+      setImageError("Upload Image");
+    } else {
+      setImageError("");
+    }
     if (
       errorMessages.first_name === "" &&
       errorMessages.last_name === "" &&
       errorMessages.email === "" &&
-      errorMessages.phone_number === ""
+      errorMessages.phone_number === "" &&
+      image.data !== undefined
     ) {
       canSubmit = true;
     }
@@ -134,6 +154,22 @@ const AddEmployeeForm = ({ token, setReloadEmployees, reloadEmployees }) => {
       </section>
       <section className="form">
         <form onSubmit={onSubmit}>
+          <div className="edit-image-form">
+            {imageError && <p className="error-msg">{imageError}</p>}
+            {image.preview && <img src={image.preview} alt="User Image" />}
+            <div>
+              <label htmlFor="picture" className="form-control">
+                <BiImageAdd /> Upload Image
+                <input
+                  type="file"
+                  onChange={onImageChange}
+                  className="form-control"
+                  name="picture"
+                  id="picture"
+                />
+              </label>
+            </div>
+          </div>
           <div className="form-group">
             <label htmlFor="first_name" className="form-label">
               First Name
@@ -190,12 +226,6 @@ const AddEmployeeForm = ({ token, setReloadEmployees, reloadEmployees }) => {
             />
             <p>{errors.phone_number}</p>
           </div>
-          <input
-            type="file"
-            name="picture"
-            onChange={handleImage}
-            placeholder="Upload your Image"
-          ></input>
           <div className="form-group">
             <input
               type="submit"

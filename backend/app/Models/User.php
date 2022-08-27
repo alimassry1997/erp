@@ -54,6 +54,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Skill[] $skills
  * @property-read int|null $skills_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @property-read int|null $projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
+ * @property-read int|null $roles_count
  */
 class User extends Authenticatable
 {
@@ -120,9 +124,30 @@ class User extends Authenticatable
      */
     public function skills(): BelongsToMany
     {
-        return $this->belongsToMany(Skill::class)
+        return $this->belongsToMany(Skill::class, "skill_user")
+            ->using(SkillUser::class)
             ->as("kpi")
-            ->withPivot("score", "feedback")
+            ->withPivot("score")
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the assignments that belongs to this user.
+     */
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, "assignments")
+            ->withPivot("role_id", "end_date")
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the assignments that belongs to this user.
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, "assignments")
+            ->withPivot("project_id", "end_date")
             ->withTimestamps();
     }
 }

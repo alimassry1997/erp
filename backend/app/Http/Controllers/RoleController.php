@@ -25,16 +25,6 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
@@ -51,28 +41,6 @@ class RoleController extends Controller
         return response()->json([
             "message" => "Role Added Successfully",
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Role $role
-     * @return Response
-     */
-    public function show(Role $role)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Role $role
-     * @return Response
-     */
-    public function edit(Role $role)
-    {
-        //
     }
 
     /**

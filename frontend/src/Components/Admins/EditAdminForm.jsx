@@ -1,19 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineTeam } from "react-icons/ai";
 import axios from "axios";
+import { BiImageAdd } from "react-icons/bi";
 
 const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
+  editAdmin.password = "";
+  editAdmin.password_confirmation = "";
   const [formData, setFormData] = useState(editAdmin);
+  const {
+    first_name,
+    last_name,
+    email,
+    phone_number,
+    password,
+    password_confirmation,
+    picture,
+  } = formData;
   const [errors, setErrors] = useState({});
+  const [role, setRole] = useState(0);
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [pic, setPic] = useState([]);
   const [uniqueEmail, setUniqueEmail] = useState("");
-
+  const [imageError, setImageError] = useState("");
+  const [image, setImage] = useState(picture);
+  const { system_role_id } = editAdmin;
   let canSubmit = false;
-  const { first_name, last_name, email, phone_number, password,  password_confirmation} = formData;
-  const handleImage = (e) => {
-    setPic({ image: e.target.files[0] });
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const image = event.target.files[0];
+      if (!image.name.match(/\.(jpg|jpeg|png)$/)) {
+        setImageError("Invalid Image Type");
+      } else {
+        setImageError("");
+        const img = {
+          preview: URL.createObjectURL(event.target.files[0]),
+          data: event.target.files[0],
+        };
+        setImage(img);
+      }
+    }
   };
 
   // On Change for controlled fields
@@ -46,9 +72,9 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
     setErrors(validate(formData));
     if (canSubmit) {
       try {
-        const { image } = pic;
+        const imageFile = image.data;
         const data = new FormData();
-        data.append("image", image);
+        data.append("image", imageFile);
         data.append("first_name", first_name);
         data.append("last_name", last_name);
         data.append("email", email);
@@ -60,14 +86,6 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
         const message = await EditAdmin(data);
         setSuccess(message.message);
         setReloadAdmins(!reloadAdmins);
-        setFormData({
-          first_name: "",
-          last_name: "",
-          email: "",
-          phone_number: "",
-          password: "",
-          password_confirmation: "",
-        });
       } catch (err) {
         console.log(err);
       }
@@ -98,33 +116,48 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
     } else {
       errorMessages.phone_number = "";
     }
-    if (values.password === "") {
-      errorMessages.password = "Password is required";
-    } else if (values.password.length < 8) {
-      errorMessages.password = "Password must contain at least 8 characters";
+    if (role !== 2) {
+      if (values.password === "") {
+        errorMessages.password = "Password is required";
+      } else if (values.password.length < 8) {
+        errorMessages.password = "Password must contain at least 8 characters";
+      } else {
+        errorMessages.password = "";
+      }
+      if (values.password_confirmation !== values.password) {
+        errorMessages.password = "Passwords didn't match";
+        errorMessages.password_confirmation = "Passwords didn't match";
+      } else {
+        errorMessages.password = "";
+        errorMessages.password_confirmation = "";
+      }
+      if (
+        errorMessages.first_name === "" &&
+        errorMessages.last_name === "" &&
+        errorMessages.email === "" &&
+        errorMessages.phone_number === "" &&
+        errorMessages.password === "" &&
+        errorMessages.password_confirmation === ""
+      ) {
+        canSubmit = true;
+      }
     } else {
-      errorMessages.password = "";
+      if (
+        errorMessages.first_name === "" &&
+        errorMessages.last_name === "" &&
+        errorMessages.email === "" &&
+        errorMessages.phone_number === ""
+      ) {
+        canSubmit = true;
+      }
     }
-    if (values.password_confirmation !== values.password) {
-      errorMessages.password_confirmation = "You Must Confirm your password";
-    } else {
-      errorMessages.password_confirmation = "";
-    }
-    if (
-      errorMessages.first_name === "" &&
-      errorMessages.last_name === "" &&
-      errorMessages.email === "" &&
-      errorMessages.phone_number === "" &&
-      errorMessages.password === "" && 
-      errorMessages.password_confirmation === ""
-    ) {
-      canSubmit = true;
-    }
+
     return errorMessages;
   };
 
   // Reset Messages after 5 seconds
   useEffect(() => {
+    setRole(system_role_id);
     setUniqueEmail(email);
     if (errorMessage) {
       setTimeout(() => {
@@ -142,7 +175,7 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
     <div className="form-section add-team-form">
       <section className="heading">
         <h2>
-          <AiOutlineTeam /> Edit Admin
+          <AiOutlineTeam /> Edit User
         </h2>
         <p>Enter your information below</p>
         {success && <p className="succeed-msg">{success}</p>}
@@ -150,6 +183,31 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
       </section>
       <section className="form">
         <form onSubmit={onSubmit}>
+          <div className="edit-image-form">
+            {imageError && <p className="error-msg">{imageError}</p>}
+            <img
+              src={
+                image.preview
+                  ? image.preview
+                  : image.includes("avataaars")
+                  ? image
+                  : `${process.env.REACT_APP_BACKEND_URL}${image}`
+              }
+              alt="User Image"
+            />
+            <div>
+              <label htmlFor="picture" className="form-control">
+                <BiImageAdd /> Upload Image
+                <input
+                  type="file"
+                  onChange={onImageChange}
+                  className="form-control"
+                  name="picture"
+                  id="picture"
+                />
+              </label>
+            </div>
+          </div>
           <div className="form-group">
             <label htmlFor="first_name" className="form-label">
               First Name
@@ -210,42 +268,44 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
             />
             <p>{errors.phone_number}</p>
           </div>
+          {system_role_id !== 2 ? (
+            <>
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className={errors.password ? "error" : "form-valid"}
+                  name="password"
+                  id="password"
+                  placeholder="Enter your Password"
+                  onChange={onChange}
+                />
+                <p>{errors.password}</p>
+              </div>
+              <div className="form-group">
+                <label htmlFor="password_confirmation" className="form-label">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  className={
+                    errors.password_confirmation ? "error" : "form-valid"
+                  }
+                  name="password_confirmation"
+                  id="password_confirmation"
+                  onChange={onChange}
+                  placeholder="Confirm your Password"
+                />
+                <p>{errors.password_confirmation}</p>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
           <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              className={errors.password ? "error" : "form-valid"}
-              name="password"
-              id="password"
-              placeholder="Enter your Password"
-              onChange={onChange}
-            />
-            <p>{errors.password}</p>
-          </div>
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              className={errors.password_confirmation ? "error" : "form-valid"}
-              name="password_confirmation"
-              id="password_confirmation"
-              onChange={onChange}
-              placeholder="Confirm your Password"
-            />
-            <p>{errors.password_confirmation}</p>
-          </div>
-          <input
-            type="file"
-            name="picture"
-            onChange={handleImage}
-            placeholder="Upload your Image"
-          ></input>
-          <div className="form-group">
-            <input type="submit" className="btn btn-block" value="Edit Admin" />
+            <input type="submit" className="btn btn-block" value="Edit User" />
           </div>
         </form>
       </section>
