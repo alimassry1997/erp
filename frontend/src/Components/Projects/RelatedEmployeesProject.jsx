@@ -1,4 +1,3 @@
-import { FaTeamspeak } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { AiOutlineTeam } from "react-icons/ai";
 import { FaUsersCog } from "react-icons/fa";
@@ -15,16 +14,27 @@ const RelatedEmployeesProject = ({
   return (
     <div className="employees-project-card">
       <div className="employees-project-image">
-        <img src={picture} alt="employee picture" />
+        <img
+          src={
+            picture.includes("avataaars")
+              ? picture
+              : `${process.env.REACT_APP_BACKEND_URL}${picture}`
+          }
+          alt="employee picture"
+        />
       </div>
       <div className="employees-project-content">
         <h3>
           <Link to={`/employees/${email}`}>
-            {first_name} {last_name} 
+            {first_name} {last_name}
           </Link>
         </h3>
-        <p><AiOutlineTeam className="icons"/> {team_name}</p>
-        <p><FaUsersCog className="icons"/> {role_name}</p>
+        <p>
+          <AiOutlineTeam className="icons" /> {team_name}
+        </p>
+        <p>
+          <FaUsersCog className="icons" /> {role_name}
+        </p>
       </div>
     </div>
   );

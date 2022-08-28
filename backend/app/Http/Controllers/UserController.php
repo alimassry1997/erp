@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Skill;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File;
@@ -14,6 +12,77 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function change_role(User $user, Request $request): JsonResponse
+    {
+        $request->validate([
+            "project" => "required",
+            "role" => "required",
+        ]);
+        $inputs["project"] = $request["project"];
+        $inputs["role"] = $request["role"];
+        $find_if_same = $user
+            ->projects()
+            ->wherePivot("end_date", null)
+            ->wherePivot("role_id", $inputs["role"])
+            ->wherePivot("project_id", $inputs["project"])
+            ->get();
+        if ($find_if_same->toArray()) {
+            return response()->json(
+                [
+                    "message" => "User already assigned to this role",
+                ],
+                400
+            );
+        }
+        $check_if_day_elapsed = $user
+            ->projects()
+            ->wherePivot("end_date", null)
+            ->wherePivot("project_id", $inputs["project"])
+            ->first();
+        $project_role_assigned_date = new Carbon(
+            $check_if_day_elapsed->pivot->created_at
+        );
+        if ($project_role_assigned_date->diffInDays() < 1) {
+            return response()->json(
+                [
+                    "message" =>
+                        "User already assigned today, Please try again tomorrow",
+                ],
+                400
+            );
+        }
+        $check_if_day_elapsed->pivot->end_date = Carbon::now();
+        $check_if_day_elapsed->pivot->save();
+        $user->projects()->attach($inputs["project"], [
+            "role_id" => $inputs["role"],
+        ]);
+        return response()->json([
+            "message" => "User role changed Successfully",
+        ]);
+    }
+
+    /**
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function projects(User $user): JsonResponse
+    {
+        return response()->json([
+            "projects" => $user
+                ->projects()
+                ->wherePivot("end_date", null)
+                ->get(),
+            "roles" => $user
+                ->roles()
+                ->wherePivot("end_date", null)
+                ->get(),
+        ]);
+    }
+
+    /**
+     * @param User $user
+     * @return JsonResponse
+     */
     public function reports(User $user): JsonResponse
     {
         $last_skills = [];
@@ -35,7 +104,10 @@ class UserController extends Controller
         return response()->json([
             "user" => $user,
             "skills" => $output,
-            "projects" => $user->projects,
+            "projects" => $user
+                ->projects()
+                ->orderBy("status", "DESC")
+                ->get(),
             "roles" => $user->roles,
         ]);
     }

@@ -30,9 +30,6 @@ const SingleProject = ({
   if (loadingProject) {
     return <Spinner />;
   } else {
-    for (let i = 0; i < relatedAssignedEmployees.length; i++) {
-      relatedAssignedEmployees[i].phone_number = relatedEmployeesRoles[i];
-    }
     const { name, status, finished_at, slug: project_slug } = project;
     const size = relatedUnassignedTeams.length;
     const assignedEmployeesSize = relatedAssignedEmployees.length;
@@ -99,14 +96,13 @@ const SingleProject = ({
               <AiOutlineUser /> Assigned Employees with Roles
             </h2>
             <div className="employees-project">
-              {relatedAssignedEmployees.map((employee) => (
+              {relatedAssignedEmployees.map((employee, index) => (
                 <RelatedEmployeesProject
-                
                   key={employee.id}
                   first_name={employee.first_name}
                   last_name={employee.last_name}
                   picture={employee.picture}
-                  role_name={employee.phone_number}
+                  role_name={relatedEmployeesRoles[index].name}
                   email={employee.email}
                   team_name={employee.team.name}
                 />

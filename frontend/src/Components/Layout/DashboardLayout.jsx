@@ -12,14 +12,16 @@ const DashboardLayout = ({ auth, setAuth }) => {
     }
   }, [auth]);
   return (
-    <div>
-      <Sidebar auth={auth} />
-      <main className="content-container">
-        <Navbar auth={auth} setAuth={setAuth} />
-        <Outlet auth={auth} />
-        <Footer />
-      </main>
-    </div>
+    auth && (
+      <div>
+        <Sidebar auth={auth} />
+        <main className="content-container">
+          <Navbar auth={auth} setAuth={setAuth} />
+          <Outlet auth={auth} />
+          <Footer />
+        </main>
+      </div>
+    )
   );
 };
 

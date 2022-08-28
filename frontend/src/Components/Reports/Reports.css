@@ -46,7 +46,7 @@
 
 .reports .reports-container-projects div span {
   font-size: 0.8rem;
-  display: inline-block;
+  display: block;
 }
 
 @media (max-width: 1100px) {

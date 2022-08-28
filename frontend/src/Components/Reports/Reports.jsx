@@ -27,9 +27,10 @@ const Reports = ({
   reportEmployeeSkills,
   reportEmployee,
   reportEmployeeRoles,
+  reportEmployeeProjects,
 }) => {
   document.title = "Reports Dashboard | ERP";
-  const { skills, projects } = reportEmployee;
+  const { skills } = reportEmployee;
   const [lineChartData, setLineChartData] = useState([]);
 
   const showSkill = (single) => {
@@ -117,18 +118,21 @@ const Reports = ({
           ) : (
             <div className="no-data"> No Data to Show</div>
           )}
-          {projects.length > 0 ? (
+          {reportEmployeeProjects.length > 0 ? (
             <div className="reports-projects">
               <h2>
                 <AiOutlineProject />
                 Projects
               </h2>
               <div className="reports-container-projects">
-                {projects.map((project, index) => (
+                {reportEmployeeProjects.map((project, index) => (
                   <ReportProjects
-                    key={project.id}
+                    key={index}
                     role={reportEmployeeRoles[index].name}
                     name={project.name}
+                    slug={project.slug}
+                    created_at={project.pivot.created_at}
+                    end_date={project.pivot.end_date}
                   />
                 ))}
               </div>

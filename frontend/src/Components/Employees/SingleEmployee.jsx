@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 import Spinner from "../Layout/Spinner";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaUsersCog } from "react-icons/fa";
 import "./SingleEmployee.css";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 import { GiSkills } from "react-icons/gi";
@@ -17,6 +17,7 @@ const SingleEmployee = ({
   showEditEmployeePopup,
   showAssignEmployeePopup,
   showDeleteEmployeePopup,
+  showChangeRolePopup,
 }) => {
   const colors = {
     bar: "#0097a4",
@@ -78,6 +79,12 @@ const SingleEmployee = ({
             />
           </div>
           <div className="profile-buttons">
+            <button
+              className="btn dark-btn"
+              onClick={() => showChangeRolePopup(employee)}
+            >
+              <FaUsersCog />
+            </button>
             <button
               className="btn"
               onClick={() => showAssignEmployeePopup(employee)}
