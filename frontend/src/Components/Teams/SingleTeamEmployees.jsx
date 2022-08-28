@@ -15,7 +15,14 @@ const SingleTeamEmployees = ({
     <Link to={`/employees/${email}`}>
       <div className="single-team-employee-card">
         <div className="single-team-employee-card-image">
-          <img src={picture} alt="Employee image" />
+          <img
+            src={
+              picture.includes("avataaars")
+                ? picture
+                : `${process.env.REACT_APP_BACKEND_URL}${picture}`
+            }
+            alt="Employee image"
+          />
         </div>
         <div className="single-team-employee-card-body">
           <h3>

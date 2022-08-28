@@ -14,7 +14,14 @@ const RelatedEmployeesProject = ({
   return (
     <div className="employees-project-card">
       <div className="employees-project-image">
-        <img src={picture} alt="employee picture" />
+        <img
+          src={
+            picture.includes("avataaars")
+              ? picture
+              : `${process.env.REACT_APP_BACKEND_URL}${picture}`
+          }
+          alt="employee picture"
+        />
       </div>
       <div className="employees-project-content">
         <h3>
