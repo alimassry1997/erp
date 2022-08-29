@@ -15,6 +15,8 @@ import RolesDashboard from "./Components/Pages/RolesDashboard";
 import SingleProjectDashboard from "./Components/Pages/SingleProjectDahboard";
 import AdminsDashboard from "./Components/Pages/AdminsDashboard";
 import SingleEmployeeDashboard from "./Components/Pages/SingleEmployeeDashboard";
+import Forget from "./Components/Pages/Forget";
+import Reset from "./Components/Pages/Reset";
 // import Pagination from "./utils/Pagination";
 
 const App = () => {
@@ -534,6 +536,15 @@ const App = () => {
           <Route
             path="/login"
             element={<LoginPage auth={auth} setAuth={setAuth} />}
+          />
+          <Route
+            path="/forget"
+
+            element={<Forget auth={auth}/>}
+          />
+          <Route
+            path="/reset/:id"
+            element={<Reset auth={auth}/>}
           />
         </Routes>
       </>

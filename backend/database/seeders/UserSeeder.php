@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
                 "first_name" => "Ali",
                 "last_name" => "Masri",
                 "password" => Hash::make("1q2w3e4r5t"),
-                "email" => "ali@example.com",
+                "email" => "alimassry20@gmail.com",
                 "email_verified_at" => now(),
                 "remember_token" => Str::random(10),
                 "phone_number" => "71861634",
