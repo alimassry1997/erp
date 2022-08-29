@@ -1,17 +1,18 @@
 import CapitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
-import formatDate from "../../utils/formatDate";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import React from "react";
 
 const Skill = ({
   name,
   slug,
   showDeleteSkillPopup,
   showEditSkillPopup,
+  userCounts,
 }) => {
   return (
     <tr>
       <td>{CapitalizeFirstLetter(name)}</td>
-      
+
       <td>
         <div className="flex-btn">
           <button
@@ -22,7 +23,8 @@ const Skill = ({
           </button>
 
           <button
-            className="btn delete-btn"
+            disabled={userCounts > 0}
+            className={`btn ${userCounts > 0 ? "disabled-btn" : "delete-btn"}`}
             onClick={() => showDeleteSkillPopup({ name, slug })}
           >
             <FaTrashAlt />

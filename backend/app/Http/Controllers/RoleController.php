@@ -18,7 +18,9 @@ class RoleController extends Controller
      */
     public function index(): JsonResponse
     {
-        $roles = Role::latest()->get();
+        $roles = Role::withCount("users")
+            ->latest()
+            ->get();
         return response()->json([
             "roles" => $roles,
         ]);

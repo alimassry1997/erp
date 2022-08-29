@@ -1,12 +1,13 @@
 import CapitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
-import formatDate from "../../utils/formatDate";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import React from "react";
 
 const Role = ({
   name,
   slug,
   showDeleteRolePopup,
   showEditRolePopup,
+  userCounts,
 }) => {
   return (
     <tr>
@@ -19,9 +20,9 @@ const Role = ({
           >
             <FaEdit />
           </button>
-
           <button
-            className="btn delete-btn"
+            disabled={userCounts > 0}
+            className={`btn ${userCounts > 0 ? "disabled-btn" : "delete-btn"}`}
             onClick={() => showDeleteRolePopup({ name, slug })}
           >
             <FaTrashAlt />
