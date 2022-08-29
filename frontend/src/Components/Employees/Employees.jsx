@@ -28,7 +28,7 @@ const Employees = ({
   const teamoptions = [
     { value: 1, label: "Assigned" },
     { value: 0, label: "Unassigned" },
-    { value: -1, label: "All" }
+    { value: -1, label: "All" },
   ];
 
   document.title = "Employees Dashboard | ERP";
@@ -85,14 +85,13 @@ const Employees = ({
                 onChange={(item) => onChange(item)}
                 options={options}
               />
-              
             </div>
             <Select
-                defaultValue={{ value: 1, label: "Assigned" }}
-                onChange={(item1) => onChange1(item1)}
+              defaultValue={{ value: 1, label: "Assigned" }}
+              onChange={(item1) => onChange1(item1)}
               options={teamoptions}
-              />
-            
+            />
+
             <button
               className="btn add-btn"
               onClick={() => showAddEmployeeFormPopup()}
@@ -113,7 +112,7 @@ const Employees = ({
             .filter((employee) => {
               if (teamStatusTerm === 0) {
                 return employee.team.name === "unassigned";
-              } else if ((teamStatusTerm === 1)){
+              } else if (teamStatusTerm === 1) {
                 return employee.team.name !== "unassigned";
               } else {
                 return employee;
@@ -146,8 +145,6 @@ const Employees = ({
             ))}
           {/* <button onClick={showEmployees} className="btn show-btn" id="hideit">Show More</button> */}
         </div>
-
-        
       </div>
     );
   }
