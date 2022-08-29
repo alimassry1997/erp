@@ -218,6 +218,9 @@ Forms Design
 .add-btn {
   background-color: var(--success-color);
 }
+.show-btn{
+  background-color: var(--primary-color);
+}
 
 .delete-btn {
   background-color: var(--danger-color);

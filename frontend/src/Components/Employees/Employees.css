@@ -9,6 +9,8 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
+
+
 .employees-dashboard .users-container .users-card {
   padding: 1rem;
   border: 2px solid var(--secondary-color);

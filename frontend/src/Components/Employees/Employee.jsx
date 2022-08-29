@@ -61,6 +61,7 @@ const Employee = ({
           <FaEdit />
         </button>
       </div>
+      
     </div>
   );
 };
