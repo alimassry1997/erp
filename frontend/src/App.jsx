@@ -15,6 +15,9 @@ import RolesDashboard from "./Components/Pages/RolesDashboard";
 import SingleProjectDashboard from "./Components/Pages/SingleProjectDahboard";
 import AdminsDashboard from "./Components/Pages/AdminsDashboard";
 import SingleEmployeeDashboard from "./Components/Pages/SingleEmployeeDashboard";
+import Forget from "./Components/Pages/Forget";
+import Reset from "./Components/Pages/Reset";
+// import Pagination from "./utils/Pagination";
 
 const App = () => {
   /**
@@ -72,6 +75,12 @@ const App = () => {
    */
   const [loadingEmployees, setLoadingEmployees] = useState(true);
   const [employees, setEmployees] = useState([]);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [employeesPerPage, setemployeesPerPage] = useState(12);
+
+  // const indexOfLastEmployee = currentPage * employeesPerPage;
+  // const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
+  // const currentEmployees = employees.slice(indexOfFirstEmployee, indexOfLastEmployee);
 
   /**
    * Admins States
@@ -198,6 +207,8 @@ const App = () => {
       console.log(error.message);
     }
   };
+
+  
 
   /**
    * Get all employees
@@ -492,9 +503,12 @@ const App = () => {
                 <EmployeesDashboard
                   fetchEmployees={fetchEmployees}
                   employees={employees}
+                  // employeesPerPage={employeesPerPage}
+                  // currentEmployees={currentEmployees}
                   loadingEmployees={loadingEmployees}
                   token={token}
                 />
+                
               }
             />
           </Route>
@@ -561,6 +575,15 @@ const App = () => {
           <Route
             path="/login"
             element={<LoginPage auth={auth} setAuth={setAuth} />}
+          />
+          <Route
+            path="/forget"
+
+            element={<Forget auth={auth}/>}
+          />
+          <Route
+            path="/reset/:id"
+            element={<Reset auth={auth}/>}
           />
         </Routes>
       </>

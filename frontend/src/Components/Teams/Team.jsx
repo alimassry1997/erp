@@ -17,8 +17,6 @@ const Team = ({
     <tr>
       <td>{CapitalizeFirstLetter(name)}</td>
       <td>{size}</td>
-      <td>{formatDate(created_at)}</td>
-      <td>{formatDate(updated_at)}</td>
       <td>
         <div className="flex-btn">
           <Link to={`/teams/${slug}`} className="btn view-btn">

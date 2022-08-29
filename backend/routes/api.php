@@ -24,6 +24,10 @@ use App\Http\Controllers\UserController;
  */
 Route::post("/login", [AuthController::class, "login"]);
 
+Route::post("/forgetpassword", [AuthController::class, "ForgetPassword"]);
+Route::post("/resetpassword", [AuthController::class, "ResetPassword"]);
+
+
 /**
  * Private Routes
  */
