@@ -127,7 +127,7 @@ const Reports = ({
               </ResponsiveContainer>
             </div>
           ) : (
-            <div className="no-data"> No Data to Show</div>
+            <div className="no-data"> Not Evaluated Yet</div>
           )}
           {reportEmployeeProjects.length > 0 ? (
             <div className="reports-projects">
