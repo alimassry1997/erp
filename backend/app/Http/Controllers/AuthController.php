@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Mail\ForgetMail;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,121 +36,114 @@ class AuthController extends Controller
             );
         }
         $user = Auth::user();
-        $token = $user->createToken("auth_token")->plainTextToken;
-        return response()->json([
-            "user" => $user->only([
-                "first_name",
-                "picture",
-                "system_role_id",
-                "email",
-            ]),
-            "access_token" => $token,
-        ]);
+        if ($user) {
+            $token = $user->createToken("auth_token")->plainTextToken;
+            return response()->json([
+                "user" => $user->only([
+                    "first_name",
+                    "picture",
+                    "system_role_id",
+                    "email",
+                ]),
+                "access_token" => $token,
+            ]);
+        }
+        return response()->json(
+            [
+                "message" => "Error Occurred",
+            ],
+            404
+        );
     }
 
-
-    public function ForgetPassword(Request $request)
+    /**
+     * Request a reset email for password change.
+     * @param Request $request
+     * @return ResponseFactory
+     * @throws Exception
+     */
+    public function ForgetPassword(Request $request): ResponseFactory
     {
         $email = $request->input("email");
-
-        // if (User::where('email', $email)->doesntExist()) {
-        //     return response([
-        //         'message' => 'Email Not Found'
-        //     ], 404);
-        // }
+        if (User::where("email", $email)->doesntExist()) {
+            return response(
+                [
+                    "message" => "Email Not Found",
+                ],
+                404
+            );
+        }
 
         // generate Random Token
-
-        $token = rand(10, 100000);
+        $token = random_int(10, 100000);
         try {
-
-            DB::table('password_resets')->insert([
-                'email' => $email,
-                'token' => $token
+            DB::table("password_resets")->insert([
+                "email" => $email,
+                "token" => $token,
             ]);
-
 
             // Mail send to user
             Mail::to($email)->send(new ForgetMail($token));
             return response([
-                'message' => 'Reset Passowrd Mail send on your email'
-            ], 200);
+                "message" => "Reset Password Mail send on your email",
+            ]);
         } catch (Exception $exception) {
-            return response([
-                'message' => $exception->getMessage()
-            ], 400);
+            return response(
+                [
+                    "message" => $exception->getMessage(),
+                ],
+                400
+            );
         }
     }
 
-
-
-    public function ResetPassword(Request $request)
+    /**
+     * Get the Pin code provided with the client to rest their password
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function ResetPassword(Request $request): JsonResponse
     {
         $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            "token" => "required",
+            "email" => "required|email",
+            "password" => "required|min:8|confirmed",
         ]);
 
-        $email = $request->email;
-        $token = $request->token;
-        $password = Hash::make($request->password);
+        $email = $request->input("email");
+        $token = $request->input("token");
+        $password = Hash::make($request->input("password"));
+        $email_check = DB::table("password_resets")
+            ->where("email", $email)
+            ->first();
+        $pin_check = DB::table("password_resets")
+            ->where("token", $token)
+            ->first();
 
-        $emailcheck = DB::table('password_resets')->where('email', $email)->first();
-        $pincheck = DB::table('password_resets')->where('token', $token)->first();
-
-
-        if (!$emailcheck) {
-            return response([
-                'message' => 'Email Not Found'
-            ], 401);
+        if (!$email_check) {
+            return response()->json(
+                [
+                    "message" => "Email Not Found",
+                ],
+                401
+            );
         }
-        if (!$pincheck) {
-            return response([
-                'message' => 'Pin Code Invalid'
-            ], 401);
+        if (!$pin_check) {
+            return response()->json(
+                [
+                    "message" => "Pin Code Invalid",
+                ],
+                401
+            );
         }
-
-        DB::table('users')->where('email', $email)->update(['password' => $password]);
-        DB::table('password_resets')->where('email', $email)->delete();
-        return response([
-            'message' => 'Password Changed Successfully'
-        ], 200);
+        DB::table("users")
+            ->where("email", $email)
+            ->update(["password" => $password]);
+        DB::table("password_resets")
+            ->where("email", $email)
+            ->delete();
+        return response()->json([
+            "message" => "Password Changed Successfully",
+        ]);
     }
 }
-
-/* 
-public function ResetPassword(Request $request)
-    {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
-        ]);
-
-        $email = $request -> email;
-        $token = $request -> token;
-        $password = Hash::make($request -> password);
-
-        $emailcheck = DB::table('password_resets')-> where('email', $email)->first();
-        $pincheck = DB::table('password_resets')-> where('token', $token)->first();
-
-
-        if (!$emailcheck){
-            return response([
-                'message' => 'Email Not Found'
-            ], 401);
-        } if(!$pincheck){
-            return response([
-                'message' => 'Pin Code Invalid'
-            ], 401);
-        }
-         
-        DB::table('users')-> where('email', $email)->update(['password' => $password]);
-        DB::table('password_resets')-> where('email', $email)->delete();
-        return response([
-            'message' => 'Password Changed Successfully'
-        ], 200);
-
-    }
-*/

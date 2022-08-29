@@ -76,8 +76,6 @@ const Reports = ({
     );
   }
 
-  console.log(correctRoles);
-
   useEffect(() => {
     fetchEmployees();
   }, []);
