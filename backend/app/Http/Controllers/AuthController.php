@@ -59,14 +59,18 @@ class AuthController extends Controller
     /**
      * Request a reset email for password change.
      * @param Request $request
-     * @return ResponseFactory
+     * @return JsonResponse
      * @throws Exception
      */
-    public function ForgetPassword(Request $request): ResponseFactory
+    public function ForgetPassword(Request $request): JsonResponse
     {
+        $request->validate([
+            "email" => "required|email",
+        ]);
         $email = $request->input("email");
+
         if (User::where("email", $email)->doesntExist()) {
-            return response(
+            return response()->json(
                 [
                     "message" => "Email Not Found",
                 ],
@@ -77,6 +81,18 @@ class AuthController extends Controller
         // generate Random Token
         $token = random_int(10, 100000);
         try {
+            if (
+                DB::table("password_resets")
+                    ->where("email", $email)
+                    ->exists()
+            ) {
+                return response()->json(
+                    [
+                        "message" => "Request Already sent",
+                    ],
+                    400
+                );
+            }
             DB::table("password_resets")->insert([
                 "email" => $email,
                 "token" => $token,
@@ -84,11 +100,11 @@ class AuthController extends Controller
 
             // Mail send to user
             Mail::to($email)->send(new ForgetMail($token));
-            return response([
+            return response()->json([
                 "message" => "Reset Password Mail send on your email",
             ]);
         } catch (Exception $exception) {
-            return response(
+            return response()->json(
                 [
                     "message" => $exception->getMessage(),
                 ],

@@ -393,11 +393,4 @@ class UserController extends Controller
             "message" => "User was Evaluated",
         ]);
     }
-
-    // public function read_skills(User $user,Request $request): JsonResponse
-    // {
-    //     return response()->json([
-    //         "message" => "Skill are read",
-    //     ]);
-    // }
 }

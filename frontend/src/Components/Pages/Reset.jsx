@@ -11,14 +11,18 @@ import { useNavigate } from "react-router-dom";
 const Reset = ({ auth }) => {
   document.title = "Reset Password | ERP";
   const navigate = useNavigate();
+  let canSubmit = false;
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
     token: "",
     email: "",
     password: "",
     password_confirmation: "",
   });
+
+  const { token, email, password, password_confirmation } = formData;
 
   const onChangePass = (e) => {
     setFormData((prevState) => ({
@@ -27,21 +31,44 @@ const Reset = ({ auth }) => {
     }));
   };
 
+  // Reset Password Function
+  const resetPassword = async (userData) => {
+    try {
+      const response = await axios.post("/api/reset-password", userData);
+      if (response.data) {
+        const { data: message } = response;
+        return message;
+      }
+    } catch (err) {
+      setErrorMessage(err.response.data.message);
+      throw new Error();
+    }
+  };
+
   const submitForm = async (e) => {
     e.preventDefault();
-    const response = await axios.post("/api/resetpassword", formData);
-    setFormData({
-      token: "",
-      email: "",
-      password: "",
-      password_confirmation: "",
-    });
+    setErrors(validate(formData));
+    if (canSubmit) {
+      const message = await resetPassword(formData);
+      setSuccess(message.message);
+      setFormData({
+        token: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+      });
+    }
   };
 
   const validate = (values) => {
+    canSubmit = false;
     const errorMessages = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-
+    if (values.token === "") {
+      errorMessages.token = "Pin Code is required";
+    } else {
+      errorMessages.token = "";
+    }
     if (values.email === "") {
       errorMessages.email = "Email is required";
     } else if (!regex.test(values.email)) {
@@ -53,12 +80,17 @@ const Reset = ({ auth }) => {
       errorMessages.password = "Password is required";
     } else if (values.password.length < 8) {
       errorMessages.password = "Password should be at least 8 characters";
-    } else if (values.conpassword !== values.password) {
-      errorMessages.conpassword = "Password is not Confirmed";
+    } else if (values.password_confirmation !== values.password) {
+      errorMessages.password_confirmation = "Password is not Confirmed";
     } else {
       errorMessages.password = "";
     }
-    if (errorMessages.email === "" && errorMessages.password === "") {
+    if (
+      errorMessages.token === "" &&
+      errorMessages.email === "" &&
+      errorMessages.password === ""
+    ) {
+      canSubmit = true;
     }
     return errorMessages;
   };
@@ -67,6 +99,12 @@ const Reset = ({ auth }) => {
     if (errorMessage) {
       setTimeout(() => {
         setErrorMessage(false);
+      }, 5000);
+    }
+    if (success) {
+      setTimeout(() => {
+        setSuccess(false);
+        navigate("/login");
       }, 5000);
     }
     if (auth) {
@@ -79,41 +117,45 @@ const Reset = ({ auth }) => {
       <div className="login-form">
         <section className="heading">
           <h1>Reset Your Password</h1>
+          {success && <p className="succeed-msg">{success}</p>}
+          {errorMessage && <p className="error-msg">{errorMessage}</p>}
         </section>
         <section className="form">
           <form onSubmit={submitForm}>
             <div className="form-group">
-              <label className="form-label">Pincode:</label>
+              <label htmlFor="token" className="form-label">
+                Pin code:
+              </label>
               <div className="form-input-div">
                 <div>
                   <IoBarcode />
                 </div>
-
                 <input
                   type="number"
-                  className="form-valid"
+                  className={errors.token ? "error" : "form-valid"}
                   name="token"
                   id="token"
-                  // value={token}
-                  required
+                  value={token}
                   onChange={onChangePass}
                   placeholder="Enter your Pincode"
                 />
               </div>
+              <p>{errors.token}</p>
             </div>
             <div className="form-group">
-              <label className="form-label">Email:</label>
+              <label htmlFor="email" className="form-label">
+                Email:
+              </label>
               <div className="form-input-div">
                 <div>
                   <HiOutlineMail />
                 </div>
                 <input
                   type="email"
-                  className="form-valid"
+                  className={errors.email ? "error" : "form-valid"}
                   name="email"
                   id="email"
-                  required
-                  // value={email}
+                  value={email}
                   onChange={onChangePass}
                   placeholder="Enter your Email Address"
                 />
@@ -121,7 +163,9 @@ const Reset = ({ auth }) => {
               <p>{errors.email}</p>
             </div>
             <div className="form-group">
-              <label className="form-label">Password:</label>
+              <label htmlFor="pass" className="form-label">
+                Password:
+              </label>
               <div className="form-input-div">
                 <div>
                   <RiLockPasswordFill />
@@ -129,32 +173,36 @@ const Reset = ({ auth }) => {
                 <input
                   type="password"
                   name="password"
-                  required
-                  className="form-valid"
+                  className={errors.password ? "error" : "form-valid"}
                   id="pass"
-                  // value={password}
+                  value={password}
                   onChange={onChangePass}
                   placeholder="Enter your password"
                 />
               </div>
+              <p>{errors.password}</p>
             </div>
             <div className="form-group">
-              <label className="form-label">Confirm The Password:</label>
+              <label htmlFor="passCon" className="form-label">
+                Confirm The Password:
+              </label>
               <div className="form-input-div">
                 <div>
                   <RiLockPasswordFill />
                 </div>
                 <input
                   type="password"
-                  className="form-valid"
+                  className={
+                    errors.password_confirmation ? "error" : "form-valid"
+                  }
                   name="password_confirmation"
                   id="passCon"
-                  // value={conpassword}
+                  value={password_confirmation}
                   onChange={onChangePass}
-                  required
                   placeholder="Confirm your password"
                 />
               </div>
+              <p>{errors.password_confirmation}</p>
             </div>
             <div className="form-group reset">
               <input type="submit" className="btn" value="Reset" />
