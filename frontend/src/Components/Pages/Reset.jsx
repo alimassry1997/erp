@@ -8,25 +8,17 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import "./Reset.css";
 import { useNavigate } from "react-router-dom";
 
-
 const Reset = ({ auth }) => {
   document.title = "Reset Password | ERP";
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState(false);
   const [formData, setFormData] = useState({
     token: "",
     email: "",
     password: "",
     password_confirmation: "",
   });
-
-  
-
-  useEffect(() => {
-    
-    if (auth) {
-      navigate("/");
-    }
-  }, [ auth]);
 
   const onChangePass = (e) => {
     setFormData((prevState) => ({
@@ -46,6 +38,42 @@ const Reset = ({ auth }) => {
     });
   };
 
+  const validate = (values) => {
+    const errorMessages = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+    if (values.email === "") {
+      errorMessages.email = "Email is required";
+    } else if (!regex.test(values.email)) {
+      errorMessages.email = "Invalid Email address!";
+    } else {
+      errorMessages.email = "";
+    }
+    if (values.password === "") {
+      errorMessages.password = "Password is required";
+    } else if (values.password.length < 8) {
+      errorMessages.password = "Password should be at least 8 characters";
+    } else if (values.conpassword !== values.password) {
+      errorMessages.conpassword = "Password is not Confirmed";
+    } else {
+      errorMessages.password = "";
+    }
+    if (errorMessages.email === "" && errorMessages.password === "") {
+    }
+    return errorMessages;
+  };
+
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 5000);
+    }
+    if (auth) {
+      navigate("/");
+    }
+  }, [errorMessage, auth]);
+
   return (
     <div className="login-container">
       <div className="login-form">
@@ -60,13 +88,14 @@ const Reset = ({ auth }) => {
                 <div>
                   <IoBarcode />
                 </div>
-                
+
                 <input
                   type="number"
                   className="form-valid"
                   name="token"
                   id="token"
-                  // value={password}
+                  // value={token}
+                  required
                   onChange={onChangePass}
                   placeholder="Enter your Pincode"
                 />
@@ -83,11 +112,13 @@ const Reset = ({ auth }) => {
                   className="form-valid"
                   name="email"
                   id="email"
+                  required
                   // value={email}
                   onChange={onChangePass}
                   placeholder="Enter your Email Address"
                 />
               </div>
+              <p>{errors.email}</p>
             </div>
             <div className="form-group">
               <label className="form-label">Password:</label>
@@ -98,6 +129,7 @@ const Reset = ({ auth }) => {
                 <input
                   type="password"
                   name="password"
+                  required
                   className="form-valid"
                   id="pass"
                   // value={password}
@@ -117,8 +149,9 @@ const Reset = ({ auth }) => {
                   className="form-valid"
                   name="password_confirmation"
                   id="passCon"
-                  // value={password}
+                  // value={conpassword}
                   onChange={onChangePass}
+                  required
                   placeholder="Confirm your password"
                 />
               </div>

@@ -145,10 +145,11 @@ const LoginPage = ({ auth, setAuth }) => {
                   placeholder="Enter your password"
                 />
               </div>
-              <Link to="/forget">
-                <p>Forget your Password?</p>
-              </Link>
+              
               <p>{errors.password}</p>
+              <Link to="/forget">
+                <p className="secondp">Forget your Password?</p>
+              </Link>
             </div>
 
             <div className="form-group">
