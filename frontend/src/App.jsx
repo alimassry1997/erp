@@ -135,9 +135,12 @@ const App = () => {
   const fetchTeams = async () => {
     try {
       setLoadingTeams(true);
-      const response = await axios.get(`/api/teams/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/teams/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { teams },
       } = response;
@@ -155,9 +158,12 @@ const App = () => {
   const fetchProjects = async () => {
     try {
       setLoadingProjects(true);
-      const response = await axios.get(`/api/projects/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/projects/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { projects },
       } = response;
@@ -175,9 +181,12 @@ const App = () => {
   const fetchSkills = async () => {
     try {
       setLoadingSkills(true);
-      const response = await axios.get(`/api/skills/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/skills/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { skills },
       } = response;
@@ -195,9 +204,12 @@ const App = () => {
   const fetchRoles = async () => {
     try {
       setLoadingRoles(true);
-      const response = await axios.get(`/api/roles/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/roles/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { roles },
       } = response;
@@ -208,8 +220,6 @@ const App = () => {
     }
   };
 
-  
-
   /**
    * Get all employees
    * @returns {Promise<void>}
@@ -217,9 +227,12 @@ const App = () => {
   const fetchEmployees = async () => {
     try {
       setLoadingEmployees(true);
-      const response = await axios.get(`/api/employees`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/employees`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { employees },
       } = response;
@@ -237,9 +250,12 @@ const App = () => {
   const fetchAdmins = async () => {
     try {
       setLoadingAdmins(true);
-      const response = await axios.get(`/api/admins`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/admins`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { admins },
       } = response;
@@ -258,9 +274,12 @@ const App = () => {
   const getTeam = async (slug) => {
     setLoadingTeam(true);
     try {
-      const response = await axios.get(`/api/teams/${slug}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/teams/${slug}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { team, employees, projects },
       } = response;
@@ -282,9 +301,12 @@ const App = () => {
   const getProject = async (slug) => {
     setLoadingProject(true);
     try {
-      const response = await axios.get(`/api/projects/${slug}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/projects/${slug}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { project, related_teams, roles, assigned_employees },
       } = response;
@@ -309,9 +331,12 @@ const App = () => {
   const getEmployee = async (email) => {
     setLoadingEmployee(true);
     try {
-      const response = await axios.get(`/api/employees/${email}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/employees/${email}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { user, team, skills },
       } = response;
@@ -335,9 +360,12 @@ const App = () => {
   const getReport = async (email) => {
     setLoadingReport(true);
     try {
-      const response = await axios.get(`/api/reports/${email}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/reports/${email}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { skills, user, roles, projects },
       } = response;
@@ -359,9 +387,12 @@ const App = () => {
   const getProjectsEmployee = async (email) => {
     setLoadingEmployeeProjects(true);
     try {
-      const response = await axios.get(`/api/employees/${email}/projects`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}api/employees/${email}/projects`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const {
         data: { projects, roles },
       } = response;
@@ -508,7 +539,6 @@ const App = () => {
                   loadingEmployees={loadingEmployees}
                   token={token}
                 />
-                
               }
             />
           </Route>
@@ -576,15 +606,8 @@ const App = () => {
             path="/login"
             element={<LoginPage auth={auth} setAuth={setAuth} />}
           />
-          <Route
-            path="/forget"
-
-            element={<Forget auth={auth}/>}
-          />
-          <Route
-            path="/reset/:id"
-            element={<Reset auth={auth}/>}
-          />
+          <Route path="/forget" element={<Forget auth={auth} />} />
+          <Route path="/reset/:id" element={<Reset auth={auth} />} />
         </Routes>
       </>
     </Router>
