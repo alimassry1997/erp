@@ -5,6 +5,16 @@
   justify-content: space-between;
 }
 
+.dashboard .header .form-input-div{
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard .header .form-input-div input{
+ width: 100%;
+ padding: 10px;
+}
+
 .header button {
   display: flex;
   align-items: center;

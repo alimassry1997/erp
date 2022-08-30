@@ -8,8 +8,8 @@ const ReportProjects = ({ name, role, slug, created_at, end_date }) => {
         <Link to={`/projects/${slug}`}>{name}</Link>
       </h3>
       <span>
-        From {formatDate(created_at)}{" "}
-        {end_date ? `To ${formatDate(end_date)}` : ""}
+        <b>From</b> {formatDate(created_at)} {end_date ? <b>To</b> : ""}{" "}
+        {end_date ? formatDate(end_date) : ""}
       </span>
       <span>@{role}</span>
     </div>

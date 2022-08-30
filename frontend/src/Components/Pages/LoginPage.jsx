@@ -5,6 +5,7 @@ import "./LoginPage.css";
 import Logo from "../../assets/images/logo.png";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const LoginPage = ({ auth, setAuth }) => {
   const [formData, setFormData] = useState({
@@ -144,7 +145,11 @@ const LoginPage = ({ auth, setAuth }) => {
                   placeholder="Enter your password"
                 />
               </div>
+              
               <p>{errors.password}</p>
+              <Link to="/forget">
+                <p className="secondp">Forget your Password?</p>
+              </Link>
             </div>
 
             <div className="form-group">
@@ -158,4 +163,5 @@ const LoginPage = ({ auth, setAuth }) => {
 };
 
 export default LoginPage;
+
 

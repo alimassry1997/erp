@@ -40,7 +40,7 @@ class Skill extends Model
     /**
      * Get the users that belongs to this skill.
      */
-    public function skills(): BelongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, "skill_user")
             ->using(SkillUser::class)

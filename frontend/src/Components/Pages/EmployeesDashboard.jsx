@@ -7,6 +7,7 @@ import DeleteEmployeeAlert from "../Employees/DeleteEmployeeAlert";
 
 const EmployeesDashboard = ({
   employees,
+  page,
   loadingEmployees,
   fetchEmployees,
   token,
@@ -65,6 +66,7 @@ const EmployeesDashboard = ({
         showEditEmployeePopup={showEditEmployeePopup}
         showDeleteEmployeePopup={showDeleteEmployeePopup}
         token={token}
+        page={page}
       />
       {/* Employees Add Form Popup */}
       {showAddEmployeeForm && (

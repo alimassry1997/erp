@@ -67,6 +67,15 @@ const Reports = ({
     return false;
   });
 
+  const correctRoles = [];
+  for (let i = 0; i < reportEmployeeProjects.length; i++) {
+    correctRoles.push(
+      reportEmployeeRoles.find(
+        (item) => item.id === reportEmployeeProjects[i].pivot.role_id
+      ).name
+    );
+  }
+
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -116,7 +125,7 @@ const Reports = ({
               </ResponsiveContainer>
             </div>
           ) : (
-            <div className="no-data"> No Data to Show</div>
+            <div className="no-data"> Not Evaluated Yet</div>
           )}
           {reportEmployeeProjects.length > 0 ? (
             <div className="reports-projects">
@@ -128,7 +137,7 @@ const Reports = ({
                 {reportEmployeeProjects.map((project, index) => (
                   <ReportProjects
                     key={index}
-                    role={reportEmployeeRoles[index].name}
+                    role={correctRoles[index]}
                     name={project.name}
                     slug={project.slug}
                     created_at={project.pivot.created_at}

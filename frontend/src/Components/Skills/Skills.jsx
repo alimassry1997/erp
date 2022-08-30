@@ -43,6 +43,7 @@ const Skills = ({
                   key={skill.id}
                   name={skill.name}
                   slug={skill.slug}
+                  userCounts={skill.users_count}
                   showEditSkillPopup={showEditSkillPopup}
                   showDeleteSkillPopup={showDeleteSkillPopup}
                 />

@@ -16,7 +16,9 @@ class SkillController extends Controller
      */
     public function index(): JsonResponse
     {
-        $skills = Skill::latest()->get();
+        $skills = Skill::withCount("users")
+            ->latest()
+            ->get();
         return response()->json([
             "skills" => $skills,
         ]);

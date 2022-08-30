@@ -24,6 +24,12 @@
   align-items: center;
 }
 
+.form-group .secondp{
+  color: var(--primary-color);
+  text-decoration: underline;
+
+}
+
 .form-input-div > div {
   display: flex;
   text-align: center;

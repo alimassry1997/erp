@@ -41,6 +41,7 @@ const Roles = ({
                   key={role.id}
                   name={role.name}
                   slug={role.slug}
+                  userCounts={role.users_count}
                   showEditRolePopup={showEditRolePopup}
                   showDeleteRolePopup={showDeleteRolePopup}
                 />
