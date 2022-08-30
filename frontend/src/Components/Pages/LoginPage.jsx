@@ -31,7 +31,10 @@ const LoginPage = ({ auth, setAuth }) => {
   // Login Function
   const loginProcess = async (userData) => {
     try {
-      const response = await axios.post("/api/login", userData);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}api/login`,
+        userData
+      );
       if (response.data) {
         const { data: user } = response;
         setAuth(user);
@@ -145,7 +148,7 @@ const LoginPage = ({ auth, setAuth }) => {
                   placeholder="Enter your password"
                 />
               </div>
-              
+
               <p>{errors.password}</p>
               <Link to="/forget">
                 <p className="secondp">Forget your Password?</p>
@@ -163,5 +166,3 @@ const LoginPage = ({ auth, setAuth }) => {
 };
 
 export default LoginPage;
-
-
