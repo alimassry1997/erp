@@ -1,7 +1,7 @@
 /node_modules
-/public/build
 /public/hot
 /public/storage
+/react-app/node_modules
 /storage/*.key
 /vendor
 .env
