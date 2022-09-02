@@ -4,7 +4,9 @@ import { StatusBar } from "expo-status-bar";
 import LoginScreen from "./screens/LoginScreen";
 import ReportsScreen from "./screens/ReportsScreen";
 import { Colors } from "./constants/styles";
-import AuthContextProvider from "./store/auth-context";
+import AuthContextProvider, { AuthContext } from "./store/auth-context";
+import { useContext } from "react";
+import IconButton from "./components/ui/IconButton";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +25,7 @@ function AuthStack() {
 }
 
 function AuthenticatedStack() {
+  const authCtx = useContext(AuthContext);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -31,18 +34,31 @@ function AuthenticatedStack() {
         contentStyle: { backgroundColor: Colors.whiteColor },
       }}
     >
-      <Stack.Screen name="Welcome" component={ReportsScreen} />
+      <Stack.Screen
+        name="Reports"
+        component={ReportsScreen}
+        options={{
+          headerRight: ({ tintColor }) => (
+            <IconButton
+              icon="exit"
+              color={tintColor}
+              size={24}
+              onPress={authCtx.logout}
+            />
+          ),
+        }}
+      />
     </Stack.Navigator>
   );
 }
 
 function Navigation() {
+  const authCtx = useContext(AuthContext);
   return (
-    <AuthContextProvider>
-      <NavigationContainer>
-        <AuthStack />
-      </NavigationContainer>
-    </AuthContextProvider>
+    <NavigationContainer>
+      {!authCtx.isAuthenticated && <AuthStack />}
+      {authCtx.isAuthenticated && <AuthenticatedStack />}
+    </NavigationContainer>
   );
 }
 
@@ -50,7 +66,9 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <Navigation />
+      <AuthContextProvider>
+        <Navigation />
+      </AuthContextProvider>
     </>
   );
 }
