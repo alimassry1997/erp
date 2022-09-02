@@ -25,8 +25,8 @@ const Teams = ({
             <AiOutlineTeam />
             Teams Management
           </h2>
-          <div className="form-input-div">
-            <div>
+          <div className="form-input-div teams-search">
+            <div className="search_teams">
               <AiOutlineSearch />
             </div>
             <input
