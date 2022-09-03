@@ -1,26 +1,28 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../store/auth-context";
 import axios from "axios";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 import { Colors } from "../constants/styles";
-import { BarChart, LineChart } from "react-native-chart-kit";
+import capitalizeFirstLetter from "../util/capitalizeFirstLetter";
+import {
+  VictoryBar,
+  VictoryChart,
+  VictoryTheme,
+  VictoryLine,
+} from "victory-native";
 
 function ReportsScreen() {
   const authCtx = useContext(AuthContext);
-  const [selectedItem, setSelectedItem] = useState(null);
   const [employeesList, setEmployeesList] = useState([]);
-  const [report, setReport] = useState([]);
   const [loadingEmployees, setLoadingEmployees] = useState(false);
   const [loadingReport, setLoadingReport] = useState(false);
-
-  const data = [
-    { quarter: 1, earnings: 13000 },
-    { quarter: 2, earnings: 16500 },
-    { quarter: 3, earnings: 14250 },
-    { quarter: 4, earnings: 19000 },
-  ];
+  const [reportEmployeeSkills, setReportEmployeeSkills] = useState([]);
+  const [reportEmployee, setReportEmployee] = useState([]);
+  const [reportEmployeeRoles, setReportEmployeeRoles] = useState([]);
+  const [reportEmployeeProjects, setReportEmployeeProjects] = useState([]);
+  const [lineChartData, setLineChartData] = useState([]);
 
   /**
    * Get a single Report by SLug
@@ -36,8 +38,13 @@ function ReportsScreen() {
           headers: { Authorization: `Bearer ${authCtx.token}` },
         }
       );
-      const { data } = response;
-      setReport(data);
+      const {
+        data: { skills, user, roles, projects },
+      } = response;
+      setReportEmployeeRoles(roles);
+      setReportEmployee(user);
+      setReportEmployeeSkills(skills);
+      setReportEmployeeProjects(projects);
     } catch (error) {
       console.log(error.message);
     }
@@ -92,11 +99,46 @@ function ReportsScreen() {
     fetchEmployees();
   }, []);
 
-  if (loadingEmployees) {
+  if (loadingEmployees || loadingReport) {
     return <LoadingOverlay message="Loading Employees" />;
   }
+  const { skills } = reportEmployee;
+  const progressSkills = [];
+  for (let i = 0; i < reportEmployeeSkills.length; i++) {
+    progressSkills.push({
+      name: capitalizeFirstLetter(
+        skills.find((skill) => skill.id === reportEmployeeSkills[i].skill_id)
+          .name
+      ),
+      score: reportEmployeeSkills[i].score,
+    });
+  }
+
+  const uniqueIds = [];
+  const allSkills = progressSkills.filter((element) => {
+    const isDuplicate = uniqueIds.includes(element.name);
+    if (!isDuplicate) {
+      uniqueIds.push(element.name);
+      return true;
+    }
+    return false;
+  });
+
+  const showSkill = (single) => {
+    const temp = [];
+    for (let i = 0; i < skills.length; i++) {
+      if (skills[i].name.toLowerCase() === single.name.toLowerCase()) {
+        temp.push({
+          y: skills[i].kpi.score,
+          x: skills[i].kpi.created_at.split("T")[0].slice(0, 7),
+        });
+      }
+    }
+    setLineChartData(temp);
+  };
+
   return (
-    <View>
+    <ScrollView>
       <AutocompleteDropdown
         containerStyle={styles.container}
         inputContainerStyle={styles.dropdown}
@@ -106,93 +148,46 @@ function ReportsScreen() {
         onSelectItem={(item) => getReportOnSelect(item)}
         dataSet={dropdown}
       />
-      <BarChart
-        data={{
-          labels: ["January", "February", "March", "April", "May", "June"],
-          datasets: [
+      <VictoryChart
+        width={350}
+        theme={VictoryTheme.material}
+        domainPadding={{ x: 30 }}
+      >
+        <VictoryBar
+          barWidth={({ index }) => index * 2 + 20}
+          data={allSkills}
+          x="name"
+          y="score"
+          style={{ data: { fill: Colors.primaryColor } }}
+          events={[
             {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-              ],
+              target: "data",
+              eventHandlers: {
+                onPressIn: () => {
+                  return [
+                    {
+                      target: "data",
+                      mutation: ({ datum }) => {
+                        showSkill(datum);
+                      },
+                    },
+                  ];
+                },
+              },
             },
-          ],
-        }}
-        width={Dimensions.get("window").width} // from react-native
-        height={220}
-        yAxisLabel="$"
-        yAxisSuffix="k"
-        yAxisInterval={1} // optional, defaults to 1
-        chartConfig={{
-          backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#fb8c00",
-          backgroundGradientTo: "#ffa726",
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
-          propsForDots: {
-            r: "6",
-            strokeWidth: "2",
-            stroke: "#ffa726",
-          },
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      />
-      <LineChart
-        data={{
-          labels: ["January", "February", "March", "April", "May", "June"],
-          datasets: [
-            {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-              ],
-            },
-          ],
-        }}
-        width={Dimensions.get("window").width} // from react-native
-        height={220}
-        yAxisLabel="$"
-        yAxisSuffix="k"
-        yAxisInterval={1} // optional, defaults to 1
-        chartConfig={{
-          backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#fb8c00",
-          backgroundGradientTo: "#ffa726",
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
-          propsForDots: {
-            r: "6",
-            strokeWidth: "2",
-            stroke: "#ffa726",
-          },
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      />
-    </View>
+          ]}
+        />
+      </VictoryChart>
+      <VictoryChart theme={VictoryTheme.material}>
+        <VictoryLine
+          style={{
+            data: { stroke: "#c43a31" },
+            parent: { border: "1px solid #ccc" },
+          }}
+          data={lineChartData}
+        />
+      </VictoryChart>
+    </ScrollView>
   );
 }
 
