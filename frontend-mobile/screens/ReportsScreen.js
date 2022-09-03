@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, View, Text } from "react-native";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../store/auth-context";
@@ -137,57 +137,85 @@ function ReportsScreen() {
     setLineChartData(temp);
   };
 
+  const correctRoles = [];
+  for (let i = 0; i < reportEmployeeProjects.length; i++) {
+    correctRoles.push(
+      reportEmployeeRoles.find(
+        (item) => item.id === reportEmployeeProjects[i].pivot.role_id
+      ).name
+    );
+  }
+
   return (
-    <ScrollView>
-      <AutocompleteDropdown
-        containerStyle={styles.container}
-        inputContainerStyle={styles.dropdown}
-        clearOnFocus={false}
-        closeOnBlur={true}
-        closeOnSubmit={false}
-        onSelectItem={(item) => getReportOnSelect(item)}
-        dataSet={dropdown}
-      />
-      <VictoryChart
-        width={350}
-        theme={VictoryTheme.material}
-        domainPadding={{ x: 30 }}
-      >
-        <VictoryBar
-          barWidth={({ index }) => index * 2 + 20}
-          data={allSkills}
-          x="name"
-          y="score"
-          style={{ data: { fill: Colors.primaryColor } }}
-          events={[
-            {
-              target: "data",
-              eventHandlers: {
-                onPressIn: () => {
-                  return [
-                    {
-                      target: "data",
-                      mutation: ({ datum }) => {
-                        showSkill(datum);
-                      },
+    <>
+      <View>
+        <AutocompleteDropdown
+          containerStyle={styles.container}
+          inputContainerStyle={styles.dropdown}
+          clearOnFocus={false}
+          closeOnBlur={true}
+          closeOnSubmit={false}
+          onSelectItem={(item) => getReportOnSelect(item)}
+          dataSet={dropdown}
+        />
+      </View>
+      <ScrollView>
+        {allSkills.length > 0 && (
+          <VictoryChart
+            width={350}
+            theme={VictoryTheme.material}
+            domainPadding={{ x: 30 }}
+          >
+            <VictoryBar
+              barWidth={({ index }) => index * 2 + 20}
+              data={allSkills}
+              x="name"
+              y="score"
+              style={{ data: { fill: Colors.primaryColor } }}
+              events={[
+                {
+                  target: "data",
+                  eventHandlers: {
+                    onPressIn: () => {
+                      return [
+                        {
+                          target: "data",
+                          mutation: ({ datum }) => {
+                            showSkill(datum);
+                          },
+                        },
+                      ];
                     },
-                  ];
+                  },
                 },
-              },
-            },
-          ]}
-        />
-      </VictoryChart>
-      <VictoryChart theme={VictoryTheme.material}>
-        <VictoryLine
-          style={{
-            data: { stroke: "#c43a31" },
-            parent: { border: "1px solid #ccc" },
-          }}
-          data={lineChartData}
-        />
-      </VictoryChart>
-    </ScrollView>
+              ]}
+            />
+          </VictoryChart>
+        )}
+        {lineChartData.length > 1 ? (
+          <VictoryChart theme={VictoryTheme.material}>
+            <VictoryLine
+              style={{
+                data: { stroke: Colors.primaryColor },
+                parent: { border: "1px solid #ccc" },
+              }}
+              data={lineChartData}
+            />
+          </VictoryChart>
+        ) : (
+          <Text style={styles.text}>No History</Text>
+        )}
+        {reportEmployeeProjects.length > 0 ? (
+          reportEmployeeProjects.map((project, index) => (
+            <Text key={index} style={styles.project}>
+              {project.name} {correctRoles[index]}
+            </Text>
+          ))
+        ) : (
+          <Text style={styles.text}>No Projects</Text>
+        )}
+      </ScrollView>
+    </>
   );
 }
 
@@ -208,5 +236,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 8,
+  },
+  text: {
+    flex: 1,
+    alignSelf: "center",
+    margin: 20,
+  },
+  project: {
+    flex: 1,
+    borderBottomColor: Colors.primaryColor,
+    paddingBottom: 2,
+    borderBottomWidth: 1,
+    margin: 10,
   },
 });
