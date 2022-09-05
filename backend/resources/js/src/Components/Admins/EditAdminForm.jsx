@@ -199,7 +199,7 @@ const EditAdminForm = ({ token, setReloadAdmins, reloadAdmins, editAdmin }) => {
                                     ? image.preview
                                     : image.includes("avataaars")
                                     ? image
-                                    : `${process.env.REACT_APP_BACKEND_URL}${image}`
+                                    : `${url}${image}`
                             }
                             alt="User Image"
                         />
