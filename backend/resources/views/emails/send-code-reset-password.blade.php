@@ -3,9 +3,9 @@
 <p>You can use the following code to recover your account:</p>
 
 @component('mail::panel')
-Pincode: {{ $token }}
+Pin code: {{ $token }}
 
-<a href="http://localhost:3000/reset/{{$token}}">Click Here to change your password </a>
+<a href="https://erp-lamp-api.herokuapp.com/reset/{{$token}}">Click Here to change your password </a>
 
 @endcomponent
 
