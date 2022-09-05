@@ -75,12 +75,6 @@ const App = () => {
    */
   const [loadingEmployees, setLoadingEmployees] = useState(true);
   const [employees, setEmployees] = useState([]);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [employeesPerPage, setemployeesPerPage] = useState(12);
-
-  // const indexOfLastEmployee = currentPage * employeesPerPage;
-  // const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
-  // const currentEmployees = employees.slice(indexOfFirstEmployee, indexOfLastEmployee);
 
   /**
    * Admins States
