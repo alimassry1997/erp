@@ -11,16 +11,3 @@ Pin code: {{ $token }}
 
 <p>The allowed duration of the code is one hour from the time the message was sent</p>
 @endcomponent
-
-{{-- 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Forget Password</title>
-</head>
-<body>
-    Change Your Password <a href="http://localhost:3000/reset/{{$token}}">Click Here</a>
-    <br>
-    Pincode: {{$token}}
-</body>
-</html> --}}
