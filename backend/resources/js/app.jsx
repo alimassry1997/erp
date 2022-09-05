@@ -2,6 +2,12 @@ import "./bootstrap";
 import "../css/app.css";
 
 import ReactDOM from "react-dom/client";
-import Home from "./Page/Home";
+import React from "react";
+import App from "./src/App";
 
-ReactDOM.createRoot(document.getElementById("app")).render(<Home />);
+const root = ReactDOM.createRoot(document.getElementById("app"));
+root.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);

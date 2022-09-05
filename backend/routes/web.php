@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
+/**
+ * Redirect to the React APP
+ */
+Route::view("/{path?}", "welcome");
