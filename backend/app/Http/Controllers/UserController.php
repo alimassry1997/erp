@@ -338,7 +338,7 @@ class UserController extends Controller
         }
         $admin->save();
         return response()->json([
-            "message" => "Admin Updated Successfully",
+            "message" => "Admin Saved Successfully",
         ]);
     }
 

@@ -36,7 +36,7 @@ const Reports = ({
   const showSkill = (single) => {
     const temp = [];
     for (let i = 0; i < skills.length; i++) {
-      if (skills[i].name === single.name.toLowerCase()) {
+      if (skills[i].name.toLowerCase() === single.name.toLowerCase()) {
         temp.push({
           value: skills[i].kpi.score,
           time: skills[i].kpi.created_at.split("T")[0].slice(0, 7),

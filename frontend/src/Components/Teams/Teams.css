@@ -8,8 +8,18 @@
 .dashboard .header .form-input-div{
   display: flex;
   justify-content: center;
+  
 }
 
+.dashboard .header .teams-search input{
+  margin-right: 1rem;
+  
+}
+
+
+.form-input-div .search_teams{
+  margin-bottom: 0;
+}
 .dashboard .header .form-input-div input{
  width: 100%;
  padding: 10px;
